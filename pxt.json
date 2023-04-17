@@ -1,0 +1,27 @@
+{
+    "name": "JS Template",
+    "version": "3.0.3",
+    "description": "",
+    "dependencies": {
+        "device": "*",
+        "pxt-arcade-info-screens": "github:robo-technical-group/pxt-arcade-info-screens#v2.0.1"
+    },
+    "files": [
+        "main.ts",
+        "README.md",
+        "enums.ts",
+        "attract.ts",
+        "controller.ts",
+        "images.g.jres",
+        "images.g.ts"
+    ],
+    "testFiles": [],
+    "targetVersions": {
+        "target": "1.12.29",
+        "targetId": "arcade"
+    },
+    "supportedTargets": [
+        "arcade"
+    ],
+    "preferredEditor": "tsprj"
+}
