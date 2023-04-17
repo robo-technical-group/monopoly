@@ -1,5 +1,5 @@
 /**
- * My JavaScript Game
+ * Monopoly
  * Built on
  * MakeCode Arcade JavaScript Template v. 3.0.3
  * Template last update: 16 Apr 2023 ak

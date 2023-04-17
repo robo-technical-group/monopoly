@@ -3,18 +3,17 @@
  */
 
 const TEXT_HEADLINES: string[][] = [
-    ['My Game is', '(C) 20XX'],
+    ['Monopoly is a registered', 'trademark of Hasbro'],
+    ['MakeCode Arcade Port', '(C) 2023'],
+    ['(C) 2023', 'Robo Technical Group'],
     ['Programmed in', 'MakeCode Arcade'],
-    ['by', 'Me']
+    ['by', 'AlexK']
 ]
 const TEXT_ACTIONS: string[][] = [[
-    'Left/Right = Action',
-    'Up = Action',
-    'Down = Action',
-    'A = Action',
-    'B = Action'
+    'For up to four players',
+    'Local or multiplayer!',
 ]]
-const TEXT_TITLES: string[] = ['My Game', 'in JavaScript']
+const TEXT_TITLES: string[] = ['Monopoly',]
 
 /**
  * Global variables
