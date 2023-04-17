@@ -15,6 +15,7 @@ const HARDWARE: boolean = control.ramSize() < (1024 * 1024)
  */
 let g_activePlayer: number = -1
 let g_currPlayer: number = -1
+let g_players: Player[] = []
 
 /**
  * Game loops

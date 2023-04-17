@@ -16,7 +16,8 @@
         "images.g.jres",
         "images.g.ts",
         "settings.ts",
-        "avatars.ts"
+        "avatars.ts",
+        "players.ts"
     ],
     "testFiles": [],
     "targetVersions": {

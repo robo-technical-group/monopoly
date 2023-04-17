@@ -1,6 +1,10 @@
 /**
  * Avatars
  */
+namespace SpriteKind {
+    export const Avatar = SpriteKind.create()
+}
+
 interface Avatar {
     name: string
     frontImage: Image
@@ -172,7 +176,7 @@ function fixAvatars(): void {
 function getPlayerInfo() {
     let n: string = game.askPlayerForString(g_avatarSelection.currPlayer + 1,
         'Player ' + (g_avatarSelection.currPlayer + 1) + ' enter name.')
-    // TODO: Update player information with name.
+    g_players[g_avatarSelection.currPlayer].Name = n
     updateAvatarSelection()
 }
 
@@ -185,13 +189,13 @@ function initAvatarSelection() {
     g_avatarSelection.footer1.setPosition(80, 105)
     g_avatarSelection.footer2 = textsprite.create('Press A to select', 0, Color.White)
     g_avatarSelection.footer2.setPosition(80, 115)
-    g_avatarSelection.left = sprites.create(img`.`, SpriteKind.Player)
+    g_avatarSelection.left = sprites.create(img`.`, SpriteKind.Avatar)
     g_avatarSelection.left.setPosition(40, 60)
     g_avatarSelection.left.setFlag(SpriteFlag.Ghost, true)
-    g_avatarSelection.front = sprites.create(img`.`, SpriteKind.Player)
+    g_avatarSelection.front = sprites.create(img`.`, SpriteKind.Avatar)
     g_avatarSelection.front.setPosition(80, 60)
     g_avatarSelection.front.setFlag(SpriteFlag.Ghost, true)
-    g_avatarSelection.right = sprites.create(img`.`, SpriteKind.Player)
+    g_avatarSelection.right = sprites.create(img`.`, SpriteKind.Avatar)
     g_avatarSelection.right.setPosition(120, 60)
     g_avatarSelection.right.setFlag(SpriteFlag.Ghost, true)
     scene.setBackgroundColor(Color.Wine)
@@ -214,8 +218,13 @@ function showNextAvatar(direction: number) {
         if (g_avatarSelection.selectedAvatar >= AVATARS.length) {
             g_avatarSelection.selectedAvatar = 0
         }
-        // TODO: Determine if selected avatar has been taken by another player
         taken = false
+        for (let p of g_players) {
+            if (p.Avatar == g_avatarSelection.selectedAvatar) {
+                taken = true
+                break
+            }
+        }
     }
     updateAvatarImages()
 }
@@ -230,11 +239,17 @@ function startAvatarSelection() {
 }
 
 function selectAvatar() {
-    // TODO: Update player information with selected avatar.
+    g_players[g_avatarSelection.currPlayer].Avatar = g_avatarSelection.selectedAvatar
     if (g_avatarSelection.currPlayer + 1 <= g_settings.numPlayers - 1) {
         g_avatarSelection.currPlayer++
         getPlayerInfo()
     } else {
+        g_avatarSelection.header.destroy()
+        g_avatarSelection.footer1.destroy()
+        g_avatarSelection.footer2.destroy()
+        g_avatarSelection.left.destroy()
+        g_avatarSelection.front.destroy()
+        g_avatarSelection.right.destroy()
         // TODO: Determine first player.
         game.splash("Let's roll!")
         startGame()
@@ -242,8 +257,8 @@ function selectAvatar() {
 }
 
 function updateAvatarSelection() {
-    g_avatarSelection.header.setText('Player ' + (g_avatarSelection.currPlayer + 1)
-        + ' select image')
+    g_avatarSelection.header.setText(g_players[g_avatarSelection.currPlayer].Name
+        + ' select avatar.')
     g_avatarSelection.header.setPosition(80, 4)
     g_avatarSelection.selectedAvatar = 0
     updateAvatarImages()

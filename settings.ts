@@ -69,6 +69,10 @@ function collectSettings(): void {
             g_settings.controllers = ControllerSetting.Multiple
             break
     }
+    g_players = []
+    for (let i: number = 0; i < g_settings.numPlayers; i++) {
+        g_players.push(new Player())
+    }
 }
 
 function startSettingsMode(): void {
