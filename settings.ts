@@ -1,4 +1,9 @@
 // Configure game settings
+interface GameSettings {
+    numPlayers: number
+    controllers: ControllerSetting
+}
+
 /**
  * Constants
  */
@@ -14,10 +19,15 @@ const TEXT_SETTINGS_MULTIPLAYER_TAB: string = 'Multiplayer'
 const TEXT_SETTINGS_MULTIPLAYER: string[][] = [
     ['Shared controller', 'Online/Multiple controllers'],
 ]
+
 /**
  * Global variables
  */
 let g_settingsScreens: OptionScreenCollection = null
+let g_settings: GameSettings = {
+    numPlayers: 2,
+    controllers: ControllerSetting.Multiple,
+}
 
 /**
  * Functions
@@ -45,6 +55,19 @@ function buildSettingsScreens(): void {
 
     } else {
         g_settingsScreens.setSelectionForScreen(1, 0, 1)
+    }
+}
+
+function collectSettings(): void {
+    g_settings.numPlayers = g_settingsScreens.getSelectionForScreen(0, 0) + 1
+    switch (g_settingsScreens.getSelectionForScreen(1, 0)) {
+        case 0:
+            g_settings.controllers = ControllerSetting.Single
+            break
+
+        case 1:
+            g_settings.controllers = ControllerSetting.Multiple
+            break
     }
 }
 

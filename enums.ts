@@ -21,10 +21,17 @@ enum Color {
     Black // 15 = RGB(0, 0, 0)
 }   // enum Color
 
+enum ControllerSetting {
+    Single,
+    Multiple
+}
+
 // Game modes
 enum GameMode {
     Attract,
     Main,
     NotReady,
-    Settings
+    Settings,
+    AvatarSelect,
+    AvatarTest,
 }   // GameMode

@@ -4,7 +4,8 @@
     "description": "",
     "dependencies": {
         "device": "*",
-        "pxt-arcade-info-screens": "github:robo-technical-group/pxt-arcade-info-screens#v2.0.1"
+        "pxt-arcade-info-screens": "github:robo-technical-group/pxt-arcade-info-screens#v2.0.1",
+        "pxt-arcade-multiplayer-prompt": "github:robo-technical-group/pxt-arcade-multiplayer-prompt#v1.0.0"
     },
     "files": [
         "main.ts",
@@ -14,7 +15,8 @@
         "controller.ts",
         "images.g.jres",
         "images.g.ts",
-        "settings.ts"
+        "settings.ts",
+        "avatars.ts"
     ],
     "testFiles": [],
     "targetVersions": {

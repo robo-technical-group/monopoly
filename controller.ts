@@ -14,13 +14,23 @@ controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
             g_settingsScreens.select()
             if (g_settingsScreens.done) {
                 if (validateSettings()) {
-                    // Start avatar selection mode.
-                    game.splash("Let's roll!")
+                    collectSettings()
+                    startAvatarSelection()
                 }
             }   // if (g_settingsScreens.done)
             break
 
+        case GameMode.AvatarSelect:
+            if (g_avatarSelection.currPlayer == 0) {
+                selectAvatar()
+            }
+            break
+
         case GameMode.Main:
+            break
+
+        case GameMode.AvatarTest:
+            showNextAvatarTest()
             break
     }   // switch (g_gameMode)
 })
@@ -35,6 +45,10 @@ controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Press
             break
 
         case GameMode.Main:
+            break
+
+        case GameMode.AvatarTest:
+            toggleAvatarTestAnims()
             break
     }   // switch (g_gameMode)
 })
@@ -51,6 +65,10 @@ controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
 
         case GameMode.Main:
             break
+
+        case GameMode.AvatarTest:
+            showTestAvatarBack()
+            break
     }   // switch (g_gameMode)
 })
 
@@ -66,6 +84,10 @@ controller.player1.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pr
 
         case GameMode.Main:
             break
+
+        case GameMode.AvatarTest:
+            showTestAvatarFront()
+            break
     }   // switch (g_gameMode)
 })
 
@@ -79,7 +101,17 @@ controller.player1.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
             g_settingsScreens.moveCursorLeft()
             break
 
+        case GameMode.AvatarSelect:
+            if (g_avatarSelection.currPlayer == 0) {
+                showNextAvatar(-1)
+            }
+            break
+
         case GameMode.Main:
+            break
+
+        case GameMode.AvatarTest:
+            showTestAvatarLeft()
             break
     }   // switch (g_gameMode)
 })
@@ -94,8 +126,180 @@ controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
             g_settingsScreens.moveCursorRight()
             break
 
+        case GameMode.AvatarSelect:
+            if (g_avatarSelection.currPlayer == 0) {
+                showNextAvatar(1)
+            }
+            break
+
         case GameMode.Main:
             break
+
+        case GameMode.AvatarTest:
+            showTestAvatarRight()
+            break
     }   // switch (g_gameMode)
+})
+
+/**
+ * Player 2
+ */
+controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        case GameMode.AvatarSelect:
+            if (g_avatarSelection.currPlayer == 1) {
+                selectAvatar()
+            }
+            break
+    }
+})
+
+controller.player2.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        default:
+            break
+    }
+})
+
+controller.player2.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        default:
+            break
+    }
+})
+
+controller.player2.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        default:
+            break
+    }
+})
+
+controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        case GameMode.AvatarSelect:
+            if (g_avatarSelection.currPlayer == 1) {
+                showNextAvatar(-1)
+            }
+            break
+    }
+})
+
+controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        case GameMode.AvatarSelect:
+            if (g_avatarSelection.currPlayer == 1) {
+                showNextAvatar(1)
+            }
+            break
+    }
+})
+
+/**
+ * Player 3
+ */
+controller.player3.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        case GameMode.AvatarSelect:
+            if (g_avatarSelection.currPlayer == 2) {
+                selectAvatar()
+            }
+            break
+    }
+})
+
+controller.player3.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        default:
+            break
+    }
+})
+
+controller.player3.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        default:
+            break
+    }
+})
+
+controller.player3.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        default:
+            break
+    }
+})
+
+controller.player3.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        case GameMode.AvatarSelect:
+            if (g_avatarSelection.currPlayer == 2) {
+                showNextAvatar(-1)
+            }
+            break
+    }
+})
+
+controller.player3.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        case GameMode.AvatarSelect:
+            if (g_avatarSelection.currPlayer == 2) {
+                showNextAvatar(1)
+            }
+            break
+    }
+})
+
+/**
+ * Player 4
+ */
+controller.player4.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        case GameMode.AvatarSelect:
+            if (g_avatarSelection.currPlayer == 3) {
+                selectAvatar()
+            }
+            break
+    }
+})
+
+controller.player4.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        default:
+            break
+    }
+})
+
+controller.player4.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        default:
+            break
+    }
+})
+
+controller.player4.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        default:
+            break
+    }
+})
+
+controller.player4.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        case GameMode.AvatarSelect:
+            if (g_avatarSelection.currPlayer == 3) {
+                showNextAvatar(-1)
+            }
+            break
+    }
+})
+
+controller.player4.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
+    switch (g_gameMode) {
+        case GameMode.AvatarSelect:
+            if (g_avatarSelection.currPlayer == 3) {
+                showNextAvatar(1)
+            }
+            break
+    }
 })
 

@@ -13,6 +13,8 @@ const HARDWARE: boolean = control.ramSize() < (1024 * 1024)
 /**
  * Global variables
  */
+let g_activePlayer: number = -1
+let g_currPlayer: number = -1
 
 /**
  * Game loops
@@ -50,3 +52,4 @@ function startGame(): void {
  * Main() a.k.a. game.onStart()
  */
 startAttractMode()
+// startAvatarTest()
