@@ -36,6 +36,15 @@ game.onUpdate(function () {
 
         case GameMode.Main:
             break
+
+        case GameMode.DiceTest:
+            if (g_diceTest.AreRolling) {
+                g_diceTest.move()
+                if (!g_diceTest.AreRolling) {
+                    game.splash('Roll: ' + g_diceTest.Roll + ' Doubles: ' + g_diceTest.AreDoubles)
+                }
+            }
+            break
     }   // switch (g_gameMode)
 })  // game.onUpdate()
 
@@ -54,3 +63,4 @@ function startGame(): void {
  */
 startAttractMode()
 // startAvatarTest()
+// startDiceTest()

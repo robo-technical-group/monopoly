@@ -250,9 +250,7 @@ function selectAvatar() {
         g_avatarSelection.left.destroy()
         g_avatarSelection.front.destroy()
         g_avatarSelection.right.destroy()
-        // TODO: Determine first player.
-        game.splash("Let's roll!")
-        startGame()
+        setupFirstRoll()
     }
 }
 

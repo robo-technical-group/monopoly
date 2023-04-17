@@ -38,6 +38,9 @@ class Player {
         this.turnsInJail = -1
     }
 
+    /**
+     * Public properties
+     */
     public get Avatar(): number {
         return this.avatar
     }
@@ -64,5 +67,15 @@ class Player {
 
     public set Name(value: string) {
         this.name = value
+    }
+}
+
+/**
+ * Functions
+ */
+function initPlayers() {
+    g_players = []
+    for (let i: number = 0; i < g_settings.numPlayers; i++) {
+        g_players.push(new Player())
     }
 }

@@ -33,5 +33,7 @@ enum GameMode {
     NotReady,
     Settings,
     AvatarSelect,
+    FirstRoll,
     AvatarTest,
+    DiceTest,
 }   // GameMode

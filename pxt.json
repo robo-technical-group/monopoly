@@ -17,7 +17,8 @@
         "images.g.ts",
         "settings.ts",
         "avatars.ts",
-        "players.ts"
+        "players.ts",
+        "dice.ts"
     ],
     "testFiles": [],
     "targetVersions": {
