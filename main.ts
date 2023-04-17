@@ -8,15 +8,11 @@
 /**
  * Constants
  */
+const HARDWARE: boolean = control.ramSize() < (1024 * 1024)
 
 /**
  * Global variables
  */
-
-/**
- * Main() a.k.a. game.onStart()
- */
-startAttractMode()
 
 /**
  * Game loops
@@ -29,21 +25,28 @@ game.onUpdate(function () {
             }   // if (game.runtime() >= splash.nextTime)
             break
 
+        case GameMode.Settings:
+            if (game.runtime() >= g_settingsScreens.nextTime) {
+                g_settingsScreens.rotate()
+            }   // if (game.runtime() >= settings.nextTime)
+            break
+
         case GameMode.Main:
             break
     }   // switch (g_gameMode)
 })  // game.onUpdate()
 
 /**
- * Start game modes
+ * Other functions
  */
 function startGame(): void {
     g_gameMode = GameMode.NotReady
-    g_splashScreen.release()
+    g_settingsScreens.release()
     scene.setBackgroundImage(assets.image`bg`)
     g_gameMode = GameMode.Main
 }   // startGame()
 
 /**
- * Other functions
+ * Main() a.k.a. game.onStart()
  */
+startAttractMode()

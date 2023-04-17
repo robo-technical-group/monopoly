@@ -1,5 +1,5 @@
 {
-    "name": "JS Template",
+    "name": "Monopoly",
     "version": "3.0.3",
     "description": "",
     "dependencies": {
@@ -13,7 +13,8 @@
         "attract.ts",
         "controller.ts",
         "images.g.jres",
-        "images.g.ts"
+        "images.g.ts",
+        "settings.ts"
     ],
     "testFiles": [],
     "targetVersions": {
