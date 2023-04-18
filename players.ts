@@ -50,9 +50,9 @@ class Player {
     }
 
     public set Avatar(value: number) {
-        if (value >= 0 && value < AVATARS.length) {
+        if (value >= 0 && value < Avatar.AVATARS.length) {
             this.avatar = value
-            this.sprite = sprites.create(AVATARS[value].frontImage, SpriteKind.Player)
+            this.sprite = sprites.create(Avatar.AVATARS[value].frontImage, SpriteKind.Player)
             this.sprite.setFlag(SpriteFlag.Invisible, true)
         } else {
             this.avatar = -1

@@ -1,8 +1,8 @@
 /**
  * Monopoly
  * Built on
- * MakeCode Arcade JavaScript Template v. 3.0.3
- * Template last update: 16 Apr 2023 ak
+ * MakeCode Arcade JavaScript Template v. 3.1.0
+ * Template last update: 17 Apr 2023 ak
  */
 
 /**
@@ -69,6 +69,6 @@ function startGame(): void {
 /**
  * Main() a.k.a. game.onStart()
  */
-Attract.start()
-// startAvatarTest()
+// Attract.start()
+AvatarTest.startAvatarTest()
 // startDiceTest()
