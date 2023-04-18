@@ -5,7 +5,7 @@
  * Player 1
  */
 controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function() {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.Attract:
             GameSettings.start()
             break
@@ -39,11 +39,11 @@ controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
 
         case GameMode.DiceTest:
             DiceTests.diceTest.startRoll()
-    }   // switch (g_gameMode)
+    }   // switch (GameSettings.gameMode)
 })
 
 controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.Attract:
             GameSettings.start()
             break
@@ -65,11 +65,11 @@ controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Press
                 DiceTests.diceTest.Skin++
             }
             break
-    }   // switch (g_gameMode)
+    }   // switch (GameSettings.gameMode)
 })
 
 controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.Attract:
             GameSettings.start()
             break
@@ -92,11 +92,11 @@ controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
             DiceTests.diceTest.setLocationChange(0, -5)
             DiceTests.diceTest.show()
             break
-    }   // switch (g_gameMode)
+    }   // switch (GameSettings.gameMode)
 })
 
 controller.player1.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.Attract:
             GameSettings.start()
             break
@@ -119,11 +119,11 @@ controller.player1.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pr
             DiceTests.diceTest.setLocationChange(0, 5)
             DiceTests.diceTest.show()
             break
-    }   // switch (g_gameMode)
+    }   // switch (GameSettings.gameMode)
 })
 
 controller.player1.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.Attract:
             GameSettings.start()
             break
@@ -152,11 +152,11 @@ controller.player1.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
             DiceTests.diceTest.setLocationChange(-5, 0)
             DiceTests.diceTest.show()
             break
-    }   // switch (g_gameMode)
+    }   // switch (GameSettings.gameMode)
 })
 
 controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.Attract:
             GameSettings.start()
             break
@@ -185,14 +185,14 @@ controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
             DiceTests.diceTest.setLocationChange(5, 0)
             DiceTests.diceTest.show()
             break
-    }   // switch (g_gameMode)
+    }   // switch (GameSettings.gameMode)
 })
 
 /**
  * Player 2
  */
 controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
             if (Avatar.selection.currPlayer == 1) {
                 Avatar.select()
@@ -206,28 +206,28 @@ controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
 })
 
 controller.player2.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         default:
             break
     }
 })
 
 controller.player2.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         default:
             break
     }
 })
 
 controller.player2.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         default:
             break
     }
 })
 
 controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
             if (Avatar.selection.currPlayer == 1) {
                 Avatar.showNext(-1)
@@ -237,7 +237,7 @@ controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
 })
 
 controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
             if (Avatar.selection.currPlayer == 1) {
                 Avatar.showNext(1)
@@ -250,7 +250,7 @@ controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
  * Player 3
  */
 controller.player3.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
             if (Avatar.selection.currPlayer == 2) {
                 Avatar.select()
@@ -264,28 +264,28 @@ controller.player3.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
 })
 
 controller.player3.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         default:
             break
     }
 })
 
 controller.player3.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         default:
             break
     }
 })
 
 controller.player3.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         default:
             break
     }
 })
 
 controller.player3.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
             if (Avatar.selection.currPlayer == 2) {
                 Avatar.showNext(-1)
@@ -295,7 +295,7 @@ controller.player3.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
 })
 
 controller.player3.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
             if (Avatar.selection.currPlayer == 2) {
                 Avatar.showNext(1)
@@ -308,7 +308,7 @@ controller.player3.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
  * Player 4
  */
 controller.player4.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
             if (Avatar.selection.currPlayer == 3) {
                 Avatar.select()
@@ -322,28 +322,28 @@ controller.player4.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
 })
 
 controller.player4.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         default:
             break
     }
 })
 
 controller.player4.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         default:
             break
     }
 })
 
 controller.player4.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         default:
             break
     }
 })
 
 controller.player4.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
             if (Avatar.selection.currPlayer == 3) {
                 Avatar.showNext(-1)
@@ -353,7 +353,7 @@ controller.player4.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
 })
 
 controller.player4.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
             if (Avatar.selection.currPlayer == 3) {
                 Avatar.showNext(1)

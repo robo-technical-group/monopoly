@@ -233,8 +233,8 @@ class Dice {
 namespace DiceTests {
     export let diceTest: Dice = null
     export function start() {
-        g_gameMode = GameMode.NotReady
+        GameSettings.gameMode = GameMode.NotReady
         diceTest = new Dice(2, DiceOrientation.Vertical)
-        g_gameMode = GameMode.DiceTest
+        GameSettings.gameMode = GameMode.DiceTest
     }
 }

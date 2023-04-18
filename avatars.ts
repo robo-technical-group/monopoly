@@ -177,7 +177,7 @@ namespace Avatar {
     function getPlayerInfo() {
         let n: string = game.askPlayerForString(selection.currPlayer + 1,
             'Player ' + (selection.currPlayer + 1) + ' enter name.')
-        g_players[selection.currPlayer].Name = n
+        GameSettings.players[selection.currPlayer].Name = n
         updateSelection()
     }
 
@@ -220,7 +220,7 @@ namespace Avatar {
                 selection.selectedAvatar = 0
             }
             taken = false
-            for (let p of g_players) {
+            for (let p of GameSettings.players) {
                 if (p.Avatar == selection.selectedAvatar) {
                     taken = true
                     break
@@ -231,17 +231,17 @@ namespace Avatar {
     }
 
     export function startSelection() {
-        g_gameMode = GameMode.NotReady
+        GameSettings.gameMode = GameMode.NotReady
         GameSettings.settingsScreens.release()
         fixAvatars()
-        g_gameMode = GameMode.AvatarSelect
+        GameSettings.gameMode = GameMode.AvatarSelect
         initSelection()
         getPlayerInfo()
     }
 
     export function select() {
-        g_players[selection.currPlayer].Avatar = selection.selectedAvatar
-        if (selection.currPlayer + 1 <= GameSettings.settings.numPlayers - 1) {
+        GameSettings.players[selection.currPlayer].Avatar = selection.selectedAvatar
+        if (selection.currPlayer + 1 <= GameSettings.numPlayers - 1) {
             selection.currPlayer++
             getPlayerInfo()
         } else {
@@ -256,7 +256,7 @@ namespace Avatar {
     }
 
     function updateSelection() {
-        selection.header.setText(g_players[selection.currPlayer].Name
+        selection.header.setText(GameSettings.players[selection.currPlayer].Name
             + ' select avatar.')
         selection.header.setPosition(80, 4)
         selection.selectedAvatar = -1
@@ -347,10 +347,10 @@ namespace AvatarTest {
     }
 
     export function startAvatarTest(): void {
-        g_gameMode = GameMode.NotReady
+        GameSettings.gameMode = GameMode.NotReady
         test = sprites.create(img`.`, SpriteKind.Player)
         showTestAvatar()
-        g_gameMode = GameMode.AvatarTest
+        GameSettings.gameMode = GameMode.AvatarTest
     }
 
     export function toggleAvatarTestAnims(): void {

@@ -98,13 +98,3 @@ class Player {
         this.sprite.setFlag(SpriteFlag.Invisible, false)
     }
 }
-
-/**
- * Functions
- */
-function initPlayers() {
-    g_players = []
-    for (let i: number = 0; i < GameSettings.settings.numPlayers; i++) {
-        g_players.push(new Player())
-    }
-}

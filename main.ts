@@ -13,16 +13,12 @@ const HARDWARE: boolean = control.ramSize() < (1024 * 1024)
 /**
  * Global variables
  */
-let g_activePlayer: number = -1
-let g_currPlayer: number = -1
-let g_gameMode: GameMode = GameMode.NotReady
-let g_players: Player[] = []
 
 /**
  * Game loops
  */
 game.onUpdate(function () {
-    switch (g_gameMode) {
+    switch (GameSettings.gameMode) {
         case GameMode.Attract:
             if (game.runtime() >= Attract.splashScreen.nextTime) {
                 Attract.splashScreen.rotate()
@@ -54,22 +50,29 @@ game.onUpdate(function () {
                 }
             }
             break
-    }   // switch (g_gameMode)
+    }   // switch (GameSettings.gameMode)
 })  // game.onUpdate()
 
 /**
  * Other functions
  */
+function initPlayers() {
+    GameSettings.players = []
+    for (let i: number = 0; i < GameSettings.numPlayers; i++) {
+        GameSettings.players.push(new Player())
+    }
+}
+
 function startGame(): void {
-    g_gameMode = GameMode.NotReady
+    GameSettings.gameMode = GameMode.NotReady
     GameSettings.settingsScreens.release()
     scene.setBackgroundImage(assets.image`bg`)
-    g_gameMode = GameMode.Main
+    GameSettings.gameMode = GameMode.Main
 }   // startGame()
 
 /**
  * Main() a.k.a. game.onStart()
  */
-// Attract.start()
+Attract.start()
 // AvatarTest.startAvatarTest()
-DiceTests.start()
+// DiceTests.start()

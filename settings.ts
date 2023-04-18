@@ -1,10 +1,4 @@
-// Configure game settings.
 namespace GameSettings {
-    interface GameSettings {
-        numPlayers: number
-        controllers: ControllerSetting
-    }
-
     /**
      * Constants
      */
@@ -25,10 +19,12 @@ namespace GameSettings {
      * Global variables
      */
     export let settingsScreens: OptionScreenCollection = null
-    export let settings: GameSettings = {
-        numPlayers: 2,
-        controllers: ControllerSetting.Multiple,
-    }
+    export let activePlayer: number = -1
+    export let controllers: ControllerSetting = ControllerSetting.Multiple
+    export let currPlayer: number = -1
+    export let gameMode: GameMode = GameMode.NotReady
+    export let numPlayers: number = 2
+    export let players: Player[] = []
 
     /**
      * Functions
@@ -60,25 +56,25 @@ namespace GameSettings {
     }
 
     export function collect(): void {
-        settings.numPlayers = settingsScreens.getSelectionForScreen(0, 0) + 1
+        numPlayers = settingsScreens.getSelectionForScreen(0, 0) + 1
         switch (settingsScreens.getSelectionForScreen(1, 0)) {
             case 0:
-                settings.controllers = ControllerSetting.Single
+                controllers = ControllerSetting.Single
                 break
 
             case 1:
-                settings.controllers = ControllerSetting.Multiple
+                controllers = ControllerSetting.Multiple
                 break
         }
         initPlayers()
     }
 
     export function start(): void {
-        g_gameMode = GameMode.NotReady
+        gameMode = GameMode.NotReady
         Attract.splashScreen.release()
         build()
         settingsScreens.build()
-        g_gameMode = GameMode.Settings
+        gameMode = GameMode.Settings
     }
 
     export function validate(): boolean {
