@@ -231,7 +231,7 @@ function showNextAvatar(direction: number) {
 
 function startAvatarSelection() {
     g_gameMode = GameMode.NotReady
-    g_settingsScreens.release()
+    GameSettings.settingsScreens.release()
     fixAvatars()
     g_gameMode = GameMode.AvatarSelect
     initAvatarSelection()
@@ -240,7 +240,7 @@ function startAvatarSelection() {
 
 function selectAvatar() {
     g_players[g_avatarSelection.currPlayer].Avatar = g_avatarSelection.selectedAvatar
-    if (g_avatarSelection.currPlayer + 1 <= g_settings.numPlayers - 1) {
+    if (g_avatarSelection.currPlayer + 1 <= GameSettings.settings.numPlayers - 1) {
         g_avatarSelection.currPlayer++
         getPlayerInfo()
     } else {

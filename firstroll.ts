@@ -69,7 +69,7 @@ namespace FirstRoll {
         footer.setPosition(80, 115)
         let x: number = 20
         let y: number = 100
-        for (let i: number = 0; i < g_settings.numPlayers; i++) {
+        for (let i: number = 0; i < GameSettings.settings.numPlayers; i++) {
             let p: Player = g_players[i]
             p.moveSprite(x, y)
             p.showSprite()

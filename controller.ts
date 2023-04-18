@@ -7,17 +7,17 @@
 controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function() {
     switch (g_gameMode) {
         case GameMode.Attract:
-            startSettingsMode()
+            GameSettings.start()
             break
 
         case GameMode.Settings:
-            g_settingsScreens.select()
-            if (g_settingsScreens.done) {
-                if (validateSettings()) {
-                    collectSettings()
+            GameSettings.settingsScreens.select()
+            if (GameSettings.settingsScreens.done) {
+                if (GameSettings.validate()) {
+                    GameSettings.collect()
                     startAvatarSelection()
                 }
-            }   // if (g_settingsScreens.done)
+            }   // if (GameSettings.settingsScreens.done)
             break
 
         case GameMode.AvatarSelect:
@@ -45,7 +45,7 @@ controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
 controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Pressed, function () {
     switch (g_gameMode) {
         case GameMode.Attract:
-            startSettingsMode()
+            GameSettings.start()
             break
 
         case GameMode.Settings:
@@ -71,11 +71,11 @@ controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Press
 controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
     switch (g_gameMode) {
         case GameMode.Attract:
-            startSettingsMode()
+            GameSettings.start()
             break
 
         case GameMode.Settings:
-            g_settingsScreens.moveCursorUp()
+            GameSettings.settingsScreens.moveCursorUp()
             break
 
         case GameMode.Main:
@@ -98,11 +98,11 @@ controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
 controller.player1.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pressed, function () {
     switch (g_gameMode) {
         case GameMode.Attract:
-            startSettingsMode()
+            GameSettings.start()
             break
 
         case GameMode.Settings:
-            g_settingsScreens.moveCursorDown()
+            GameSettings.settingsScreens.moveCursorDown()
             break
 
         case GameMode.Main:
@@ -125,11 +125,11 @@ controller.player1.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pr
 controller.player1.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
     switch (g_gameMode) {
         case GameMode.Attract:
-            startSettingsMode()
+            GameSettings.start()
             break
 
         case GameMode.Settings:
-            g_settingsScreens.moveCursorLeft()
+            GameSettings.settingsScreens.moveCursorLeft()
             break
 
         case GameMode.AvatarSelect:
@@ -158,11 +158,11 @@ controller.player1.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
 controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
     switch (g_gameMode) {
         case GameMode.Attract:
-            startSettingsMode()
+            GameSettings.start()
             break
 
         case GameMode.Settings:
-            g_settingsScreens.moveCursorRight()
+            GameSettings.settingsScreens.moveCursorRight()
             break
 
         case GameMode.AvatarSelect:

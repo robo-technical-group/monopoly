@@ -104,7 +104,7 @@ class Player {
  */
 function initPlayers() {
     g_players = []
-    for (let i: number = 0; i < g_settings.numPlayers; i++) {
+    for (let i: number = 0; i < GameSettings.settings.numPlayers; i++) {
         g_players.push(new Player())
     }
 }
