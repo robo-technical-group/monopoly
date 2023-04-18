@@ -38,7 +38,7 @@ controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
             break
 
         case GameMode.DiceTest:
-            g_diceTest.startRoll()
+            DiceTests.diceTest.startRoll()
     }   // switch (g_gameMode)
 })
 
@@ -59,10 +59,10 @@ controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Press
             break
 
         case GameMode.DiceTest:
-            if (g_diceTest.Skin == DiceSkin.Orange) {
-                g_diceTest.Skin = DiceSkin.White
+            if (DiceTests.diceTest.Skin == DiceSkin.Orange) {
+                DiceTests.diceTest.Skin = DiceSkin.White
             } else {
-                g_diceTest.Skin++
+                DiceTests.diceTest.Skin++
             }
             break
     }   // switch (g_gameMode)
@@ -86,11 +86,11 @@ controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
             break
 
         case GameMode.DiceTest:
-            g_diceTest.Orientation = DiceOrientation.Horizontal
-            g_diceTest.setStartLocation(5, 115)
-            g_diceTest.setStopLocation(5, 6)
-            g_diceTest.setLocationChange(0, -5)
-            g_diceTest.show()
+            DiceTests.diceTest.Orientation = DiceOrientation.Horizontal
+            DiceTests.diceTest.setStartLocation(5, 115)
+            DiceTests.diceTest.setStopLocation(5, 6)
+            DiceTests.diceTest.setLocationChange(0, -5)
+            DiceTests.diceTest.show()
             break
     }   // switch (g_gameMode)
 })
@@ -113,11 +113,11 @@ controller.player1.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pr
             break
 
         case GameMode.DiceTest:
-            g_diceTest.Orientation = DiceOrientation.Horizontal
-            g_diceTest.setStartLocation(5, 5)
-            g_diceTest.setStopLocation(5, 114)
-            g_diceTest.setLocationChange(0, 5)
-            g_diceTest.show()
+            DiceTests.diceTest.Orientation = DiceOrientation.Horizontal
+            DiceTests.diceTest.setStartLocation(5, 5)
+            DiceTests.diceTest.setStopLocation(5, 114)
+            DiceTests.diceTest.setLocationChange(0, 5)
+            DiceTests.diceTest.show()
             break
     }   // switch (g_gameMode)
 })
@@ -146,11 +146,11 @@ controller.player1.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
             break
 
         case GameMode.DiceTest:
-            g_diceTest.Orientation = DiceOrientation.Vertical
-            g_diceTest.setStartLocation(155, 5)
-            g_diceTest.setStopLocation(6, 5)
-            g_diceTest.setLocationChange(-5, 0)
-            g_diceTest.show()
+            DiceTests.diceTest.Orientation = DiceOrientation.Vertical
+            DiceTests.diceTest.setStartLocation(155, 5)
+            DiceTests.diceTest.setStopLocation(6, 5)
+            DiceTests.diceTest.setLocationChange(-5, 0)
+            DiceTests.diceTest.show()
             break
     }   // switch (g_gameMode)
 })
@@ -179,11 +179,11 @@ controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
             break
 
         case GameMode.DiceTest:
-            g_diceTest.Orientation = DiceOrientation.Vertical
-            g_diceTest.setStartLocation(5, 5)
-            g_diceTest.setStopLocation(154, 5)
-            g_diceTest.setLocationChange(5, 0)
-            g_diceTest.show()
+            DiceTests.diceTest.Orientation = DiceOrientation.Vertical
+            DiceTests.diceTest.setStartLocation(5, 5)
+            DiceTests.diceTest.setStopLocation(154, 5)
+            DiceTests.diceTest.setLocationChange(5, 0)
+            DiceTests.diceTest.show()
             break
     }   // switch (g_gameMode)
 })

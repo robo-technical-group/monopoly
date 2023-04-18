@@ -26,7 +26,18 @@ enum ControllerSetting {
     Multiple
 }
 
-// Game modes
+enum DiceOrientation {
+    None,
+    Horizontal,
+    Vertical,
+}
+
+enum DiceSkin {
+    White = 0,
+    Yellow = 1,
+    Orange = 2,
+}
+
 enum GameMode {
     Attract,
     Main,

@@ -3,18 +3,6 @@ namespace SpriteKind {
     export const Dice = SpriteKind.create()
 }
 
-enum DiceOrientation {
-    None,
-    Horizontal,
-    Vertical,
-}
-
-enum DiceSkin {
-    White = 0,
-    Yellow = 1,
-    Orange = 2,
-}
-
 const D6_IMAGES: Image[][] = [
     assets.animation`d6white`,
     assets.animation`d6yellow`,
@@ -242,9 +230,11 @@ class Dice {
 /**
  * Dice test routines
  */
-let g_diceTest: Dice = null
-function startDiceTest() {
-    g_gameMode = GameMode.NotReady
-    g_diceTest = new Dice(2, DiceOrientation.Vertical)
-    g_gameMode = GameMode.DiceTest
+namespace DiceTests {
+    export let diceTest: Dice = null
+    export function start() {
+        g_gameMode = GameMode.NotReady
+        diceTest = new Dice(2, DiceOrientation.Vertical)
+        g_gameMode = GameMode.DiceTest
+    }
 }

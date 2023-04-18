@@ -46,10 +46,11 @@ game.onUpdate(function () {
             break
 
         case GameMode.DiceTest:
-            if (g_diceTest.AreRolling) {
-                g_diceTest.move()
-                if (!g_diceTest.AreRolling) {
-                    game.splash('Roll: ' + g_diceTest.Roll + ' Doubles: ' + g_diceTest.AreDoubles)
+            if (DiceTests.diceTest.AreRolling) {
+                DiceTests.diceTest.move()
+                if (!DiceTests.diceTest.AreRolling) {
+                    game.splash('Roll: ' + DiceTests.diceTest.Roll +
+                        ' Doubles: ' + DiceTests.diceTest.AreDoubles)
                 }
             }
             break
@@ -70,5 +71,5 @@ function startGame(): void {
  * Main() a.k.a. game.onStart()
  */
 // Attract.start()
-AvatarTest.startAvatarTest()
-// startDiceTest()
+// AvatarTest.startAvatarTest()
+DiceTests.start()
