@@ -44,7 +44,7 @@ namespace FirstRoll {
                 }
             }
         } else {
-            game.splash('Player ' + winPlayer[0] + ' goes first!')
+            game.splash('Player ' + (winPlayer[0] + 1) + ' goes first!')
             toReturn = true
         }
         return toReturn

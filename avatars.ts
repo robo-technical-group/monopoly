@@ -17,7 +17,7 @@ namespace Avatar {
     }
 
     interface AvatarSelection {
-        currPlayer: number
+        currPlayer: number // Between 1 and 4
         selectedAvatar: number
         header: TextSprite
         footer1: TextSprite
@@ -147,7 +147,7 @@ namespace Avatar {
      */
 
     export let selection: AvatarSelection = {
-        currPlayer: -1,
+        currPlayer: 0,
         selectedAvatar: -1,
         header: null,
         footer1: null,
@@ -175,14 +175,14 @@ namespace Avatar {
     }
 
     function getPlayerInfo() {
-        let n: string = game.askPlayerForString(selection.currPlayer + 1,
-            'Player ' + (selection.currPlayer + 1) + ' enter name.')
-        GameSettings.players[selection.currPlayer].Name = n
+        GameSettings.players[selection.currPlayer - 1].Name =
+            game.askPlayerForString(selection.currPlayer,
+            'Player ' + selection.currPlayer + ' enter name.')
         updateSelection()
     }
 
     export function initSelection() {
-        selection.currPlayer = 0
+        selection.currPlayer = 1
         selection.selectedAvatar = 0
         selection.header = textsprite.create(' ', 0, Color.Yellow)
         selection.header.setPosition(80, 4)
@@ -240,8 +240,8 @@ namespace Avatar {
     }
 
     export function select() {
-        GameSettings.players[selection.currPlayer].Avatar = selection.selectedAvatar
-        if (selection.currPlayer + 1 <= GameSettings.numPlayers - 1) {
+        GameSettings.players[selection.currPlayer - 1].Avatar = selection.selectedAvatar
+        if (selection.currPlayer < GameSettings.numPlayers) {
             selection.currPlayer++
             getPlayerInfo()
         } else {
@@ -256,7 +256,7 @@ namespace Avatar {
     }
 
     function updateSelection() {
-        selection.header.setText(GameSettings.players[selection.currPlayer].Name
+        selection.header.setText(GameSettings.players[selection.currPlayer - 1].Name
             + ' select avatar.')
         selection.header.setPosition(80, 4)
         selection.selectedAvatar = -1

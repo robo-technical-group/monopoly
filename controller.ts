@@ -21,7 +21,7 @@ controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
             break
 
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == 0) {
+            if (Avatar.selection.currPlayer == 1) {
                 Avatar.select()
             }
             break
@@ -133,7 +133,7 @@ controller.player1.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
             break
 
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == 0) {
+            if (Avatar.selection.currPlayer == 1) {
                 Avatar.showNext(-1)
             }
             break
@@ -166,7 +166,7 @@ controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
             break
 
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == 0) {
+            if (Avatar.selection.currPlayer == 1) {
                 Avatar.showNext(1)
             }
             break
@@ -194,7 +194,7 @@ controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
 controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
     switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == 1) {
+            if (Avatar.selection.currPlayer == 2) {
                 Avatar.select()
             }
             break
@@ -229,7 +229,7 @@ controller.player2.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pr
 controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
     switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == 1) {
+            if (Avatar.selection.currPlayer == 2) {
                 Avatar.showNext(-1)
             }
             break
@@ -239,7 +239,7 @@ controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
 controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
     switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == 1) {
+            if (Avatar.selection.currPlayer == 2) {
                 Avatar.showNext(1)
             }
             break
@@ -252,7 +252,7 @@ controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
 controller.player3.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
     switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == 2) {
+            if (Avatar.selection.currPlayer == 3) {
                 Avatar.select()
             }
             break
@@ -287,7 +287,7 @@ controller.player3.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pr
 controller.player3.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
     switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == 2) {
+            if (Avatar.selection.currPlayer == 3) {
                 Avatar.showNext(-1)
             }
             break
@@ -297,7 +297,7 @@ controller.player3.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
 controller.player3.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
     switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == 2) {
+            if (Avatar.selection.currPlayer == 3) {
                 Avatar.showNext(1)
             }
             break
@@ -310,7 +310,7 @@ controller.player3.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
 controller.player4.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
     switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == 3) {
+            if (Avatar.selection.currPlayer == 4) {
                 Avatar.select()
             }
             break
@@ -345,7 +345,7 @@ controller.player4.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pr
 controller.player4.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
     switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == 3) {
+            if (Avatar.selection.currPlayer == 4) {
                 Avatar.showNext(-1)
             }
             break
@@ -355,7 +355,7 @@ controller.player4.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
 controller.player4.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
     switch (GameSettings.gameMode) {
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == 3) {
+            if (Avatar.selection.currPlayer == 4) {
                 Avatar.showNext(1)
             }
             break
