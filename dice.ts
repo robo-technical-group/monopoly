@@ -1,4 +1,4 @@
-// Dice routines including first roll.
+// Dice routines
 namespace SpriteKind {
     export const Dice = SpriteKind.create()
 }
@@ -111,6 +111,10 @@ class Dice {
 
     public set Skin(value: DiceSkin) {
         this.skin = value
+    }
+
+    public get Visible(): boolean {
+        return (this.sprites[0].flags & SpriteFlag.Invisible) != SpriteFlag.Invisible
     }
 
     /**
@@ -233,15 +237,6 @@ class Dice {
             }
         }
     }
-}
-
-/**
- * Functions
- */
-function setupFirstRoll(): void {
-    g_gameMode = GameMode.NotReady
-    scene.setBackgroundColor(Color.Wine)
-    
 }
 
 /**

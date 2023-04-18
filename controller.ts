@@ -26,6 +26,10 @@ controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
             }
             break
 
+        case GameMode.FirstRoll:
+            FirstRoll.startRoll(1)
+            break
+
         case GameMode.Main:
             break
 
@@ -194,6 +198,10 @@ controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
                 selectAvatar()
             }
             break
+
+        case GameMode.FirstRoll:
+            FirstRoll.startRoll(2)
+            break
     }
 })
 
@@ -248,6 +256,10 @@ controller.player3.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
                 selectAvatar()
             }
             break
+
+        case GameMode.FirstRoll:
+            FirstRoll.startRoll(3)
+            break
     }
 })
 
@@ -301,6 +313,10 @@ controller.player4.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
             if (g_avatarSelection.currPlayer == 3) {
                 selectAvatar()
             }
+            break
+
+        case GameMode.FirstRoll:
+            FirstRoll.startRoll(4)
             break
     }
 })

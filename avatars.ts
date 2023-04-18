@@ -250,7 +250,7 @@ function selectAvatar() {
         g_avatarSelection.left.destroy()
         g_avatarSelection.front.destroy()
         g_avatarSelection.right.destroy()
-        setupFirstRoll()
+        FirstRoll.setup()
     }
 }
 
@@ -258,8 +258,8 @@ function updateAvatarSelection() {
     g_avatarSelection.header.setText(g_players[g_avatarSelection.currPlayer].Name
         + ' select avatar.')
     g_avatarSelection.header.setPosition(80, 4)
-    g_avatarSelection.selectedAvatar = 0
-    updateAvatarImages()
+    g_avatarSelection.selectedAvatar = -1
+    showNextAvatar(1)
 }
 
 function updateAvatarImages() {

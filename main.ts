@@ -34,6 +34,13 @@ game.onUpdate(function () {
             }   // if (game.runtime() >= settings.nextTime)
             break
 
+        case GameMode.FirstRoll:
+            FirstRoll.moveDice()
+            if (FirstRoll.findFirstPlayer()) {
+                // Start game!
+                startGame()
+            }
+
         case GameMode.Main:
             break
 

@@ -21,9 +21,11 @@ class Player {
     private avatar: number
     private bank: number
     private currSpace: number
+    private dice: Dice
     private isInJail: boolean
     private location: number
     private name: string
+    private sprite: Sprite
     private statsSprite: Sprite
     private turnsInJail: number
 
@@ -31,9 +33,11 @@ class Player {
         this.avatar = -1
         this.bank = -1
         this.currSpace = -1
+        this.dice = new Dice(2)
         this.isInJail = false
         this.location = -1
         this.name = ''
+        this.sprite = null
         this.statsSprite = null
         this.turnsInJail = -1
     }
@@ -48,6 +52,8 @@ class Player {
     public set Avatar(value: number) {
         if (value >= 0 && value < AVATARS.length) {
             this.avatar = value
+            this.sprite = sprites.create(AVATARS[value].frontImage, SpriteKind.Player)
+            this.sprite.setFlag(SpriteFlag.Invisible, true)
         } else {
             this.avatar = -1
         }
@@ -61,12 +67,35 @@ class Player {
         this.bank = value
     }
 
+    public get Dice(): Dice {
+        return this.dice
+    }
+
     public get Name(): string {
         return this.name
     }
 
     public set Name(value: string) {
         this.name = value
+    }
+
+    public get Sprite(): Sprite {
+        return this.sprite
+    }
+
+    /**
+     * Public methods
+     */
+    public hideSprite(): void {
+        this.sprite.setFlag(SpriteFlag.Invisible, true)
+    }
+
+    public moveSprite(x: number, y: number): void {
+        this.sprite.setPosition(x, y)
+    }
+
+    public showSprite(): void {
+        this.sprite.setFlag(SpriteFlag.Invisible, false)
     }
 }
 
