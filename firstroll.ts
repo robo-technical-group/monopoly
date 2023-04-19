@@ -2,6 +2,9 @@
  * Routines for determining first player.
  */
 namespace FirstRoll {
+    const HEADING_TEXT: string = 'Highest roll goes first'
+    const FOOTER_TEXT: string = 'Players: Press A to roll!'
+    
     /**
      * Global variables
      */
@@ -65,10 +68,10 @@ namespace FirstRoll {
     export function setup(): void {
         g_state.Mode = GameMode.NotReady
         scene.setBackgroundColor(Color.Wine)
-        let header: TextSprite = textsprite.create('Determine first player',
+        let header: TextSprite = textsprite.create(HEADING_TEXT,
             Color.Transparent, Color.Yellow)
         header.setPosition(80, 5)
-        let footer: TextSprite = textsprite.create('Players: Press A to roll!',
+        let footer: TextSprite = textsprite.create(FOOTER_TEXT,
             Color.Transparent, Color.White)
         footer.setPosition(80, 115)
         let deltaX: number = Math.floor(160 / g_state.NumPlayers)

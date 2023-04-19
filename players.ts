@@ -97,11 +97,12 @@ class Player {
     }
 
     public promptForName(): void {
-        if (this.controllerId >= 1 && this.controllerId <= 4) {
-            this.name = game.askPlayerForString(this.controllerId,
-                'Player ' + this.controllerId + ' enter name.')
+        let prompt: string = `Player ${this.controllerId} enter name.`
+        if (GameSettings.controllers == ControllerSetting.Multiple &&
+                this.controllerId >= 1 && this.controllerId <= 4) {
+            this.name = game.askPlayerForString(this.controllerId, prompt)
         } else {
-            this.name = game.askForString('Enter your name.')
+            this.name = game.askForString(prompt)
         }
     }
 
