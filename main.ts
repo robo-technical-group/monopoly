@@ -13,12 +13,13 @@ const HARDWARE: boolean = control.ramSize() < (1024 * 1024)
 /**
  * Global variables
  */
+let g_state: GameState = new GameState()
 
 /**
  * Game loops
  */
 game.onUpdate(function () {
-    switch (GameSettings.gameMode) {
+    switch (g_state.Mode) {
         case GameMode.Attract:
             if (game.runtime() >= Attract.splashScreen.nextTime) {
                 Attract.splashScreen.rotate()
@@ -35,7 +36,7 @@ game.onUpdate(function () {
             FirstRoll.moveDice()
             if (FirstRoll.findFirstPlayer()) {
                 // Start game!
-                game.splash(GameSettings.players[FirstRoll.firstPlayer - 1].Name +
+                game.splash(g_state.Players[FirstRoll.firstPlayer - 1].Name +
                     ": You're first!")
                 startGame()
             }
@@ -52,22 +53,22 @@ game.onUpdate(function () {
                 }
             }
             break
-    }   // switch (GameSettings.gameMode)
+    }   // switch (g_state.Mode)
 })  // game.onUpdate()
 
 /**
  * Other functions
  */
 function startGame(): void {
-    GameSettings.gameMode = GameMode.NotReady
+    g_state.Mode = GameMode.NotReady
     scene.setBackgroundImage(assets.image`bg`)
-    GameSettings.gameMode = GameMode.Main
+    g_state.Mode = GameMode.Main
 }   // startGame()
 
 /**
  * Main() a.k.a. game.onStart()
  */
-// Attract.start()
+Attract.start()
 // AvatarTest.startAvatarTest()
 // DiceTests.start()
-FirstRollTests.start(4)
+// FirstRollTests.start(4)

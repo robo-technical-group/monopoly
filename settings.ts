@@ -22,12 +22,7 @@ namespace GameSettings {
      * Global variables
      */
     export let settingsScreens: OptionScreenCollection = null
-    export let activePlayer: number = -1
     export let controllers: ControllerSetting = ControllerSetting.Multiple
-    export let currPlayer: number = -1
-    export let gameMode: GameMode = GameMode.NotReady
-    export let numPlayers: number = 2
-    export let players: Player[] = []
 
     /**
      * Functions
@@ -59,7 +54,7 @@ namespace GameSettings {
     }
 
     export function collect(): void {
-        numPlayers = settingsScreens.getSelectionForScreen(0, 0) + 1
+        g_state.NumPlayers = settingsScreens.getSelectionForScreen(0, 0) + 1
         switch (settingsScreens.getSelectionForScreen(1, 0)) {
             case 0:
                 controllers = ControllerSetting.Single
@@ -69,22 +64,14 @@ namespace GameSettings {
                 controllers = ControllerSetting.Multiple
                 break
         }
-        initPlayers()
-    }
-
-    export function initPlayers() {
-        players = []
-        for (let i: number = 0; i < numPlayers; i++) {
-            players.push(new Player(i + 1))
-        }
     }
 
     export function start(): void {
-        gameMode = GameMode.NotReady
+        g_state.Mode = GameMode.NotReady
         Attract.splashScreen.release()
         build()
         settingsScreens.build()
-        gameMode = GameMode.Settings
+        g_state.Mode = GameMode.Settings
     }
 
     export function validate(): boolean {

@@ -2,7 +2,7 @@
  * Controller event handlers
  */
 function pressA(player: number): void {
-    switch (GameSettings.gameMode) {
+    switch (g_state.Mode) {
         case GameMode.Attract:
             if (player == 1) {
                 GameSettings.start()
@@ -40,11 +40,11 @@ function pressA(player: number): void {
 
         case GameMode.DiceTest:
             DiceTests.diceTest.startRoll()
-    }   // switch (GameSettings.gameMode)
+    }   // switch (g_state.Mode)
 }
 
 function pressB(player: number): void {
-    switch (GameSettings.gameMode) {
+    switch (g_state.Mode) {
         case GameMode.Attract:
             if (player == 1) {
                 GameSettings.start()
@@ -68,11 +68,11 @@ function pressB(player: number): void {
                 DiceTests.diceTest.Skin++
             }
             break
-    }   // switch (GameSettings.gameMode)
+    }   // switch (g_state.Mode)
 }
 
 function pressDown(player: number): void {
-    switch (GameSettings.gameMode) {
+    switch (g_state.Mode) {
         case GameMode.Attract:
             if (player == 1) {
                 GameSettings.start()
@@ -99,11 +99,11 @@ function pressDown(player: number): void {
             DiceTests.diceTest.setLocationChange(0, 5)
             DiceTests.diceTest.show()
             break
-    }   // switch (GameSettings.gameMode)
+    }   // switch (g_state.Mode)
 }
 
 function pressLeft(player: number): void {
-    switch (GameSettings.gameMode) {
+    switch (g_state.Mode) {
         case GameMode.Attract:
             if (player == 1) {
                 GameSettings.start()
@@ -136,11 +136,11 @@ function pressLeft(player: number): void {
             DiceTests.diceTest.setLocationChange(-5, 0)
             DiceTests.diceTest.show()
             break
-    }   // switch (GameSettings.gameMode)
+    }   // switch (g_state.Mode)
 }
 
 function pressRight(player: number): void {
-    switch (GameSettings.gameMode) {
+    switch (g_state.Mode) {
         case GameMode.Attract:
             if (player == 1) {
                 GameSettings.start()
@@ -173,11 +173,11 @@ function pressRight(player: number): void {
             DiceTests.diceTest.setLocationChange(5, 0)
             DiceTests.diceTest.show()
             break
-    }   // switch (GameSettings.gameMode)
+    }   // switch (g_state.Mode)
 }
 
 function pressUp(player: number) {
-    switch (GameSettings.gameMode) {
+    switch (g_state.Mode) {
         case GameMode.Attract:
             if (player == 1) {
                 GameSettings.start()
@@ -204,7 +204,7 @@ function pressUp(player: number) {
             DiceTests.diceTest.setLocationChange(0, -5)
             DiceTests.diceTest.show()
             break
-    }   // switch (GameSettings.gameMode)
+    }   // switch (g_state.Mode)
 }
 
 /**

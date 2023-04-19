@@ -21,15 +21,15 @@ namespace FirstRoll {
                 return false
             }
         }
-        for (let p of GameSettings.players) {
+        for (let p of g_state.Players) {
             if (p.Dice.AreRolling) {
                 return false
             }
         }
         let highRoll: number = 0
         let winPlayer: number[] = []
-        for (let i: number = 0; i < GameSettings.players.length; i++) {
-            let p: Player = GameSettings.players[i]
+        for (let i: number = 0; i < g_state.NumPlayers; i++) {
+            let p: Player = g_state.Players[i]
             if (p.Dice.Visible && p.Dice.Roll == highRoll) {
                 winPlayer.push(i)
             }
@@ -40,11 +40,11 @@ namespace FirstRoll {
             }
         }
         if (winPlayer.length > 1) {
-            for (let i: number = 0; i < GameSettings.players.length; i++) {
+            for (let i: number = 0; i < g_state.NumPlayers; i++) {
                 if (winPlayer.indexOf(i) > -1) {
-                    GameSettings.players[i].Dice.startRoll()
+                    g_state.Players[i].Dice.startRoll()
                 } else {
-                    GameSettings.players[i].Dice.hide()
+                    g_state.Players[i].Dice.hide()
                 }
             }
         } else {
@@ -55,7 +55,7 @@ namespace FirstRoll {
     }
 
     export function moveDice(): void {
-        for (let p of GameSettings.players) {
+        for (let p of g_state.Players) {
             if (p.Dice.AreRolling) {
                 p.Dice.move()
             }
@@ -63,7 +63,7 @@ namespace FirstRoll {
     }
 
     export function setup(): void {
-        GameSettings.gameMode = GameMode.NotReady
+        g_state.Mode = GameMode.NotReady
         scene.setBackgroundColor(Color.Wine)
         let header: TextSprite = textsprite.create('Determine first player',
             Color.Transparent, Color.Yellow)
@@ -71,11 +71,11 @@ namespace FirstRoll {
         let footer: TextSprite = textsprite.create('Players: Press A to roll!',
             Color.Transparent, Color.White)
         footer.setPosition(80, 115)
-        let deltaX: number = Math.floor(160 / GameSettings.numPlayers)
+        let deltaX: number = Math.floor(160 / g_state.NumPlayers)
         let x: number = Math.floor(deltaX / 2)
         let y: number = 100
-        for (let i: number = 0; i < GameSettings.numPlayers; i++) {
-            let p: Player = GameSettings.players[i]
+        for (let i: number = 0; i < g_state.NumPlayers; i++) {
+            let p: Player = g_state.Players[i]
             p.moveSprite(x, y)
             p.showSprite()
             p.Dice.Orientation = DiceOrientation.Horizontal
@@ -86,15 +86,15 @@ namespace FirstRoll {
             x += deltaX
             firstRollStarted.push(false)
         }
-        GameSettings.gameMode = GameMode.FirstRoll
+        g_state.Mode = GameMode.FirstRoll
     }
 
     export function startRoll(player: number): void {
-        if (player < 1 || player > GameSettings.players.length) {
+        if (player < 1 || player > g_state.NumPlayers) {
             return
         }
         firstRollStarted[player - 1] = true
-        GameSettings.players[player - 1].Dice.startRoll()
+        g_state.Players[player - 1].Dice.startRoll()
     }
 }
 
@@ -102,11 +102,10 @@ namespace FirstRollTests {
     const PLAYER_NAMES: string[] = ['Robo', 'Xander', 'Lex', 'Solar',]
     const PLAYER_AVATARS: number[] = [0, 1, 2, 3]
     export function start(numPlayers: number): void {
-        GameSettings.numPlayers = numPlayers
-        GameSettings.initPlayers()
+        g_state.NumPlayers = numPlayers
         for (let i: number = 0; i < numPlayers; i++) {
-            GameSettings.players[i].Name = PLAYER_NAMES[i]
-            GameSettings.players[i].Avatar = PLAYER_AVATARS[i]
+            g_state.Players[i].Name = PLAYER_NAMES[i]
+            g_state.Players[i].Avatar = PLAYER_AVATARS[i]
         }
         FirstRoll.setup()
     }

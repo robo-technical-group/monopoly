@@ -19,7 +19,8 @@
         "avatars.ts",
         "players.ts",
         "dice.ts",
-        "firstroll.ts"
+        "firstroll.ts",
+        "state.ts"
     ],
     "testFiles": [],
     "targetVersions": {

@@ -30,6 +30,6 @@ namespace Attract {
     export function start(): void {
         build()
         splashScreen.build()
-        GameSettings.gameMode = GameMode.Attract
+        g_state.Mode = GameMode.Attract
     }   // startAttractMode()
 }
