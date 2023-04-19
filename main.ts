@@ -61,7 +61,6 @@ game.onUpdate(function () {
  */
 function startGame(): void {
     g_state.Mode = GameMode.NotReady
-    game.showLongText(g_state.State, DialogLayout.Full)
     scene.setBackgroundImage(assets.image`bg`)
     g_state.Mode = GameMode.Main
 }   // startGame()
@@ -72,4 +71,5 @@ function startGame(): void {
 // Attract.start()
 // AvatarTest.startAvatarTest()
 // DiceTests.start()
-FirstRollTests.start(4)
+// FirstRollTests.start(4)
+GameStateTests.start()

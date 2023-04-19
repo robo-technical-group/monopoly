@@ -49,13 +49,33 @@ class GameState {
         }
     }
 
-    public set State(value: IGameState) {
-        this.gameMode = value.gameMode
-        this.players = []
-        for (let ps of value.players) {
-            let p: Player = new Player()
-            p.State = ps
+    /**
+     * Public methods
+     */
+    public loadState(state: any): boolean {
+        if (typeof state != 'object') {
+            return false
         }
+        if (typeof state.gameMode == 'number') {
+            this.gameMode = state.gameMode
+        } else {
+            this.gameMode = GameMode.NotReady
+        }
+        if (typeof state.players == 'object') {
+            this.players = []
+            let playerList = <object[]>state.players
+            for (let playerState of playerList) {
+                let p: Player = new Player()
+                if (!p.loadState(playerState)) {
+                    return false
+                } else {
+                    this.players.push(p)
+                }
+            }
+        } else {
+            return false
+        }
+        return true
     }
 
     /**
@@ -66,5 +86,51 @@ class GameState {
         for (let i: number = 0; i < numPlayers; i++) {
             this.players.push(new Player(i + 1))
         }
+    }
+}
+
+namespace GameStateTests {
+    export function start() {
+        /*
+        let n: number = 0
+        game.splash('n is a ' + typeof n)
+        let a: number[] = [2, 6, 19]
+        game.splash('a is a ' + typeof a)
+        let gm: GameMode = GameMode.Attract
+        game.splash('gm is a ' + typeof gm)
+        */
+        // Try to initialize game state with an incomplete object.
+        let s: any = {
+            players: [
+                {
+                    name: 'Robo',
+                    controllerId: 1,
+                    avatar: 9,
+                }, {
+                    name: 'Xander',
+                    controllerId: 2,
+                    avatar: 6,
+                }, {
+                    name: 'Lex',
+                    controllerId: 3,
+                    avatar: 2,
+                }, {
+                    name: 'Solar',
+                    controllerId: 4,
+                    avatar: 1,
+                },
+            ],
+        }
+        /*
+        game.splash('s.gameMode is a ' + typeof s.gameMode)
+        // Will this throw an error?
+        game.splash('s.gameMode is ' + s.gameMode)
+        game.splash('s.players is a ' + typeof s.players)
+        */
+        g_state.loadState(s)
+        // game.showLongText(g_state.State, DialogLayout.Full)
+        // game.splash(g_state.NumPlayers)
+        FirstRoll.setup()
+        g_state.Mode = GameMode.FirstRoll
     }
 }

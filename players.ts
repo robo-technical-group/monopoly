@@ -63,17 +63,33 @@ class Player {
         }
     }
 
-    public set State(value: IPlayer) {
-        this.Avatar = value.avatar
-        this.controllerId = value.controllerId
-        this.name = value.name
-    }
-
     /**
      * Public methods
      */
     public hideSprite(): void {
         this.sprite.setFlag(SpriteFlag.Invisible, true)
+    }
+
+    public loadState(state: any): boolean {
+        if (typeof state != 'object') {
+            return false
+        }
+        if (typeof state.avatar == 'number' &&
+                state.avatar > 0 &&
+                state.avatar < Avatar.AVATARS.length) {
+            this.Avatar = state.avatar
+        } else {
+            return false
+        }
+        if (typeof state.controllerId == 'number') {
+            this.controllerId = state.controllerId
+        }
+        if (typeof state.name == 'string') {
+            this.name = state.name
+        } else {
+            this.name = 'Player ' + this.controllerId
+        }
+        return true
     }
 
     public moveSprite(x: number, y: number): void {
