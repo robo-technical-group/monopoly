@@ -1,6 +1,11 @@
 /**
  * Current game state
  */
+interface IGameState {
+    gameMode: GameMode
+    players: IPlayer[]
+}
+
 class GameState {
     private gameMode: GameMode
     private players: Player[]
@@ -33,22 +38,24 @@ class GameState {
         return this.players
     }
 
-    /**
-     * Public methods
-     */
-    public Load(filename: string): boolean {
-        if (!settings.exists(filename)) {
-            return false
+    public get State(): IGameState {
+        let playerStates: IPlayer[] = []
+        for (let p of this.players) {
+            playerStates.push(p.State)
         }
-        let newState: GameState = settings.readJSON(filename)
-        if (newState == null) {
-            return false
+        return {
+            gameMode: this.gameMode,
+            players: playerStates,
         }
-        return true
     }
 
-    public Save(filename: string): void {
-        settings.writeJSON(filename, this)
+    public set State(value: IGameState) {
+        this.gameMode = value.gameMode
+        this.players = []
+        for (let ps of value.players) {
+            let p: Player = new Player()
+            p.State = ps
+        }
     }
 
     /**

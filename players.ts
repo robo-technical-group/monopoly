@@ -1,47 +1,25 @@
 /**
  * Player information
  */
-/*
-interface Player {
-    anim: Image[]
-    bank: number
-    currSpace: number
-    image: Image
-    isInJail: boolean
-    location: number
+class IPlayer {
+    avatar: number
+    controllerId: number
     name: string
-    spacesMoved: number
-    sprite: Sprite
-    statsSprite: Sprite
-    turnsInJail: number
 }
-*/
 
 class Player {
     private avatar: number
-    private bank: number
     private controllerId: number
-    private currSpace: number
     private dice: Dice
-    private isInJail: boolean
-    private location: number
     private name: string
     private sprite: Sprite
-    private statsSprite: Sprite
-    private turnsInJail: number
 
     constructor(controllerId: number = 0) {
         this.avatar = -1
-        this.bank = -1
-        this.currSpace = -1
         this.dice = new Dice(2)
         this.controllerId = controllerId
-        this.isInJail = false
-        this.location = -1
         this.name = ''
         this.sprite = null
-        this.statsSprite = null
-        this.turnsInJail = -1
     }
 
     /**
@@ -61,14 +39,6 @@ class Player {
         }
     }
 
-    public get Bank(): number {
-        return this.bank
-    }
-
-    public set Bank(value: number) {
-        this.bank = value
-    }
-
     public get Dice(): Dice {
         return this.dice
     }
@@ -83,6 +53,20 @@ class Player {
 
     public get Sprite(): Sprite {
         return this.sprite
+    }
+
+    public get State(): IPlayer {
+        return {
+            avatar: this.avatar,
+            controllerId: this.controllerId,
+            name: this.name
+        }
+    }
+
+    public set State(value: IPlayer) {
+        this.Avatar = value.avatar
+        this.controllerId = value.controllerId
+        this.name = value.name
     }
 
     /**
