@@ -1,8 +1,12 @@
+/**
+ * Routines for determining first player.
+ */
 namespace FirstRoll {
     /**
      * Global variables
      */
-    let g_firstRollStarted: boolean[] = []
+    let firstRollStarted: boolean[] = []
+    export let firstPlayer: number = 0
 
     /**
      * Functions
@@ -12,7 +16,7 @@ namespace FirstRoll {
      */
     export function findFirstPlayer(): boolean {
         let toReturn: boolean = false
-        for (let frs of g_firstRollStarted) {
+        for (let frs of firstRollStarted) {
             if (!frs) {
                 return false
             }
@@ -44,7 +48,7 @@ namespace FirstRoll {
                 }
             }
         } else {
-            game.splash('Player ' + (winPlayer[0] + 1) + ' goes first!')
+            firstPlayer = winPlayer[0] + 1
             toReturn = true
         }
         return toReturn
@@ -67,7 +71,8 @@ namespace FirstRoll {
         let footer: TextSprite = textsprite.create('Players: Press A to roll!',
             Color.Transparent, Color.White)
         footer.setPosition(80, 115)
-        let x: number = 20
+        let deltaX: number = Math.floor(160 / GameSettings.numPlayers)
+        let x: number = Math.floor(deltaX / 2)
         let y: number = 100
         for (let i: number = 0; i < GameSettings.numPlayers; i++) {
             let p: Player = GameSettings.players[i]
@@ -78,8 +83,8 @@ namespace FirstRoll {
             p.Dice.setStopLocation(x - 7, 16)
             p.Dice.setLocationChange(0, -5)
             p.Dice.show()
-            x += 37
-            g_firstRollStarted.push(false)
+            x += deltaX
+            firstRollStarted.push(false)
         }
         GameSettings.gameMode = GameMode.FirstRoll
     }
@@ -88,7 +93,21 @@ namespace FirstRoll {
         if (player < 1 || player > GameSettings.players.length) {
             return
         }
-        g_firstRollStarted[player - 1] = true
+        firstRollStarted[player - 1] = true
         GameSettings.players[player - 1].Dice.startRoll()
+    }
+}
+
+namespace FirstRollTests {
+    const PLAYER_NAMES: string[] = ['Robo', 'Xander', 'Lex', 'Solar',]
+    const PLAYER_AVATARS: number[] = [0, 1, 2, 3]
+    export function start(numPlayers: number): void {
+        GameSettings.numPlayers = numPlayers
+        GameSettings.initPlayers()
+        for (let i: number = 0; i < numPlayers; i++) {
+            GameSettings.players[i].Name = PLAYER_NAMES[i]
+            GameSettings.players[i].Avatar = PLAYER_AVATARS[i]
+        }
+        FirstRoll.setup()
     }
 }

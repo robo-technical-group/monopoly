@@ -1,3 +1,6 @@
+/**
+ * Game settings and configuration screens
+ */
 namespace GameSettings {
     /**
      * Constants
@@ -67,6 +70,13 @@ namespace GameSettings {
                 break
         }
         initPlayers()
+    }
+
+    export function initPlayers() {
+        players = []
+        for (let i: number = 0; i < numPlayers; i++) {
+            players.push(new Player(i + 1))
+        }
     }
 
     export function start(): void {

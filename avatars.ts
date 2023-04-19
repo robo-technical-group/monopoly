@@ -35,109 +35,113 @@ namespace Avatar {
             leftImage: sprites.castle.heroWalkSideLeft1,
             rightImage: sprites.castle.heroWalkSideRight1,
             leftAnim: [sprites.castle.heroWalkSideLeft1,
-            sprites.castle.heroWalkSideLeft2,
-            sprites.castle.heroWalkSideLeft3,
-            sprites.castle.heroWalkSideLeft4,],
+                sprites.castle.heroWalkSideLeft2,
+                sprites.castle.heroWalkSideLeft3,
+                sprites.castle.heroWalkSideLeft4,],
             rightAnim: [sprites.castle.heroWalkSideRight1,
-            sprites.castle.heroWalkSideRight2,
-            sprites.castle.heroWalkSideRight3,
-            sprites.castle.heroWalkSideRight4,],
-        },
-        {
+                sprites.castle.heroWalkSideRight2,
+                sprites.castle.heroWalkSideRight3,
+                sprites.castle.heroWalkSideRight4,],
+        }, {
             name: 'Castle princess',
             frontImage: sprites.castle.princess2Front,
             backImage: sprites.castle.princess2Back,
             leftImage: sprites.castle.princess2Left1,
             rightImage: sprites.castle.princess2Right1,
             leftAnim: [sprites.castle.princess2Left1,
-            sprites.castle.princess2Left2,],
+                sprites.castle.princess2Left2,],
             rightAnim: [sprites.castle.princess2Right1,
-            sprites.castle.princess2Right2,],
-        },
-        {
+                sprites.castle.princess2Right2,],
+        }, {
             name: 'Angel fish',
             frontImage: sprites.builtin.angelFish0,
             backImage: sprites.builtin.angelFish0,
             leftImage: sprites.builtin.angelFish0,
             rightImage: null,
             leftAnim: [sprites.builtin.angelFish0,
-            sprites.builtin.angelFish1,
-            sprites.builtin.angelFish2,
-            sprites.builtin.angelFish3,],
+                sprites.builtin.angelFish1,
+                sprites.builtin.angelFish2,
+                sprites.builtin.angelFish3,],
             rightAnim: [],
-        },
-        {
+        }, {
             name: 'Cat',
             frontImage: sprites.builtin.cat0,
             backImage: sprites.builtin.cat0,
             leftImage: sprites.builtin.cat0,
             rightImage: null,
             leftAnim: [sprites.builtin.cat0,
-            sprites.builtin.cat1,
-            sprites.builtin.cat2],
+                sprites.builtin.cat1,
+                sprites.builtin.cat2],
             rightAnim: [],
-        },
-        {
+        }, {
             name: 'Dog',
             frontImage: sprites.builtin.dog0,
             backImage: sprites.builtin.dog0,
             leftImage: sprites.builtin.dog0,
             rightImage: null,
             leftAnim: [sprites.builtin.dog0,
-            sprites.builtin.dog1,
-            sprites.builtin.dog2,],
+                sprites.builtin.dog1,
+                sprites.builtin.dog2,],
             rightAnim: [],
-        },
-        {
+        }, {
+            name: 'Forest monkey',
+            frontImage: sprites.builtin.forestMonkey0,
+            backImage: sprites.builtin.forestMonkey0,
+            leftImage: sprites.builtin.forestMonkey0,
+            rightImage: null,
+            leftAnim: [sprites.builtin.forestMonkey0,
+                sprites.builtin.forestMonkey1,
+                sprites.builtin.forestMonkey2,
+                sprites.builtin.forestMonkey3,
+                sprites.builtin.forestMonkey4],
+            rightAnim: [],
+        }, {
             name: 'Blue car',
             frontImage: sprites.vehicle.carBlueFront,
             backImage: sprites.vehicle.carBlueBack,
             leftImage: sprites.vehicle.carBlueLeft,
             rightImage: sprites.vehicle.carBlueRight,
             leftAnim: [sprites.vehicle.car20,
-            sprites.vehicle.car21,
-            sprites.vehicle.car22,
-            sprites.vehicle.car23,],
+                sprites.vehicle.car21,
+                sprites.vehicle.car22,
+                sprites.vehicle.car23,],
             rightAnim: [],
-        },
-        {
+        }, {
             name: 'Red car',
             frontImage: sprites.vehicle.carRedFront,
             backImage: sprites.vehicle.carRedBack,
             leftImage: sprites.vehicle.carRedLeft,
             rightImage: sprites.vehicle.carRedRight,
             leftAnim: [sprites.vehicle.car30,
-            sprites.vehicle.car31,
-            sprites.vehicle.car32,
-            sprites.vehicle.car33,],
+                sprites.vehicle.car31,
+                sprites.vehicle.car32,
+                sprites.vehicle.car33,],
             rightAnim: [],
-        },
-        {
+        }, {
             name: 'Airplane',
             frontImage: sprites.vehicle.plane0,
             backImage: sprites.vehicle.plane0,
             leftImage: sprites.vehicle.plane0,
             rightImage: null,
             leftAnim: [sprites.vehicle.plane0,
-            sprites.vehicle.plane1,
-            sprites.vehicle.plane2,
-            sprites.vehicle.plane3,
-            sprites.vehicle.plane4,
-            sprites.vehicle.plane5,],
+                sprites.vehicle.plane1,
+                sprites.vehicle.plane2,
+                sprites.vehicle.plane3,
+                sprites.vehicle.plane4,
+                sprites.vehicle.plane5,],
             rightAnim: [],
-        },
-        {
+        }, {
             name: 'Baby kaiju',
             frontImage: sprites.kaiju.kaijuBabyWalk0,
             backImage: sprites.kaiju.kaijuBabyWalk0,
             leftImage: sprites.kaiju.kaijuBabyWalk0,
             rightImage: null,
             leftAnim: [sprites.kaiju.kaijuBabyWalk0,
-            sprites.kaiju.kaijuBabyWalk1,
-            sprites.kaiju.kaijuBabyWalk2,
-            sprites.kaiju.kaijuBabyWalk3,
-            sprites.kaiju.kaijuBabyWalk4,
-            sprites.kaiju.kaijuBabyWalk5,],
+                sprites.kaiju.kaijuBabyWalk1,
+                sprites.kaiju.kaijuBabyWalk2,
+                sprites.kaiju.kaijuBabyWalk3,
+                sprites.kaiju.kaijuBabyWalk4,
+                sprites.kaiju.kaijuBabyWalk5,],
             rightAnim: [],
         }
     ]
@@ -174,14 +178,7 @@ namespace Avatar {
         }
     }
 
-    function getPlayerInfo() {
-        GameSettings.players[selection.currPlayer - 1].Name =
-            game.askPlayerForString(selection.currPlayer,
-            'Player ' + selection.currPlayer + ' enter name.')
-        updateSelection()
-    }
-
-    export function initSelection() {
+    export function initSelection(): void {
         selection.currPlayer = 1
         selection.selectedAvatar = 0
         selection.header = textsprite.create(' ', 0, Color.Yellow)
@@ -205,7 +202,7 @@ namespace Avatar {
     /**
      * @param direction Positive or negative number to indicate direction to move through array.
      */
-    export function showNext(direction: number) {
+    export function showNext(direction: number): void {
         let taken: boolean = true
         while (taken) {
             if (direction > 0) {
@@ -230,20 +227,22 @@ namespace Avatar {
         updateImages()
     }
 
-    export function startSelection() {
+    export function startSelection(): void {
         GameSettings.gameMode = GameMode.NotReady
         GameSettings.settingsScreens.release()
         fixAvatars()
         GameSettings.gameMode = GameMode.AvatarSelect
         initSelection()
-        getPlayerInfo()
+        GameSettings.players[selection.currPlayer - 1].promptForName()
+        updateSelection()
     }
 
-    export function select() {
+    export function select(): void {
         GameSettings.players[selection.currPlayer - 1].Avatar = selection.selectedAvatar
         if (selection.currPlayer < GameSettings.numPlayers) {
             selection.currPlayer++
-            getPlayerInfo()
+            GameSettings.players[selection.currPlayer - 1].promptForName()
+            updateSelection()
         } else {
             selection.header.destroy()
             selection.footer1.destroy()
@@ -255,7 +254,7 @@ namespace Avatar {
         }
     }
 
-    function updateSelection() {
+    function updateSelection(): void {
         selection.header.setText(GameSettings.players[selection.currPlayer - 1].Name
             + ' select avatar.')
         selection.header.setPosition(80, 4)
@@ -263,7 +262,7 @@ namespace Avatar {
         showNext(1)
     }
 
-    function updateImages() {
+    function updateImages(): void {
         animation.runImageAnimation(selection.left,
             AVATARS[selection.selectedAvatar].leftAnim, 100, true)
         selection.front.setImage(AVATARS[selection.selectedAvatar].frontImage)

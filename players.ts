@@ -20,6 +20,7 @@ interface Player {
 class Player {
     private avatar: number
     private bank: number
+    private controllerId: number
     private currSpace: number
     private dice: Dice
     private isInJail: boolean
@@ -29,11 +30,12 @@ class Player {
     private statsSprite: Sprite
     private turnsInJail: number
 
-    constructor() {
+    constructor(controllerId: number = 0) {
         this.avatar = -1
         this.bank = -1
         this.currSpace = -1
         this.dice = new Dice(2)
+        this.controllerId = controllerId
         this.isInJail = false
         this.location = -1
         this.name = ''
@@ -92,6 +94,15 @@ class Player {
 
     public moveSprite(x: number, y: number): void {
         this.sprite.setPosition(x, y)
+    }
+
+    public promptForName(): void {
+        if (this.controllerId >= 1 && this.controllerId <= 4) {
+            this.name = game.askPlayerForString(this.controllerId,
+                'Player ' + this.controllerId + ' enter name.')
+        } else {
+            this.name = game.askForString('Enter your name.')
+        }
     }
 
     public showSprite(): void {

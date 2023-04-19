@@ -1,4 +1,6 @@
-// Dice routines
+/**
+ * Dice routines
+ */
 namespace SpriteKind {
     export const Dice = SpriteKind.create()
 }

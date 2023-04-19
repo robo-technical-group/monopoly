@@ -35,6 +35,8 @@ game.onUpdate(function () {
             FirstRoll.moveDice()
             if (FirstRoll.findFirstPlayer()) {
                 // Start game!
+                game.splash(GameSettings.players[FirstRoll.firstPlayer - 1].Name +
+                    ": You're first!")
                 startGame()
             }
 
@@ -56,16 +58,8 @@ game.onUpdate(function () {
 /**
  * Other functions
  */
-function initPlayers() {
-    GameSettings.players = []
-    for (let i: number = 0; i < GameSettings.numPlayers; i++) {
-        GameSettings.players.push(new Player())
-    }
-}
-
 function startGame(): void {
     GameSettings.gameMode = GameMode.NotReady
-    GameSettings.settingsScreens.release()
     scene.setBackgroundImage(assets.image`bg`)
     GameSettings.gameMode = GameMode.Main
 }   // startGame()
@@ -73,6 +67,7 @@ function startGame(): void {
 /**
  * Main() a.k.a. game.onStart()
  */
-Attract.start()
+// Attract.start()
 // AvatarTest.startAvatarTest()
 // DiceTests.start()
+FirstRollTests.start(4)
