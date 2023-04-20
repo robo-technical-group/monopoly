@@ -3,6 +3,13 @@
  * Built on
  * MakeCode Arcade JavaScript Template v. 3.1.0
  * Template last update: 17 Apr 2023 ak
+ * 
+ * Immediate TODO List
+ * - [ ] Add mini menu extension. See https://forum.makecode.com/t/arcade-mini-menu-extension/14368
+ * - [ ] Implement game load mechanism from attract menu.
+ * - [ ] Add function in Option Screens plugin to add items to system menu.  See https://forum.makecode.com/t/custom-menu-showcase/18381
+ * - [ ] Add game save item to system menu.
+ * - [ ] Update Blocks and JavaScript templates accordingly.
  */
 
 /**
