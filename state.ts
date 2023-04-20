@@ -1,6 +1,9 @@
 /**
  * Current game state
  */
+/**
+ * Interface that can be translated to/from JSON.
+ */
 interface IGameState {
     gameMode: GameMode
     players: IPlayer[]

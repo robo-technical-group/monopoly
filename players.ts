@@ -1,7 +1,10 @@
 /**
  * Player information
  */
-class IPlayer {
+/**
+ * Interface that can be converted to/from JSON.
+ */
+interface IPlayer {
     avatar: number
     controllerId: number
     name: string
