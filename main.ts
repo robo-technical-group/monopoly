@@ -7,7 +7,7 @@
  * Immediate TODO List
  * - [X] Add mini menu extension. See https://forum.makecode.com/t/arcade-mini-menu-extension/14368
  * - [X] Implement game load mechanism from attract menu.
- * - [ ] Add function in Option Screens plugin to add items to system menu.  See https://forum.makecode.com/t/custom-menu-showcase/18381
+ * - [X] Add function in Option Screens plugin to add items to system menu.  See https://forum.makecode.com/t/custom-menu-showcase/18381
  * - [ ] Add game save item to system menu.
  * - [ ] Update Blocks and JavaScript templates accordingly.
  */
