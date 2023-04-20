@@ -68,8 +68,8 @@ function startGame(): void {
 /**
  * Main() a.k.a. game.onStart()
  */
-// Attract.start()
+Attract.start()
 // AvatarTest.startAvatarTest()
 // DiceTests.start()
 // FirstRollTests.start(4)
-GameStateTests.start()
+// GameStateTests.start()

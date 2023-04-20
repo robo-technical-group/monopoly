@@ -52,6 +52,14 @@ class GameState {
     /**
      * Public methods
      */
+    public loadFromSetting(key: string): boolean {
+        if (settings.exists(key)) {
+            return this.loadState(settings.readJSON(key))
+        } else {
+            return false
+        }
+    }
+    
     public loadState(state: any): boolean {
         if (typeof state != 'object') {
             return false

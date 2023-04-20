@@ -20,7 +20,8 @@
         "players.ts",
         "dice.ts",
         "firstroll.ts",
-        "state.ts"
+        "state.ts",
+        "gamesaves.ts"
     ],
     "testFiles": [],
     "targetVersions": {
