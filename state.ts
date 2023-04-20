@@ -10,6 +10,8 @@ interface IGameState {
 }
 
 class GameState {
+    private static readonly KEY_PREFIX: string = 'mpy_'
+
     private gameMode: GameMode
     private players: Player[]
 
@@ -87,6 +89,10 @@ class GameState {
             return false
         }
         return true
+    }
+
+    public static savesExist(): boolean {
+        return settings.list(GameState.KEY_PREFIX).length > 0
     }
 
     /**
