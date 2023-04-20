@@ -25,6 +25,25 @@ namespace Attract {
             TEXT_TITLES, Color.Yellow,
             TEXT_HEADLINES, Color.Brown,
             TEXT_ACTIONS, Color.LightBlue)
+        for (let i: number = 0; i < 4; i++) {
+            let n: number = randint(0, assets.animation`boardSides`.length +
+                assets.animation`boardCorners`.length - 1)
+            if (n >= assets.animation`boardSides`.length) {
+                splashScreen.addMovingSprite(
+                    assets.animation`boardCorners`[n - assets.animation`boardSides`.length])
+            } else {
+                splashScreen.addMovingSprite(
+                    assets.animation`boardSides`[n]
+                )
+            }
+        }
+        for (let i: number = 0; i < 4; i++) {
+            splashScreen.addMovingSprite(
+                Avatar.AVATARS[randint(0, Avatar.AVATARS.length - 1)].frontImage)
+        }
+        splashScreen.movingSpriteOptions.mode = SpriteMode.BlankSpace
+        splashScreen.movingSpriteOptions.dir = SpriteDirection.Both
+        splashScreen.movingSpriteOptions.speed = 50
     }
 
     export function start(): void {

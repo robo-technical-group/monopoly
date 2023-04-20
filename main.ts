@@ -31,6 +31,9 @@ game.onUpdate(function () {
             if (game.runtime() >= Attract.splashScreen.nextTime) {
                 Attract.splashScreen.rotate()
             }   // if (game.runtime() >= splash.nextTime)
+            if (sprites.allOfKind(SpriteKind.Moving).length === 0) {
+                Attract.splashScreen.showScrollingSprite()
+            }   // if (! sprites.allOfKind(SpriteKind.Moving))
             break
 
         case GameMode.Settings:
