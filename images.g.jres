@@ -24,6 +24,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "bg"
     },
+    "image6": {
+        "data": "hwQQABAAAACIiIiIiIgIAPiIiIiIiIgAExEREYGIiAgTERERgYiIiBMRERGBiIiIExEREYHY3d0TERERgdiI2BMRERGB2IjYExEREYHY3d0TERERgdjd3RMRERGB2N3dExEREYHY3d0TERERgYiIiBMRERGBiIiI+IiIiIiIiIiIiIiIiIiIiA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "saveIcon"
+    },
     "anim1": {
         "namespace": "myAnimations",
         "id": "anim1",

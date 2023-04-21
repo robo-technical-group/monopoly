@@ -139,6 +139,14 @@ function pressLeft(player: number): void {
     }   // switch (g_state.Mode)
 }
 
+function pressMenu(): void {
+    if (PauseMenu.isMenuShowing) {
+        PauseMenu.release()
+    } else {
+        PauseMenu.show()
+    }
+}
+
 function pressRight(player: number): void {
     switch (g_state.Mode) {
         case GameMode.Attract:
@@ -227,6 +235,8 @@ controller.player1.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
 
 controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed,
     () => pressRight(1))
+
+controller.menu.onEvent(ControllerButtonEvent.Pressed, () => pressMenu())
 
 /**
  * Player 2

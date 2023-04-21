@@ -22,7 +22,7 @@
         "dice.ts",
         "firstroll.ts",
         "state.ts",
-        "gamesaves.ts"
+        "pausemenu.ts"
     ],
     "testFiles": [],
     "targetVersions": {

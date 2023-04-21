@@ -11,6 +11,7 @@ interface IGameState {
 
 class GameState {
     private static readonly KEY_PREFIX: string = 'mpy_'
+    private static readonly SAVE_TEXT: string = 'SAVE GAME'
 
     private gameMode: GameMode
     private players: Player[]
@@ -57,8 +58,14 @@ class GameState {
     /**
      * Public methods
      */
+    public static addSystemMenuItem(handler: () => void): void {
+        if (infoScreens.addMenuOption != undefined) {
+            infoScreens.addMenuOption(GameState.SAVE_TEXT,assets.image`saveIcon`, handler)
+        }
+    }
+
     public loadFromSetting(key: string): boolean {
-        if (settings.exists(key)) {
+        if (key.indexOf(GameState.KEY_PREFIX) == 0 && settings.exists(key)) {
             return this.loadState(settings.readJSON(key))
         } else {
             return false
@@ -89,6 +96,13 @@ class GameState {
             return false
         }
         return true
+    }
+
+    public save(filename: string): void {
+        if (filename.indexOf(GameState.KEY_PREFIX) == -1) {
+            filename = GameState.KEY_PREFIX + filename
+        }
+        settings.writeJSON(filename, this.State)
     }
 
     public static savesExist(): boolean {

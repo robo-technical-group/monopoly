@@ -39,12 +39,13 @@ enum DiceSkin {
 }
 
 enum GameMode {
-    Attract,
-    Main,
     NotReady,
+    PauseMenu,
+    Attract,
     Settings,
     AvatarSelect,
     FirstRoll,
+    Main,
     AvatarTest,
     DiceTest,
 }   // GameMode

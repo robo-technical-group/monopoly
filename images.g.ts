@@ -296,6 +296,25 @@ cccccccccccccccccccccccccccc11111111111111111111111111aaaaaaaaaaaaaaaaaaaaaaaaaa
 cccccccccccccccccccccccccccc11111111111111111111111111aaaaaaaaaaaaaaaaaaaaaaaaaaafffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 cccccccccccccccccccccccccccc11111111111111111111111111aaaaaaaaaaaaaaaaaaaaaaaaaaafffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 `;
+            case "image6":
+            case "saveIcon":return img`
+8 8 3 3 3 3 3 3 3 3 3 3 3 3 8 8 
+8 f 1 1 1 1 1 1 1 1 1 1 1 1 f 8 
+8 8 1 1 1 1 1 1 1 1 1 1 1 1 8 8 
+8 8 1 1 1 1 1 1 1 1 1 1 1 1 8 8 
+8 8 1 1 1 1 1 1 1 1 1 1 1 1 8 8 
+8 8 1 1 1 1 1 1 1 1 1 1 1 1 8 8 
+8 8 1 1 1 1 1 1 1 1 1 1 1 1 8 8 
+8 8 1 1 1 1 1 1 1 1 1 1 1 1 8 8 
+8 8 1 1 1 1 1 1 1 1 1 1 1 1 8 8 
+8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+8 8 8 8 8 d d d d d d d 8 8 8 8 
+8 8 8 8 8 d 8 8 d d d d 8 8 8 8 
+. 8 8 8 8 d 8 8 d d d d 8 8 8 8 
+. . 8 8 8 d 8 8 d d d d 8 8 8 8 
+. . . 8 8 d d d d d d d 8 8 8 8 
+`;
         }
         return null;
     })
