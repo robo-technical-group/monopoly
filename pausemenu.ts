@@ -1,22 +1,26 @@
 // Refer to pxt-common-packages/libs/game/systemmenu.ts
 namespace PauseMenu {
     enum Items {
-        VolumeDown = 0,
-        VolumeUp = 1,
-        SaveGame = 2,
-        Stats = 3,
-        Console = 4,
-        Sleep = 5,
-        Close = 6,
+        SaveGame = 0,
+        VolumeDown,
+        VolumeUp,
+        BrightnessDown,
+        BrightnessUp,
+        Stats,
+        Console,
+        Sleep,
+        Close,
     }
 
     const FILENAME_PROMPT: string = 'Enter filename.'
     const GAME_SAVE_CONFIRM = 'Game saved!'
 
     const MENU_TEXT: string[] = [
+        'Save game',
         'Volume down',
         'Volume up',
-        'Save game',
+        'Brightness up',
+        'Brightness down',
         'Show stats',
         'Show console',
         'Sleep',
@@ -24,6 +28,8 @@ namespace PauseMenu {
     ]
 
     const MENU_TEXT_ALTERNATE: string[] = [
+        '',
+        '',
         '',
         '',
         '',
@@ -42,6 +48,14 @@ namespace PauseMenu {
     let pauseMenu: miniMenu.MenuSprite = null
     let previousMode: GameMode = GameMode.NotReady
     let volume: number = 4
+
+    function changeBrightness(delta: number): void {
+        if ((delta < 0 && screen.brightness() > 0) ||
+            (delta > 0 && screen.brightness() < 100)) {
+            screen.setBrightness(screen.brightness() + delta)
+            updateBrightness()
+        }
+    }
 
     function changeVolume(delta: number): void {
         if (delta < 0 && volume > 0) {
@@ -81,11 +95,11 @@ namespace PauseMenu {
             case Items.Sleep:
                 sleep()
                 break
-            
+
             case Items.Close:
                 release()
                 break
-            
+
             case Items.SaveGame:
                 saveGame()
                 break
@@ -123,6 +137,7 @@ namespace PauseMenu {
         pauseMenu.left = 10
         isShowingConsole = game.consoleOverlay.isVisible()
         isShowingStats = game.stats
+        updateBrightness()
         updateConsole()
         updateStats()
         updateVolume()
@@ -144,6 +159,13 @@ namespace PauseMenu {
         isShowingStats = !isShowingStats
         game.stats = isShowingStats
         updateStats()
+    }
+
+    function updateBrightness(): void {
+        pauseMenu.items[Items.BrightnessDown].text = MENU_TEXT[Items.BrightnessDown] +
+            ' (' + screen.brightness() + ')'
+        pauseMenu.items[Items.BrightnessUp].text = MENU_TEXT[Items.BrightnessUp] +
+            ' (' + screen.brightness() + ')'
     }
 
     function updateConsole(): void {
