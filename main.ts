@@ -1,23 +1,21 @@
 /**
  * Monopoly
  * Built on
- * MakeCode Arcade JavaScript Template v. 3.1.0
- * Template last update: 17 Apr 2023 ak
+ * MakeCode Arcade JavaScript Template v. 4.0.0
+ * Template last update: 20 Apr 2023 ak
  * 
  * Immediate TODO List
  * - [X] Add mini menu extension. See https://forum.makecode.com/t/arcade-mini-menu-extension/14368
  * - [X] Implement game load mechanism from attract menu.
  * - [X] Add function in Option Screens plugin to add items to system menu.  See https://forum.makecode.com/t/custom-menu-showcase/18381
  * - [X] Create alternate pause menu.
- * - [ ] Update Blocks and JavaScript templates accordingly.
+ * - [X] Update Blocks and JavaScript templates accordingly.
  */
 
 /**
  * Constants
  */
 const HARDWARE: boolean = control.ramSize() < (1024 * 1024)
-const GAME_SAVE_PROMPT: string = 'Enter filename.'
-const GAME_SAVE_CONFIRM: string = 'Game saved!'
 
 /**
  * Global variables
@@ -71,11 +69,6 @@ game.onUpdate(function () {
 /**
  * Other functions
  */
-function saveGame(): void {
-    let filename = game.askForString(GAME_SAVE_PROMPT)
-    game.splash(GAME_SAVE_CONFIRM)
-}
-
 function startGame(): void {
     g_state.Mode = GameMode.NotReady
     scene.setBackgroundImage(assets.image`bg`)
