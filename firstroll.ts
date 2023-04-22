@@ -1,15 +1,22 @@
 /**
  * Routines for determining first player.
  */
+namespace SpriteKind {
+    export const FirstRoll = SpriteKind.create()
+}
+
 namespace FirstRoll {
+    const BLINK_INTERVAL: number = 500
     const HEADING_TEXT: string = 'Highest roll goes first'
     const FOOTER_TEXT: string = 'Players: Press A to roll!'
-    
+
     /**
      * Global variables
      */
     let firstRollStarted: boolean[] = []
     export let firstPlayer: number = 0
+    let cursor: Sprite = null
+    let nextUpdate: number = 0
 
     /**
      * Functions
@@ -57,7 +64,7 @@ namespace FirstRoll {
         return toReturn
     }
 
-    export function moveDice(): void {
+    function moveDice(): void {
         for (let p of g_state.Players) {
             if (p.Dice.AreRolling) {
                 p.Dice.move()
@@ -89,6 +96,14 @@ namespace FirstRoll {
             x += deltaX
             firstRollStarted.push(false)
         }
+        if (GameSettings.controllers == ControllerSetting.Single) {
+            cursor = sprites.create(assets.image`playerCursor`, SpriteKind.FirstRoll)
+            cursor.setFlag(SpriteFlag.Ghost, true)
+            cursor.setFlag(SpriteFlag.Invisible, true)
+            let firstPlayer: Player = g_state.getPlayer(1)
+            cursor.setPosition(firstPlayer.Sprite.x, firstPlayer.Sprite.y)
+            update()
+        }
         g_state.Mode = GameMode.FirstRoll
     }
 
@@ -96,8 +111,32 @@ namespace FirstRoll {
         if (player < 1 || player > g_state.NumPlayers) {
             return
         }
+        if (GameSettings.controllers == ControllerSetting.Single) {
+            for (let i: number = 0; i < g_state.NumPlayers; i++) {
+                if (!firstRollStarted[i]) {
+                    player = i + 1
+                    if (player < g_state.NumPlayers) {
+                        let p: Player = g_state.Players[player]
+                        cursor.setPosition(p.Sprite.x, p.Sprite.y)
+                    } else {
+                        cursor.setPosition(-20, -20)
+                    }
+                    break
+                }
+            }
+        }
         firstRollStarted[player - 1] = true
-        g_state.Players[player - 1].Dice.startRoll()
+        g_state.getPlayer(player).Dice.startRoll()
+    }
+
+    export function update(): void {
+        moveDice()
+        if (GameSettings.controllers == ControllerSetting.Single &&
+                nextUpdate <= game.runtime()) {
+            cursor.setFlag(SpriteFlag.Invisible,
+                (cursor.flags & SpriteFlag.Invisible) == 0)
+            nextUpdate = game.runtime() + BLINK_INTERVAL
+        }
     }
 }
 

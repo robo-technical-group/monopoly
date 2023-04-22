@@ -29,6 +29,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "saveIcon"
     },
+    "image7": {
+        "data": "hwQQABAAAABVBQAAAABQVQUAAAAAAABQBQAAAAAAAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAABQBQAAAAAAAFBVBQAAAABQVQ==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "playerCursor"
+    },
     "anim1": {
         "namespace": "myAnimations",
         "id": "anim1",

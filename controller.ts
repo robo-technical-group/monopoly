@@ -22,7 +22,8 @@ function pressA(player: number): void {
             break
 
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == player) {
+            if (Avatar.selection.currPlayer == player ||
+                    GameSettings.controllers == ControllerSetting.Single) {
                 Avatar.select()
             }
             break
@@ -117,7 +118,8 @@ function pressLeft(player: number): void {
             break
 
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == player) {
+            if (Avatar.selection.currPlayer == player ||
+                    GameSettings.controllers == ControllerSetting.Single) {
                 Avatar.showNext(-1)
             }
             break
@@ -162,7 +164,8 @@ function pressRight(player: number): void {
             break
 
         case GameMode.AvatarSelect:
-            if (Avatar.selection.currPlayer == player) {
+            if (Avatar.selection.currPlayer == player ||
+                    GameSettings.controllers == ControllerSetting.Single) {
                 Avatar.showNext(1)
             }
             break

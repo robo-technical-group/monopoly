@@ -10,6 +10,7 @@
  * - [X] Add function in Option Screens plugin to add items to system menu.  See https://forum.makecode.com/t/custom-menu-showcase/18381
  * - [X] Create alternate pause menu.
  * - [X] Update Blocks and JavaScript templates accordingly.
+ * - [ ] Work on single-controller implementation.
  * - [ ] Finish game load and manage save file routines.
  */
 
@@ -44,7 +45,7 @@ game.onUpdate(function () {
             break
 
         case GameMode.FirstRoll:
-            FirstRoll.moveDice()
+            FirstRoll.update()
             if (FirstRoll.findFirstPlayer()) {
                 // Start game!
                 game.splash(g_state.getPlayer(FirstRoll.firstPlayer).Name +
