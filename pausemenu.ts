@@ -2,6 +2,7 @@
 namespace PauseMenu {
     enum Items {
         SaveGame = 0,
+        ManageGames,
         VolumeDown,
         VolumeUp,
         BrightnessDown,
@@ -12,15 +13,13 @@ namespace PauseMenu {
         Close,
     }
 
-    const FILENAME_PROMPT: string = 'Enter filename.'
-    const GAME_SAVE_CONFIRM = 'Game saved!'
-
     const MENU_TEXT: string[] = [
         'Save game',
+        'Manage game saves',
         'Volume down',
         'Volume up',
-        'Brightness up',
         'Brightness down',
+        'Brightness up',
         'Show stats',
         'Show console',
         'Sleep',
@@ -28,6 +27,7 @@ namespace PauseMenu {
     ]
 
     const MENU_TEXT_ALTERNATE: string[] = [
+        '',
         '',
         '',
         '',
@@ -42,11 +42,11 @@ namespace PauseMenu {
     const MENU_TITLE: string = 'Pause Menu'
     const VOLUMES: number[] = [0, 32, 64, 96, 128, 160, 192, 224, 255]
 
-    export let isMenuShowing: boolean = false
+    let isMenuRunning: boolean = false
     let isShowingStats: boolean = false
     let isShowingConsole: boolean = false
-    let pauseMenu: miniMenu.MenuSprite = null
-    let previousMode: GameMode = GameMode.NotReady
+    let menu: miniMenu.MenuSprite = null
+    let priorMode: GameMode = GameMode.NotReady
     let volume: number = 4
 
     function changeBrightness(delta: number): void {
@@ -68,6 +68,34 @@ namespace PauseMenu {
             updateVolume()
             playVolume()
         }
+    }
+
+    export function disableEvents(): void {
+        if (isMenuRunning) {
+            menu.buttonEventsEnabled = false
+        }
+    }
+
+    export function enableEvents(): void {
+        if (isMenuRunning) {
+            menu.buttonEventsEnabled = true
+        }
+    }
+
+    export function hide(): void {
+        if (isMenuRunning) {
+            menu.setFlag(SpriteFlag.Invisible, true)
+            menu.buttonEventsEnabled = false
+        }
+    }
+
+    export function menuRunning(): boolean {
+        return isMenuRunning
+    }
+
+    export function menuVisible(): boolean {
+        return isMenuRunning &&
+            ((menu.flags & SpriteFlag.Invisible) == 0)
     }
 
     function playVolume(): void {
@@ -101,48 +129,60 @@ namespace PauseMenu {
                 break
 
             case Items.SaveGame:
-                saveGame()
+                GameStateUI.save()
+                break
+
+            case Items.BrightnessUp:
+                changeBrightness(5)
+                break
+
+            case Items.BrightnessDown:
+                changeBrightness(-5)
+                break
+
+            case Items.ManageGames:
+                GameStateUI.manage()
                 break
         }
     }
 
     export function release(): void {
-        pauseMenu.close()
-        isMenuShowing = false
-        g_state.Mode = previousMode
-    }
-
-    function saveGame(): void {
-        let filename: string = game.askForString(FILENAME_PROMPT)
-        g_state.save(filename)
-        game.splash(GAME_SAVE_CONFIRM)
+        menu.close()
+        isMenuRunning = false
+        g_state.Mode = priorMode
     }
 
     export function show(): void {
-        previousMode = g_state.Mode
+        if (isMenuRunning) {
+            menu.setFlag(SpriteFlag.Invisible, false)
+            menu.buttonEventsEnabled = true
+            return
+        }
+        priorMode = g_state.Mode
         g_state.Mode = GameMode.PauseMenu
         let menuItems: miniMenu.MenuItem[] = []
         for (let t of MENU_TEXT) {
             menuItems.push(miniMenu.createMenuItem(t))
         }
-        pauseMenu = miniMenu.createMenuFromArray(menuItems)
-        pauseMenu.setTitle(MENU_TITLE)
-        pauseMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Width, 140)
-        pauseMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Height, 100)
-        pauseMenu.setStyleProperty(miniMenu.StyleKind.Title,
+        menu = miniMenu.createMenuFromArray(menuItems)
+        menu.setTitle(MENU_TITLE)
+        menu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Width, 140)
+        menu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Height, 100)
+        menu.setStyleProperty(miniMenu.StyleKind.Title,
             miniMenu.StyleProperty.Foreground, Color.White)
-        pauseMenu.setStyleProperty(miniMenu.StyleKind.Title,
+        menu.setStyleProperty(miniMenu.StyleKind.Title,
             miniMenu.StyleProperty.Background, Color.Wine)
-        pauseMenu.top = 10
-        pauseMenu.left = 10
+        menu.top = 10
+        menu.left = 10
         isShowingConsole = game.consoleOverlay.isVisible()
         isShowingStats = game.stats
         updateBrightness()
         updateConsole()
         updateStats()
         updateVolume()
-        pauseMenu.onButtonPressed(controller.A, processSelection)
-        isMenuShowing = true
+        menu.onButtonPressed(controller.A, processSelection)
+        menu.onButtonPressed(controller.B, processSelection)
+        isMenuRunning = true
     }
 
     function sleep(): void {
@@ -162,20 +202,20 @@ namespace PauseMenu {
     }
 
     function updateBrightness(): void {
-        pauseMenu.items[Items.BrightnessDown].text = MENU_TEXT[Items.BrightnessDown] +
+        menu.items[Items.BrightnessDown].text = MENU_TEXT[Items.BrightnessDown] +
             ' (' + screen.brightness() + ')'
-        pauseMenu.items[Items.BrightnessUp].text = MENU_TEXT[Items.BrightnessUp] +
+        menu.items[Items.BrightnessUp].text = MENU_TEXT[Items.BrightnessUp] +
             ' (' + screen.brightness() + ')'
     }
 
     function updateConsole(): void {
-        pauseMenu.items[Items.Console].text = isShowingConsole ?
+        menu.items[Items.Console].text = isShowingConsole ?
             MENU_TEXT_ALTERNATE[Items.Console] :
             MENU_TEXT[Items.Console]
     }
 
     function updateStats(): void {
-        pauseMenu.items[Items.Stats].text = isShowingStats ?
+        menu.items[Items.Stats].text = isShowingStats ?
             MENU_TEXT_ALTERNATE[Items.Stats] :
             MENU_TEXT[Items.Stats]
         if (!isShowingStats && control.EventContext.onStats) {
@@ -186,9 +226,9 @@ namespace PauseMenu {
     function updateVolume(): void {
         let v: number = VOLUMES[volume]
         music.setVolume(v)
-        pauseMenu.items[Items.VolumeDown].text = MENU_TEXT[Items.VolumeDown] +
+        menu.items[Items.VolumeDown].text = MENU_TEXT[Items.VolumeDown] +
             ' (' + v + ')'
-        pauseMenu.items[Items.VolumeUp].text = MENU_TEXT[Items.VolumeUp] +
+        menu.items[Items.VolumeUp].text = MENU_TEXT[Items.VolumeUp] +
             ' (' + v + ')'
     }
 }

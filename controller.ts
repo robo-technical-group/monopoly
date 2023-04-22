@@ -140,7 +140,7 @@ function pressLeft(player: number): void {
 }
 
 function pressMenu(): void {
-    if (PauseMenu.isMenuShowing) {
+    if (PauseMenu.menuVisible()) {
         PauseMenu.release()
     } else {
         PauseMenu.show()
