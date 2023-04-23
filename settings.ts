@@ -14,7 +14,7 @@ namespace GameSettings {
         ['1 player', '2 players', '3 players', '4 players'],
     ]
     const TEXT_SETTINGS_MULTIPLAYER_TAB: string = 'Multiplayer'
-    const TEXT_SETTINGS_MULTIPLAYER: string[][] = [
+    export const TEXT_SETTINGS_MULTIPLAYER: string[][] = [
         ['Shared controller', 'Online/Multiple controllers'],
     ]
 

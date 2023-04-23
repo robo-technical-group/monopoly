@@ -64,6 +64,22 @@ class GameState {
         }
     }
 
+    public static delete(filename: string): void {
+        if (filename.indexOf(GameState.KEY_PREFIX) != 0) {
+            filename = GameState.KEY_PREFIX + filename
+        }
+        if (settings.exists(filename)) {
+            settings.remove(filename)
+        }
+    }
+
+    public static exists(filename: string): boolean {
+        if (filename.indexOf(GameState.KEY_PREFIX) != 0) {
+            filename = GameState.KEY_PREFIX + filename
+        }
+        return settings.exists(filename)
+    }
+
     /**
      * @param player Player to retrieve. First player = 1.
      */
@@ -73,7 +89,7 @@ class GameState {
 
     public static list(): string[] {
         return settings.list(GameState.KEY_PREFIX).map((value: string, index: number) =>
-            value.slice(GameState.KEY_PREFIX.length - 1)
+            value.slice(GameState.KEY_PREFIX.length)
         )
     }
 
@@ -83,6 +99,7 @@ class GameState {
         }
         if (settings.exists(key)) {
             let toReturn: GameState = new GameState()
+            // game.showLongText(settings.readString(key), DialogLayout.Full)
             if (toReturn.loadState(settings.readJSON(key))) {
                 return toReturn
             } else {
@@ -119,6 +136,21 @@ class GameState {
         return true
     }
 
+    public static rename(oldname: string, newname: string): boolean {
+        if (oldname.indexOf(GameState.KEY_PREFIX) != 0) {
+            oldname = GameState.KEY_PREFIX + oldname
+        }
+        if (newname.indexOf(GameState.KEY_PREFIX) != 0) {
+            newname = GameState.KEY_PREFIX + newname
+        }
+        if (!settings.exists(oldname) || settings.exists(newname)) {
+            return false
+        }
+        settings.writeJSON(newname, settings.readJSON(oldname))
+        settings.remove(oldname)
+        return true
+    }
+
     public save(filename: string): void {
         if (filename.indexOf(GameState.KEY_PREFIX) == -1) {
             filename = GameState.KEY_PREFIX + filename
@@ -142,14 +174,100 @@ class GameState {
 }
 
 namespace GameStateUI {
+    enum ManageActions {
+        Rename,
+        Delete,
+    }
+
+    const DELETE_CONFIRM: string = 'Delete saved game?'
+    const DELETED_FILE: string = '--Deleted--'
     const FILENAME_PROMPT: string = 'Enter filename.'
     const GAME_SAVE_CONFIRM: string = 'Game saved!'
     const GAME_SAVE_CANCEL: string = 'Game save cancelled.'
+    const CONTROLLER_TITLE: string = 'Set controller mode.'
+    const LOAD_ERROR: string = 'Error loading file'
+    const LOAD_TITLE: string = 'Select game to load.'
     const MANAGE_MENU_TITLE: string = 'A=Rename B=Delete'
+    const RENAME_EXISTS: string = 'New name already exists.'
+    const RENAME_PROMPT: string = 'Enter new name.'
     const TEXT_CLOSE: string = '--Close menu--'
 
+    let controllerMenu: miniMenu.MenuSprite = null
     let isManageVisible: boolean = false
+    let fileMenu: miniMenu.MenuSprite = null
+    let fileToLoad: string = ''
     let manageMenu: miniMenu.MenuSprite = null
+
+    function controllerSelected(selection: string, selectedIndex: number): void {
+        controllerMenu.close()
+        if (selectedIndex == GameSettings.TEXT_SETTINGS_MULTIPLAYER[0].length) {
+            // User chose to close the menu.
+            g_state.Mode = GameMode.Attract
+            return
+        }
+        let newGame: GameState = GameState.loadFromSetting(fileToLoad)
+        if (newGame == null) {
+            game.splash(LOAD_ERROR + ' ' + selection)
+            g_state.Mode = GameMode.Attract
+        } else {
+            Attract.splashScreen.release()
+            GameSettings.controllers = selectedIndex
+            g_state = newGame
+            switch (newGame.Mode) {
+                case GameMode.FirstRoll:
+                    FirstRoll.setup()
+                    break
+
+                case GameMode.Main:
+                    // For now, just start a new game.
+                    startGame()
+                    break
+            }
+        }
+    }
+
+    export function load(): void {
+        g_state.Mode = GameMode.NotReady
+        let menuItems: miniMenu.MenuItem[] = []
+        if (menuItems.length > 10) {
+            menuItems.push(miniMenu.createMenuItem(TEXT_CLOSE))
+        }
+        for (let f of GameState.list()) {
+            menuItems.push(miniMenu.createMenuItem(f))
+        }
+        menuItems.push(miniMenu.createMenuItem(TEXT_CLOSE))
+        fileMenu = miniMenu.createMenuFromArray(menuItems)
+        fileMenu.setTitle(LOAD_TITLE)
+        setCommonSettings(fileMenu)
+        fileMenu.onButtonPressed(controller.A, loadFileSelected)
+        g_state.Mode = GameMode.PauseMenu
+    }
+
+    function loadFileSelected(selection: string, selectedIndex: number): void {
+        if (selectedIndex >= GameState.list().length ||
+                selection == TEXT_CLOSE) {
+            // User selected to close menu without selecting a file.
+            fileMenu.close()
+            g_state.Mode = GameMode.Attract
+            return
+        }
+        let newGame: GameState = GameState.loadFromSetting(selection)
+        if (newGame == null) {
+            game.splash(LOAD_ERROR + ' ' + selection)
+        } else {
+            fileToLoad = selection
+            fileMenu.close()
+            let menuItems: miniMenu.MenuItem[] = []
+            for (let i of GameSettings.TEXT_SETTINGS_MULTIPLAYER[0]) {
+                menuItems.push(miniMenu.createMenuItem(i))
+            }
+            menuItems.push(miniMenu.createMenuItem(TEXT_CLOSE))
+            controllerMenu = miniMenu.createMenuFromArray(menuItems)
+            controllerMenu.setTitle(CONTROLLER_TITLE)
+            setCommonSettings(controllerMenu)
+            controllerMenu.onButtonPressed(controller.A, controllerSelected)
+        }
+    }
 
     export function manage(): void {
         if (isManageVisible) {
@@ -165,50 +283,13 @@ namespace GameStateUI {
         menuItems.push(miniMenu.createMenuItem(TEXT_CLOSE))
         manageMenu = miniMenu.createMenuFromArray(menuItems)
         manageMenu.setTitle(MANAGE_MENU_TITLE)
-        manageMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Width, 140)
-        manageMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Height, 100)
-        manageMenu.setStyleProperty(miniMenu.StyleKind.Title,
-            miniMenu.StyleProperty.Foreground, Color.White)
-        manageMenu.setStyleProperty(miniMenu.StyleKind.Title,
-            miniMenu.StyleProperty.Background, Color.Wine)
-        manageMenu.top = 10
-        manageMenu.left = 10
-        manageMenu.onButtonPressed(controller.A, processSelection)
-        manageMenu.onButtonPressed(controller.B, processSelection)
+        setCommonSettings(manageMenu)
+        manageMenu.onButtonPressed(controller.A, manageMenuSelectedA)
+        manageMenu.onButtonPressed(controller.B, manageMenuSelectedB)
         isManageVisible = true
-        /*
-        if (isMenuVisible) {
-            return
-        }
-        previousMode = g_state.Mode
-        g_state.Mode = GameMode.PauseMenu
-        let menuItems: miniMenu.MenuItem[] = []
-        for (let t of MENU_TEXT) {
-            menuItems.push(miniMenu.createMenuItem(t))
-        }
-        pauseMenu = miniMenu.createMenuFromArray(menuItems)
-        pauseMenu.setTitle(MENU_TITLE)
-        pauseMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Width, 140)
-        pauseMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Height, 100)
-        pauseMenu.setStyleProperty(miniMenu.StyleKind.Title,
-            miniMenu.StyleProperty.Foreground, Color.White)
-        pauseMenu.setStyleProperty(miniMenu.StyleKind.Title,
-            miniMenu.StyleProperty.Background, Color.Wine)
-        pauseMenu.top = 10
-        pauseMenu.left = 10
-        isShowingConsole = game.consoleOverlay.isVisible()
-        isShowingStats = game.stats
-        updateBrightness()
-        updateConsole()
-        updateStats()
-        updateVolume()
-        pauseMenu.onButtonPressed(controller.A, processSelection)
-        pauseMenu.onButtonPressed(controller.B, processSelection)
-        isMenuVisible = true
-        */
     }
 
-    function processSelection(selection: string, selectedIndex: number): void {
+    function manageMenuSelected(selection: string, selectedIndex: number, action: ManageActions): void {
         if (selection == TEXT_CLOSE) {
             manageMenu.close()
             if (PauseMenu.menuRunning()) {
@@ -217,16 +298,63 @@ namespace GameStateUI {
             isManageVisible = false
             return
         }
+        manageMenu.buttonEventsEnabled = false
+        switch (action) {
+            case ManageActions.Delete:
+                if (game.ask(DELETE_CONFIRM, selection)) {
+                    GameState.delete(selection)
+                    manageMenu.items[selectedIndex].text = DELETED_FILE
+                }
+                break
+
+            case ManageActions.Rename:
+                let n: string | undefined = game.askForString(selection +
+                    ' ' + RENAME_PROMPT)
+                if (n == undefined) {
+                    break
+                }
+                if (n.length > 0) {
+                    if (GameState.rename(selection, n)) {
+                        manageMenu.items[selectedIndex].text = n
+                    } else {
+                        game.splash(RENAME_EXISTS)
+                    }
+                }
+                break
+        }
+        manageMenu.buttonEventsEnabled = true
     }
 
-    export function save(): void {
+    function manageMenuSelectedA(selection: string, selectedIndex: number) {
+        manageMenuSelected(selection, selectedIndex, ManageActions.Rename)
+    }
+
+    function manageMenuSelectedB(selection: string, selectedIndex: number) {
+        manageMenuSelected(selection, selectedIndex, ManageActions.Delete)
+    }
+
+    export function save(gameModeToSave: GameMode): void {
         let filename: string = game.askForString(FILENAME_PROMPT)
         if (filename.length > 0) {
+            let currMode: GameMode = g_state.Mode
+            g_state.Mode = gameModeToSave
             g_state.save(filename)
+            g_state.Mode = currMode
             game.splash(GAME_SAVE_CONFIRM)
         } else {
             game.splash(GAME_SAVE_CANCEL)
         }
+    }
+
+    function setCommonSettings(m: miniMenu.MenuSprite) {
+        m.setMenuStyleProperty(miniMenu.MenuStyleProperty.Width, 140)
+        m.setMenuStyleProperty(miniMenu.MenuStyleProperty.Height, 100)
+        m.setStyleProperty(miniMenu.StyleKind.Title,
+            miniMenu.StyleProperty.Foreground, Color.White)
+        m.setStyleProperty(miniMenu.StyleKind.Title,
+            miniMenu.StyleProperty.Background, Color.Wine)
+        m.top = 10
+        m.left = 10
     }
 }
 

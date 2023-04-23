@@ -5,13 +5,9 @@
  * Template last update: 20 Apr 2023 ak
  * 
  * Immediate TODO List
- * - [X] Add mini menu extension. See https://forum.makecode.com/t/arcade-mini-menu-extension/14368
- * - [X] Implement game load mechanism from attract menu.
- * - [X] Add function in Option Screens plugin to add items to system menu.  See https://forum.makecode.com/t/custom-menu-showcase/18381
- * - [X] Create alternate pause menu.
- * - [X] Update Blocks and JavaScript templates accordingly.
- * - [ ] Work on single-controller implementation.
- * - [ ] Finish game load and manage save file routines.
+ * - [X] Work on single-controller implementation.
+ * - [X] Finish game load and manage save file routines.
+ * - [ ] Update Blocks and JavaScript templates accordingly.
  */
 
 /**

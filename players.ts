@@ -11,6 +11,7 @@ interface IPlayer {
 }
 
 class Player {
+    private static readonly TEXT_PLAYER: string = 'Player'
     private avatar: number
     private controllerId: number
     private dice: Dice
@@ -90,7 +91,7 @@ class Player {
         if (typeof state.name == 'string') {
             this.name = state.name
         } else {
-            this.name = 'Player ' + this.controllerId
+            this.setDefaultName()
         }
         return true
     }
@@ -101,15 +102,28 @@ class Player {
 
     public promptForName(): void {
         let prompt: string = `Player ${this.controllerId} enter name.`
+        let n: string | undefined = undefined
         if (GameSettings.controllers == ControllerSetting.Multiple &&
-                this.controllerId >= 1 && this.controllerId <= 4) {
-            this.name = game.askPlayerForString(this.controllerId, prompt)
+            this.controllerId >= 1 && this.controllerId <= 4) {
+            n = game.askPlayerForString(this.controllerId, prompt)
         } else {
-            this.name = game.askForString(prompt)
+            n = game.askForString(prompt)
+        }
+        if (n == undefined) {
+            this.setDefaultName()
+        } else {
+            this.name = n
         }
     }
 
     public showSprite(): void {
         this.sprite.setFlag(SpriteFlag.Invisible, false)
+    }
+
+    /**
+     * Protected methods
+     */
+    protected setDefaultName(): void {
+        this.name = Player.TEXT_PLAYER + ' ' + this.controllerId
     }
 }

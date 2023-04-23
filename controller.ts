@@ -48,7 +48,7 @@ function pressB(player: number): void {
     switch (g_state.Mode) {
         case GameMode.Attract:
             if (player == 1) {
-                GameSettings.start()
+                GameStateUI.load()
             }
             break
 

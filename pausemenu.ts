@@ -129,7 +129,7 @@ namespace PauseMenu {
                 break
 
             case Items.SaveGame:
-                GameStateUI.save()
+                GameStateUI.save(priorMode)
                 break
 
             case Items.BrightnessUp:
