@@ -48,4 +48,5 @@ enum GameMode {
     Main,
     AvatarTest,
     DiceTest,
+    BoardTest,
 }   // GameMode

@@ -61,6 +61,12 @@ game.onUpdate(function () {
                 }
             }
             break
+
+        case GameMode.BoardTest:
+            Board.move()
+            BoardTests.currSpace.text = Board.currSpace.toString()
+            BoardTests.currSpace.update()
+            break
     }   // switch (g_state.Mode)
 })  // game.onUpdate()
 
@@ -83,3 +89,4 @@ Attract.start()
 // DiceTests.start()
 // FirstRollTests.start(4)
 // GameStateTests.start()
+// BoardTests.setup()

@@ -22,7 +22,8 @@
         "dice.ts",
         "firstroll.ts",
         "state.ts",
-        "pausemenu.ts"
+        "pausemenu.ts",
+        "board.ts"
     ],
     "testFiles": [],
     "targetVersions": {
