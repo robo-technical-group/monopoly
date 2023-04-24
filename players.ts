@@ -119,6 +119,14 @@ class Player {
         }
     }
 
+    /**
+     * Destroy resources that are not automatically released by the garbage collector.
+     */
+    public release(): void {
+        this.sprite.destroy()
+        this.Dice.release()
+    }
+
     public showSprite(): void {
         this.sprite.setFlag(SpriteFlag.Invisible, false)
     }

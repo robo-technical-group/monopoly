@@ -149,19 +149,27 @@ class Dice {
         }
     }
 
-    public setLocationChange(vx: number, vy: number) {
+    /**
+     * Release resources that are not automatically destroyed by the garbage collector.
+     */
+    public release(): void {
+        this.sprites.forEach((value: Sprite, index: number) =>
+            value.destroy())
+    }
+
+    public setLocationChange(vx: number, vy: number): void {
         this.areRolling = false
         this.deltaX = vx
         this.deltaY = vy
     }
 
-    public setStartLocation(x: number, y: number) {
+    public setStartLocation(x: number, y: number): void {
         this.areRolling = false
         this.startX = x
         this.startY = y
     }
 
-    public setStopLocation(x: number, y: number) {
+    public setStopLocation(x: number, y: number): void {
         this.areRolling = false
         this.stopX = x
         this.stopY = y

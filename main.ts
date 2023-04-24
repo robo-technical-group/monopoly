@@ -1,7 +1,7 @@
 /**
  * Monopoly
  * Built on
- * MakeCode Arcade JavaScript Template v. 4.2.0
+ * MakeCode Arcade JavaScript Template v. 4.2.1
  * Template last update: 24 Apr 2023 ak
  * 
  * Immediate TODO List
@@ -13,8 +13,8 @@
  * - [X] Setup automated testing.
  * - [X] Update JavaScript template.
  * - [X] Revisit all tests to ensure they work.
- * - [ ] Check that menu sprites are destroyed when loading saved game.
- * - [ ] Update JavaScript template accordingly.
+ * - [X] Check that sprites are destroyed when loading saved game.
+ * - [X] Update JavaScript template.
  */
 
 /**

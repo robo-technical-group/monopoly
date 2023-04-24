@@ -140,6 +140,14 @@ class GameState {
         return true
     }
 
+    /**
+     * Destroy resources that are not automatically released by the garbage collector.
+     */
+    public release(): void {
+        this.players.forEach((value: Player, index: number) =>
+            value.release())
+    }
+
     public static rename(oldname: string, newname: string): boolean {
         if (oldname.indexOf(GameState.KEY_PREFIX) != 0) {
             oldname = GameState.KEY_PREFIX + oldname
@@ -212,18 +220,22 @@ namespace GameStateUI {
         }
         let newGame: GameState = GameState.loadFromSetting(fileToLoad)
         if (newGame == null) {
+            newGame.release()
             game.splash(LOAD_ERROR + ' ' + selection)
             g_state.Mode = GameMode.Attract
         } else {
             Attract.splashScreen.release()
             GameSettings.controllers = selectedIndex
+            let oldState: GameState = g_state
             g_state = newGame
+            oldState.release()
             switch (newGame.Mode) {
                 case GameMode.FirstRoll:
                     FirstRoll.setup()
                     break
 
                 case GameMode.Main:
+                default:
                     // For now, just start a new game.
                     startGame()
                     break
@@ -259,6 +271,7 @@ namespace GameStateUI {
         if (newGame == null) {
             game.splash(LOAD_ERROR + ' ' + selection)
         } else {
+            newGame.release()
             fileToLoad = selection
             fileMenu.close()
             let menuItems: miniMenu.MenuItem[] = []
