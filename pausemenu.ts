@@ -10,6 +10,7 @@ namespace PauseMenu {
         Stats,
         Console,
         Sleep,
+        RunTests,
         Close,
     }
 
@@ -23,6 +24,7 @@ namespace PauseMenu {
         'Show stats',
         'Show console',
         'Sleep',
+        'Run tests',
         'Close',
     ]
 
@@ -36,10 +38,12 @@ namespace PauseMenu {
         'Hide stats',
         'Hide console',
         '',
+        'Stop tests',
         'Close',
     ]
 
     const MENU_TITLE: string = 'Pause Menu'
+    const TESTS_PROMPT: string = 'Restart game to start/stop tests.'
     const VOLUMES: number[] = [0, 32, 64, 96, 128, 160, 192, 224, 255]
     const Z: number = 255
 
@@ -146,6 +150,10 @@ namespace PauseMenu {
             case Items.ManageGames:
                 GameStateUI.manage()
                 break
+
+            case Items.RunTests:
+                toggleTests()
+                break
         }
     }
 
@@ -184,6 +192,7 @@ namespace PauseMenu {
         updateConsole()
         updateStats()
         updateVolume()
+        updateTests()
         menu.onButtonPressed(controller.A, processSelection)
         menu.onButtonPressed(controller.B, processSelection)
         isMenuRunning = true
@@ -203,6 +212,16 @@ namespace PauseMenu {
         isShowingStats = !isShowingStats
         game.stats = isShowingStats
         updateStats()
+    }
+
+    function toggleTests(): void {
+        if (settings.exists(Tests.TESTING_KEY)) {
+            settings.remove(Tests.TESTING_KEY)
+        } else {
+            settings.writeNumber(Tests.TESTING_KEY, 0)
+        }
+        game.splash(TESTS_PROMPT)
+        updateTests()
     }
 
     function updateBrightness(): void {
@@ -225,6 +244,12 @@ namespace PauseMenu {
         if (!isShowingStats && control.EventContext.onStats) {
             control.EventContext.onStats('');
         }
+    }
+
+    function updateTests(): void {
+        menu.items[Items.RunTests].text = settings.exists(Tests.TESTING_KEY) ?
+            MENU_TEXT_ALTERNATE[Items.RunTests] :
+            MENU_TEXT[Items.RunTests]
     }
 
     function updateVolume(): void {

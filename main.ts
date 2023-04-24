@@ -10,7 +10,8 @@
  * - [X] Update Blocks and JavaScript templates accordingly.
  * - [X] Add game board animations.
  * - [X] Add background animations.
- * - [ ] Setup automated testing?
+ * - [X] Setup automated testing.
+ * - [ ] Update JavaScript template.
  * - [ ] Revisit all tests to ensure they work.
  * - [ ] Check that menu sprites are destroyed when loading saved game.
  * - [ ] Update JavaScript template accordingly.
@@ -90,4 +91,8 @@ function startGame(): void {
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
-Attract.start()
+if (settings.exists(Tests.TESTING_KEY)) {
+    Tests.run()
+} else {
+    Attract.start()
+}

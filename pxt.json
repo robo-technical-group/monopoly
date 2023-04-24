@@ -24,7 +24,8 @@
         "state.ts",
         "pausemenu.ts",
         "board.ts",
-        "background.ts"
+        "background.ts",
+        "tests.ts"
     ],
     "testFiles": [],
     "targetVersions": {
