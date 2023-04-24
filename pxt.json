@@ -23,7 +23,8 @@
         "firstroll.ts",
         "state.ts",
         "pausemenu.ts",
-        "board.ts"
+        "board.ts",
+        "background.ts"
     ],
     "testFiles": [],
     "targetVersions": {

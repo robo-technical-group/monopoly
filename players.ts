@@ -12,6 +12,8 @@ interface IPlayer {
 
 class Player {
     private static readonly TEXT_PLAYER: string = 'Player'
+    private static readonly Z: number = 20
+
     private avatar: number
     private controllerId: number
     private dice: Dice
@@ -38,6 +40,7 @@ class Player {
             this.avatar = value
             this.sprite = sprites.create(Avatar.AVATARS[value].frontImage, SpriteKind.Player)
             this.sprite.setFlag(SpriteFlag.Invisible, true)
+            this.sprite.z = Player.Z
         } else {
             this.avatar = -1
         }

@@ -9,7 +9,7 @@
  * - [X] Finish game load and manage save file routines.
  * - [X] Update Blocks and JavaScript templates accordingly.
  * - [X] Add game board animations.
- * - [ ] Add background animations.
+ * - [X] Add background animations.
  */
 
 /**
@@ -65,6 +65,7 @@ game.onUpdate(function () {
             break
 
         case GameMode.BoardTest:
+            Background.move()
             Board.move()
             BoardTests.currSpace.text = Board.currSpace.toString()
             BoardTests.currSpace.update()
@@ -91,4 +92,5 @@ Attract.start()
 // DiceTests.start()
 // FirstRollTests.start(4)
 // GameStateTests.start()
+// Background.show()
 // BoardTests.setup()

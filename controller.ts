@@ -45,6 +45,7 @@ function pressA(player: number): void {
         case GameMode.BoardTest:
             Board.direction = (Board.direction == 1 ? -1 : 1)
             info.setScore(Board.direction)
+            Background.direction = Board.direction
             break
     }   // switch (g_state.Mode)
 }

@@ -187,6 +187,7 @@ namespace Board {
     export const JAIL_SPACE: number = 10
     const MARGIN: number = 2
     const SPEED: number = 1
+    const Z: number = 10
 
     export let currSpace: number = -1
     export let direction: number = 1
@@ -249,6 +250,7 @@ namespace Board {
         s.setFlag(SpriteFlag.Ghost, true)
         s.x = x
         s.y = y
+        s.z = Z
         return s
     }
 

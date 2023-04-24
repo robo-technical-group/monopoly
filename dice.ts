@@ -14,6 +14,7 @@ const D6_IMAGES: Image[][] = [
 class Dice {
     private static readonly MARGIN: number = 2
     private static readonly MOVES_TO_ROTATE: number = 3
+    private static readonly Z: number = 20
 
     private areRolling: boolean
     private deltaX: number
@@ -69,6 +70,7 @@ class Dice {
         for (let i: number = 0; i < value; i++) {
             let s: Sprite = sprites.create(img`.`, SpriteKind.Dice)
             s.setFlag(SpriteFlag.Invisible, true)
+            s.z = Dice.Z
             this.sprites.push(s)
             this.values.push(1)
         }
