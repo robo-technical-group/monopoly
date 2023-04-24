@@ -189,6 +189,7 @@ namespace GameStateUI {
     const RENAME_EXISTS: string = 'New name already exists.'
     const RENAME_PROMPT: string = 'Enter new name.'
     const TEXT_CLOSE: string = '--Close menu--'
+    const Z: number = 255
 
     let controllerMenu: miniMenu.MenuSprite = null
     let isManageVisible: boolean = false
@@ -350,6 +351,7 @@ namespace GameStateUI {
             miniMenu.StyleProperty.Background, Color.Wine)
         m.top = 10
         m.left = 10
+        m.z = Z
     }
 }
 

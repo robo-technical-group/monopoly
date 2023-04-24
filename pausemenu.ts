@@ -41,6 +41,7 @@ namespace PauseMenu {
 
     const MENU_TITLE: string = 'Pause Menu'
     const VOLUMES: number[] = [0, 32, 64, 96, 128, 160, 192, 224, 255]
+    const Z: number = 255
 
     let isMenuRunning: boolean = false
     let isShowingStats: boolean = false
@@ -176,6 +177,7 @@ namespace PauseMenu {
             miniMenu.StyleProperty.Background, Color.Wine)
         menu.top = 10
         menu.left = 10
+        menu.z = Z
         isShowingConsole = game.consoleOverlay.isVisible()
         isShowingStats = game.stats
         updateBrightness()
