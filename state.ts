@@ -57,10 +57,16 @@ class GameState {
     /**
      * Public methods
      */
-    public static addSystemMenuItem(handler: () => void): void {
+    public static addSystemMenuItem(text: string, icon: Image, handler: () => void): void {
         if (infoScreens.addMenuOption != undefined) {
-            infoScreens.addMenuOption(GameState.SAVE_TEXT,assets.image`saveIcon`, handler)
+            game.splash('Info Screens plugin is missing.')
+            return
         }
+        infoScreens.addMenuOption(text, icon, handler)
+    }
+
+    public static addSaveGameMenuItem(handler: () => void): void {
+        GameState.addSystemMenuItem(GameState.SAVE_TEXT, assets.image`saveIcon`, handler)
     }
 
     public static delete(filename: string): void {

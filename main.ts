@@ -10,6 +10,10 @@
  * - [X] Update Blocks and JavaScript templates accordingly.
  * - [X] Add game board animations.
  * - [X] Add background animations.
+ * - [ ] Setup automated testing?
+ * - [ ] Revisit all tests to ensure they work.
+ * - [ ] Check that menu sprites are destroyed when loading saved game.
+ * - [ ] Update JavaScript template accordingly.
  */
 
 /**
@@ -87,10 +91,3 @@ function startGame(): void {
  */
 game.stats = true
 Attract.start()
-// GameState.addSystemMenuItem(saveGame) // This won't work; reimplement system menu.
-// AvatarTest.startAvatarTest()
-// DiceTests.start()
-// FirstRollTests.start(4)
-// GameStateTests.start()
-// Background.show()
-// BoardTests.setup()
