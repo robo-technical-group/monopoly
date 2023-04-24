@@ -145,10 +145,10 @@ namespace FirstRollTests {
     const PLAYER_AVATARS: number[] = [0, 1, 2, 3]
     export function start(numPlayers: number): void {
         g_state.NumPlayers = numPlayers
-        for (let i: number = 0; i < numPlayers; i++) {
-            g_state.Players[i].Name = PLAYER_NAMES[i]
-            g_state.Players[i].Avatar = PLAYER_AVATARS[i]
-        }
+        g_state.Players.forEach(function (value: Player, index: number) {
+            value.Name = PLAYER_NAMES[index]
+            value.Avatar = PLAYER_AVATARS[index]
+        })
         FirstRoll.setup()
     }
 }

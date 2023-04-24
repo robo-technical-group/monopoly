@@ -58,13 +58,15 @@ namespace PauseMenu {
     }
 
     function changeVolume(delta: number): void {
-        if (delta < 0 && volume > 0) {
-            volume--
-            updateVolume()
-            playVolume()
-        }
-        if (delta > 0 && volume < VOLUMES.length - 1) {
-            volume++
+        if (
+            (delta < 0 && volume > 0) ||
+            (delta > 0 && volume < VOLUMES.length - 1)
+        ) {
+            if (delta < 0) {
+                volume--
+            } else {
+                volume++
+            }
             updateVolume()
             playVolume()
         }

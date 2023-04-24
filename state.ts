@@ -46,9 +46,8 @@ class GameState {
 
     public get State(): IGameState {
         let playerStates: IPlayer[] = []
-        for (let p of this.players) {
-            playerStates.push(p.State)
-        }
+        this.players.forEach((value: Player, index: number) =>
+            playerStates.push(value.State))
         return {
             gameMode: this.gameMode,
             players: playerStates,
@@ -99,7 +98,6 @@ class GameState {
         }
         if (settings.exists(key)) {
             let toReturn: GameState = new GameState()
-            // game.showLongText(settings.readString(key), DialogLayout.Full)
             if (toReturn.loadState(settings.readJSON(key))) {
                 return toReturn
             } else {
@@ -232,9 +230,8 @@ namespace GameStateUI {
         if (menuItems.length > 10) {
             menuItems.push(miniMenu.createMenuItem(TEXT_CLOSE))
         }
-        for (let f of GameState.list()) {
-            menuItems.push(miniMenu.createMenuItem(f))
-        }
+        GameState.list().forEach((value: string, index: number) =>
+            menuItems.push(miniMenu.createMenuItem(value)))
         menuItems.push(miniMenu.createMenuItem(TEXT_CLOSE))
         fileMenu = miniMenu.createMenuFromArray(menuItems)
         fileMenu.setTitle(LOAD_TITLE)
@@ -258,9 +255,10 @@ namespace GameStateUI {
             fileToLoad = selection
             fileMenu.close()
             let menuItems: miniMenu.MenuItem[] = []
-            for (let i of GameSettings.TEXT_SETTINGS_MULTIPLAYER[0]) {
-                menuItems.push(miniMenu.createMenuItem(i))
-            }
+            GameSettings.TEXT_SETTINGS_MULTIPLAYER[0].forEach(
+                (value: string, index: number) =>
+                menuItems.push(miniMenu.createMenuItem(value))
+            )
             menuItems.push(miniMenu.createMenuItem(TEXT_CLOSE))
             controllerMenu = miniMenu.createMenuFromArray(menuItems)
             controllerMenu.setTitle(CONTROLLER_TITLE)
@@ -277,9 +275,8 @@ namespace GameStateUI {
             PauseMenu.hide()
         }
         let menuItems: miniMenu.MenuItem[] = []
-        for (let f of GameState.list()) {
-            menuItems.push(miniMenu.createMenuItem(f))
-        }
+        GameState.list().forEach((value: string, index: number) =>
+            menuItems.push(miniMenu.createMenuItem(value)))
         menuItems.push(miniMenu.createMenuItem(TEXT_CLOSE))
         manageMenu = miniMenu.createMenuFromArray(menuItems)
         manageMenu.setTitle(MANAGE_MENU_TITLE)
@@ -313,12 +310,10 @@ namespace GameStateUI {
                 if (n == undefined) {
                     break
                 }
-                if (n.length > 0) {
-                    if (GameState.rename(selection, n)) {
-                        manageMenu.items[selectedIndex].text = n
-                    } else {
-                        game.splash(RENAME_EXISTS)
-                    }
+                if (GameState.rename(selection, n)) {
+                    manageMenu.items[selectedIndex].text = n
+                } else {
+                    game.splash(RENAME_EXISTS)
                 }
                 break
         }
@@ -334,16 +329,16 @@ namespace GameStateUI {
     }
 
     export function save(gameModeToSave: GameMode): void {
-        let filename: string = game.askForString(FILENAME_PROMPT)
-        if (filename.length > 0) {
-            let currMode: GameMode = g_state.Mode
-            g_state.Mode = gameModeToSave
-            g_state.save(filename)
-            g_state.Mode = currMode
-            game.splash(GAME_SAVE_CONFIRM)
-        } else {
+        let filename: string | undefined = game.askForString(FILENAME_PROMPT)
+        if (filename == undefined) {
             game.splash(GAME_SAVE_CANCEL)
+            return
         }
+        let currMode: GameMode = g_state.Mode
+        g_state.Mode = gameModeToSave
+        g_state.save(filename)
+        g_state.Mode = currMode
+        game.splash(GAME_SAVE_CONFIRM)
     }
 
     function setCommonSettings(m: miniMenu.MenuSprite) {

@@ -1,13 +1,15 @@
 /**
  * Monopoly
  * Built on
- * MakeCode Arcade JavaScript Template v. 4.0.0
- * Template last update: 20 Apr 2023 ak
+ * MakeCode Arcade JavaScript Template v. 4.1.2
+ * Template last update: 23 Apr 2023 ak
  * 
  * Immediate TODO List
  * - [X] Work on single-controller implementation.
  * - [X] Finish game load and manage save file routines.
- * - [ ] Update Blocks and JavaScript templates accordingly.
+ * - [X] Update Blocks and JavaScript templates accordingly.
+ * - [X] Add game board animations.
+ * - [ ] Add background animations.
  */
 
 /**
