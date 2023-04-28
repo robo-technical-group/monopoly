@@ -5,16 +5,18 @@
  * Template last update: 24 Apr 2023 ak
  * 
  * Immediate TODO List
- * - [X] Work on single-controller implementation.
- * - [X] Finish game load and manage save file routines.
- * - [X] Update Blocks and JavaScript templates accordingly.
- * - [X] Add game board animations.
- * - [X] Add background animations.
- * - [X] Setup automated testing.
- * - [X] Update JavaScript template.
- * - [X] Revisit all tests to ensure they work.
- * - [X] Check that sprites are destroyed when loading saved game.
- * - [X] Update JavaScript template.
+ * - [ ] Automated roll tests.
+ * - [ ] Player information sprites.
+ * - [ ] Dialog replacement.
+ * - [ ] Card decks.
+ *     - [ ] Jail cards as properties.
+ * - [ ] Player actions menu (generic, e.g., whlie in jail, buy or auction property).
+ *     - Add key binding sprites dynamically.
+ * - [ ] Player actions menu (turn).
+ *     - [ ] Bankrupt.
+ *     - [ ] Build/mortgage.
+ *     - [ ] Trade.
+ * - [ ] Auction property.
  */
 
 /**

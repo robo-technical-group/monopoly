@@ -375,17 +375,8 @@ namespace GameStateUI {
 }
 
 namespace GameStateTests {
-    export function start() {
-        /*
-        let n: number = 0
-        game.splash('n is a ' + typeof n)
-        let a: number[] = [2, 6, 19]
-        game.splash('a is a ' + typeof a)
-        let gm: GameMode = GameMode.Attract
-        game.splash('gm is a ' + typeof gm)
-        */
-        // Try to initialize game state with an incomplete object.
-        let s: any = {
+    export function getTestState(): object {
+        return {
             players: [
                 {
                     name: 'Robo',
@@ -406,6 +397,19 @@ namespace GameStateTests {
                 },
             ],
         }
+    }
+    
+    export function start(): void {
+        /*
+        let n: number = 0
+        game.splash('n is a ' + typeof n)
+        let a: number[] = [2, 6, 19]
+        game.splash('a is a ' + typeof a)
+        let gm: GameMode = GameMode.Attract
+        game.splash('gm is a ' + typeof gm)
+        */
+        // Try to initialize game state with an incomplete object.
+        let s: object = getTestState()
         /*
         game.splash('s.gameMode is a ' + typeof s.gameMode)
         // Will this throw an error?
