@@ -7,6 +7,7 @@
 interface IGameState {
     gameMode: GameMode
     players: IPlayer[]
+    properties: Properties.PropertyGroupState[]
 }
 
 class GameState {
@@ -15,10 +16,12 @@ class GameState {
 
     private gameMode: GameMode
     private players: Player[]
+    private properties: Properties.PropertyGroupState[]
 
     constructor(numPlayers: number = 0) {
         this.gameMode = GameMode.NotReady
         this.initPlayers(numPlayers)
+        this.properties = Properties.buildFromState(null)
     }
 
     /**
@@ -51,6 +54,7 @@ class GameState {
         return {
             gameMode: this.gameMode,
             players: playerStates,
+            properties: this.properties,
         }
     }
 
@@ -123,7 +127,7 @@ class GameState {
         } else {
             this.gameMode = GameMode.NotReady
         }
-        if (typeof state.players == 'object') {
+        if (Array.isArray(state.players)) {
             this.players = []
             let playerList = <object[]>state.players
             for (let playerState of playerList) {
@@ -136,6 +140,9 @@ class GameState {
             }
         } else {
             return false
+        }
+        if (Array.isArray(state.properties)) {
+            this.properties = Properties.buildFromState(state.properties)
         }
         return true
     }

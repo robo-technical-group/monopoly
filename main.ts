@@ -5,6 +5,7 @@
  * Template last update: 24 Apr 2023 ak
  * 
  * Immediate TODO List
+ * - [X] Implement property states.
  * - [ ] Automated roll tests.
  * - [ ] Player information sprites.
  * - [ ] Dialog replacement.

@@ -6,15 +6,19 @@
  */
 interface IPlayer {
     avatar: number
+    bank: number
     controllerId: number
     name: string
 }
 
 class Player {
+    public static readonly STARTING_BANK: number = 1500
+
     private static readonly TEXT_PLAYER: string = 'Player'
     private static readonly Z: number = 20
 
     private avatar: number
+    private bank: number
     private controllerId: number
     private dice: Dice
     private name: string
@@ -22,6 +26,7 @@ class Player {
 
     constructor(controllerId: number = 0) {
         this.avatar = -1
+        this.bank = Player.STARTING_BANK
         this.dice = new Dice(2)
         this.controllerId = controllerId
         this.name = ''
@@ -46,6 +51,14 @@ class Player {
         }
     }
 
+    public get Bank(): number {
+        return this.bank
+    }
+
+    public set Bank(value: number) {
+        this.bank = value
+    }
+
     public get Dice(): Dice {
         return this.dice
     }
@@ -65,6 +78,7 @@ class Player {
     public get State(): IPlayer {
         return {
             avatar: this.avatar,
+            bank: this.bank,
             controllerId: this.controllerId,
             name: this.name
         }
@@ -87,6 +101,11 @@ class Player {
             this.Avatar = state.avatar
         } else {
             return false
+        }
+        if (typeof state.bank == 'number') {
+            this.bank = state.bank
+        } else {
+            this.bank = Player.STARTING_BANK
         }
         if (typeof state.controllerId == 'number') {
             this.controllerId = state.controllerId
