@@ -316,7 +316,7 @@ namespace Board {
         let currSprite: Sprite =
             sprites.allOfKind(SpriteKind.BoardSpace).find(
                 (value: Sprite, index: number) =>
-                value.data['boardIndex'] == Board.currSpace
+                    value.data['boardIndex'] == Board.currSpace
             )
         if (currSprite == null) {
             // Current location was not found among sprites.

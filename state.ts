@@ -277,7 +277,7 @@ namespace GameStateUI {
             let menuItems: miniMenu.MenuItem[] = []
             GameSettings.TEXT_SETTINGS_MULTIPLAYER[0].forEach(
                 (value: string, index: number) =>
-                menuItems.push(miniMenu.createMenuItem(value))
+                    menuItems.push(miniMenu.createMenuItem(value))
             )
             menuItems.push(miniMenu.createMenuItem(TEXT_CLOSE))
             controllerMenu = miniMenu.createMenuFromArray(menuItems)

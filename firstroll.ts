@@ -84,8 +84,7 @@ namespace FirstRoll {
         let deltaX: number = Math.floor(160 / g_state.NumPlayers)
         let x: number = Math.floor(deltaX / 2)
         let y: number = 100
-        for (let i: number = 0; i < g_state.NumPlayers; i++) {
-            let p: Player = g_state.Players[i]
+        g_state.Players.forEach((p: Player, index: number) => {
             p.moveSprite(x, y)
             p.showSprite()
             p.Dice.Orientation = DiceOrientation.Horizontal
@@ -95,7 +94,7 @@ namespace FirstRoll {
             p.Dice.show()
             x += deltaX
             firstRollStarted.push(false)
-        }
+        })
         if (GameSettings.controllers == ControllerSetting.Single) {
             cursor = sprites.create(assets.image`playerCursor`, SpriteKind.FirstRoll)
             cursor.setFlag(SpriteFlag.Ghost, true)
@@ -145,7 +144,7 @@ namespace FirstRollTests {
     const PLAYER_AVATARS: number[] = [0, 1, 2, 3]
     export function start(numPlayers: number): void {
         g_state.NumPlayers = numPlayers
-        g_state.Players.forEach(function (value: Player, index: number) {
+        g_state.Players.forEach((value: Player, index: number) => {
             value.Name = PLAYER_NAMES[index]
             value.Avatar = PLAYER_AVATARS[index]
         })
