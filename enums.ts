@@ -46,7 +46,14 @@ enum GameMode {
     AvatarSelect,
     FirstRoll,
     Main,
+    TurnEnded,
     AvatarTest,
     DiceTest,
     BoardTest,
 }   // GameMode
+
+enum PlayerStatus {
+    Moving,
+    ProcessingRoll,
+    WaitingForTurn,
+}

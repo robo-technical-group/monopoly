@@ -5,6 +5,7 @@
  * Interface that can be translated to/from JSON.
  */
 interface IGameState {
+    currPlayer: number
     gameMode: GameMode
     players: IPlayer[]
     properties: Properties.PropertyGroupState[]
@@ -14,19 +15,34 @@ class GameState {
     private static readonly KEY_PREFIX: string = 'mpy_'
     private static readonly SAVE_TEXT: string = 'SAVE GAME'
 
+    public testMode: boolean
+
+    private currPlayer: number
     private gameMode: GameMode
     private players: Player[]
     private properties: Properties.PropertyGroupState[]
 
     constructor(numPlayers: number = 0) {
+        this.currPlayer = (numPlayers > 0 ? 1 : 0)
         this.gameMode = GameMode.NotReady
         this.initPlayers(numPlayers)
         this.properties = Properties.buildFromState(null)
+        this.testMode = false
     }
 
     /**
      * Public properties
      */
+    public get CurrPlayer(): number {
+        return this.currPlayer
+    }
+
+    public set CurrPlayer(value: number) {
+        if (value > 0 && value <= this.players.length) {
+            this.currPlayer = value
+        }
+    }
+
     public get Mode(): GameMode {
         return this.gameMode
     }
@@ -52,6 +68,7 @@ class GameState {
         this.players.forEach((value: Player, index: number) =>
             playerStates.push(value.State))
         return {
+            currPlayer: this.currPlayer,
             gameMode: this.gameMode,
             players: playerStates,
             properties: this.properties,
@@ -89,11 +106,19 @@ class GameState {
         return settings.exists(filename)
     }
 
+    public getCurrPlayer(): Player {
+        return this.getPlayer(this.currPlayer)
+    }
+
     /**
      * @param player Player to retrieve. First player = 1.
      */
     public getPlayer(player: number): Player {
-        return this.players[player - 1]
+        if (player > 0 && player <= this.players.length) {
+            return this.players[player - 1]
+        } else {
+            return null
+        }
     }
 
     public static list(): string[] {
@@ -141,10 +166,22 @@ class GameState {
         } else {
             return false
         }
+        if (typeof state.currPlayer == 'number' && state.currPlayer > 0 && state.currPlayer <= this.players.length) {
+            this.currPlayer = state.currPlayer
+        } else {
+            this.currPlayer = 1
+        }
         if (Array.isArray(state.properties)) {
             this.properties = Properties.buildFromState(state.properties)
         }
         return true
+    }
+
+    public nextPlayer(): void {
+        this.currPlayer++
+        if (this.currPlayer > this.players.length) {
+            this.currPlayer = 1
+        }
     }
 
     /**
@@ -405,6 +442,10 @@ namespace GameStateTests {
             ],
         }
     }
+
+    export function loadTestState(): void {
+        g_state.loadState(getTestState())
+    }
     
     export function start(): void {
         /*
@@ -416,16 +457,17 @@ namespace GameStateTests {
         game.splash('gm is a ' + typeof gm)
         */
         // Try to initialize game state with an incomplete object.
-        let s: object = getTestState()
+        // let s: object = getTestState()
         /*
         game.splash('s.gameMode is a ' + typeof s.gameMode)
         // Will this throw an error?
         game.splash('s.gameMode is ' + s.gameMode)
         game.splash('s.players is a ' + typeof s.players)
         */
-        g_state.loadState(s)
+        // g_state.loadState(s)
         // game.showLongText(g_state.State, DialogLayout.Full)
         // game.splash(g_state.NumPlayers)
+        loadTestState()
         FirstRoll.setup()
         g_state.Mode = GameMode.FirstRoll
     }

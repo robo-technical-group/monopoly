@@ -185,7 +185,15 @@ namespace Board {
     ]
     export const GO_SPACE: number = 0
     export const JAIL_SPACE: number = 10
+    const BOARD_TOP: number = 80
+    export const DICE_BEGIN_X: number = 10
+    export const DICE_BEGIN_Y: number = 40
+    export const DICE_END_X: number = 150
+    export const DICE_END_Y: number = 40
     const MARGIN: number = 2
+    const PLAYER_BOTTOM: number = 78
+    const PLAYER_IN_JAIL_TOP: number = 0
+    const PLAYER_IN_JAIL_X_DELTA: number = 0
     const SPEED: number = 1
     const Z: number = 10
 
@@ -208,11 +216,21 @@ namespace Board {
 
         // Place current location in center of moving board.
         let x: number = 80
-        let y: number = 100
-        let currSprite: Sprite = drawSprite(location, x, y)
+        let currSprite: Sprite = drawSprite(location, x)
+        let s: Sprite = null
+
+        // Draw current player.
+        let p: Player = g_state.getCurrPlayer()
+        if (p != null) {
+            s = p.Sprite
+            s.x = x
+            s.bottom = PLAYER_BOTTOM
+            s.z = Player.Z_CURRENT
+            p.showSprite()
+        }
 
         // Previous board locations to the right.
-        let s: Sprite = currSprite
+        s = currSprite
         let index: number = location
         let left: number = s.left
         while (left < 160) {
@@ -222,7 +240,7 @@ namespace Board {
                 index = BOARD.length - 1
             }
             x += Math.floor(BOARD[index].image.width / 2)
-            s = drawSprite(index, x, y)
+            s = drawSprite(index, x)
             left = s.left
         }
 
@@ -237,21 +255,42 @@ namespace Board {
                 index = 0
             }
             x -= Math.floor(BOARD[index].image.width / 2)
-            s = drawSprite(index, x, y)
+            s = drawSprite(index, x)
             right = s.right
         }
     }
 
-    function drawSprite(location: number, x: number, y: number): Sprite {
+    function drawSprite(location: number, x: number): Sprite {
         let s: Sprite = sprites.create(BOARD[location].image,
             SpriteKind.BoardSpace
         )
         s.data['boardIndex'] = location
         s.setFlag(SpriteFlag.Ghost, true)
         s.x = x
-        s.y = y
+        s.top = BOARD_TOP
         s.z = Z
+        if (g_state.CurrPlayer > 0) {
+            showPlayer(location, x)
+        }
+
         return s
+    }
+
+    export function getXCoordinate(location: number): number {
+        let s: Sprite[] = sprites.allOfKind(SpriteKind.BoardSpace).filter(
+            (value: Sprite, index: number) => value.data['boardIndex'] == location
+        )
+        if (s.length > 0) {
+            return s[0].x
+        } else {
+            return -1
+        }
+    }
+
+    export function locationVisible(location: number): boolean {
+        return sprites.allOfKind(SpriteKind.BoardSpace).filter(
+            (value: Sprite, index: number) => value.data['boardIndex'] == location
+        ).length > 0
     }
 
     export function move(): void {
@@ -283,6 +322,9 @@ namespace Board {
                 boardSprite.setImage(BOARD[boardIndex].image)
                 boardSprite.data['boardIndex'] = boardIndex
                 boardSprite.left = rightX + MARGIN
+                if (g_state.CurrPlayer > 0) {
+                    showPlayer(boardIndex, boardSprite.x)
+                }
             }
         }
     }
@@ -307,8 +349,24 @@ namespace Board {
                 boardSprite.setImage(BOARD[boardIndex].image)
                 boardSprite.data['boardIndex'] = boardIndex
                 boardSprite.right = leftX - MARGIN
+                if (g_state.CurrPlayer > 0) {
+                    showPlayer(boardIndex, boardSprite.x)
+                }
             }
         }
+    }
+
+    function showPlayer(location: number, x: number): void {
+        // Draw player if at this location.
+        g_state.Players.forEach((p: Player, index: number) => {
+            if (index + 1 != g_state.CurrPlayer && p.Location == location) {
+                let s: Sprite = p.Sprite
+                s.x = x
+                s.bottom = PLAYER_BOTTOM
+                s.z = Player.Z
+                p.showSprite()
+            }
+        })
     }
 
     function updateLocation(): void {

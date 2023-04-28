@@ -8,29 +8,37 @@ interface IPlayer {
     avatar: number
     bank: number
     controllerId: number
+    location: number
     name: string
+    status: PlayerStatus
 }
 
 class Player {
+    public static readonly ANIM_SPEED: number = 250
     public static readonly STARTING_BANK: number = 1500
+    public static readonly Z: number = 20
+    public static readonly Z_CURRENT: number = 21
 
     private static readonly TEXT_PLAYER: string = 'Player'
-    private static readonly Z: number = 20
 
     private avatar: number
     private bank: number
     private controllerId: number
+    private destSpace: number
     private dice: Dice
     private name: string
     private sprite: Sprite
+    private status: PlayerStatus
 
     constructor(controllerId: number = 0) {
         this.avatar = -1
         this.bank = Player.STARTING_BANK
+        this.destSpace = 0
         this.dice = new Dice(2)
         this.controllerId = controllerId
         this.name = ''
         this.sprite = null
+        this.status = PlayerStatus.WaitingForTurn
     }
 
     /**
@@ -63,6 +71,16 @@ class Player {
         return this.dice
     }
 
+    public get Location(): number {
+        return this.destSpace
+    }
+
+    public set Location(value: number) {
+        if (value >=0 && value < Board.BOARD.length) {
+            this.destSpace = value
+        }
+    }
+
     public get Name(): string {
         return this.name
     }
@@ -75,18 +93,46 @@ class Player {
         return this.sprite
     }
 
+    public get SpriteVisible(): boolean {
+        return (this.sprite.flags & SpriteFlag.Invisible) != SpriteFlag.Invisible
+    }
+
     public get State(): IPlayer {
         return {
             avatar: this.avatar,
             bank: this.bank,
             controllerId: this.controllerId,
-            name: this.name
+            location: this.destSpace,
+            name: this.name,
+            status: this.status
         }
+    }
+
+    public get Status(): PlayerStatus {
+        return this.status
+    }
+
+    public set Status(value: PlayerStatus) {
+        this.status = value
     }
 
     /**
      * Public methods
      */
+    public changeBank(delta: number): void {
+        this.bank += delta
+    }
+
+    public changeLocation(delta: number): void {
+        this.destSpace += delta
+        if (this.destSpace < 0) {
+            this.destSpace += Board.BOARD.length
+        }
+        if (this.destSpace >= Board.BOARD.length) {
+            this.destSpace -= Board.BOARD.length
+        }
+    }
+
     public hideSprite(): void {
         this.sprite.setFlag(SpriteFlag.Invisible, true)
     }
@@ -110,10 +156,16 @@ class Player {
         if (typeof state.controllerId == 'number') {
             this.controllerId = state.controllerId
         }
+        if (typeof state.location == 'number') {
+            this.Location = state.location
+        }
         if (typeof state.name == 'string') {
             this.name = state.name
         } else {
             this.setDefaultName()
+        }
+        if (typeof state.status == 'number') {
+            this.status = state.status
         }
         return true
     }
@@ -148,6 +200,21 @@ class Player {
 
     public showSprite(): void {
         this.sprite.setFlag(SpriteFlag.Invisible, false)
+    }
+
+    public startAnimation(direction: number): void {
+        if (direction >= 0) {
+            animation.runImageAnimation(this.sprite, Avatar.AVATARS[this.avatar].leftAnim,
+                Player.ANIM_SPEED, true)
+        } else {
+            animation.runImageAnimation(this.sprite, Avatar.AVATARS[this.avatar].rightAnim,
+                Player.ANIM_SPEED, true)
+        }
+    }
+
+    public stopAnimation(): void {
+        animation.stopAnimation(animation.AnimationTypes.All, this.sprite)
+        this.sprite.setImage(Avatar.AVATARS[this.avatar].frontImage)
     }
 
     /**
