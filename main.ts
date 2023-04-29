@@ -7,7 +7,7 @@
  * Immediate TODO List
  * - [X] Implement property states.
  * - [X] Automated roll tests.
- *       - [ ] Handle doubles.
+ *       - [X] Handle doubles.
  * - [ ] Player information sprites.
  * - [ ] Dialog replacement.
  * - [ ] Card decks.
@@ -121,6 +121,8 @@ function startGame(): void {
     sprites.allOfKind(SpriteKind.Text).forEach((v: Sprite, index: number) => v.destroy())
     g_state.Players.forEach((p: Player, index: number) => {
         p.Status = PlayerStatus.WaitingForTurn
+        p.DoublesRolled = false
+        p.TurnCount = 0
     })
     scene.setBackgroundColor(Color.Black)
     g_state.Mode = GameMode.Main
@@ -129,6 +131,7 @@ function startGame(): void {
 function startRoll(): void {
     let p: Player = g_state.getCurrPlayer()
     let d: Dice = p.Dice
+    p.TurnCount++
     d.Orientation = DiceOrientation.Vertical
     d.setStartLocation(Board.DICE_BEGIN_X, Board.DICE_BEGIN_Y)
     d.setStopLocation(Board.DICE_END_X, Board.DICE_END_Y)
@@ -141,6 +144,9 @@ function startTurn(): void {
     hidePlayers()
     Background.show()
     Board.draw(g_state.getCurrPlayer().Location)
+    let p: Player = g_state.getCurrPlayer()
+    p.TurnCount = 0
+    p.DoublesRolled = false
     if (g_state.testMode) {
         startRoll()
     } else {
@@ -159,11 +165,20 @@ function update(): void {
             if (d.AreRolling) {
                 d.move()
                 if (!d.AreRolling) {
-                    p.changeLocation(d.Roll)
-                    p.startAnimation(Board.direction)
+                    // Check for doubles.
+                    p.DoublesRolled = d.AreDoubles
+                    if (p.DoublesRolled && p.TurnCount == 3) {
+                        game.splash('Off to jail for you!')
+                        p.stopAnimation()
+                        p.Status = PlayerStatus.WaitingForTurn
+                        g_state.nextPlayer()
+                    } else {
+                        p.changeLocation(d.Roll)
+                        p.startAnimation(Board.direction)
+                    }
                 }
             }
-            if (!d.AreRolling) {
+            if (!d.AreRolling && p.Status == PlayerStatus.Moving) {
                 if (p.Location != Board.currSpace || Board.getXCoordinate(p.Location) < p.Sprite.x) {
                     Board.move()
                     Background.move()
@@ -177,7 +192,15 @@ function update(): void {
 
         case PlayerStatus.ProcessingRoll:
             p.Status = PlayerStatus.WaitingForTurn
-            g_state.nextPlayer()
+            if (p.DoublesRolled) {
+                if (g_state.testMode) {
+                    startRoll()
+                } else {
+                    // Show player actions.
+                }
+            } else {
+                g_state.nextPlayer()
+            }
             break
 
         case PlayerStatus.WaitingForTurn:

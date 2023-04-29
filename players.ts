@@ -11,6 +11,7 @@ interface IPlayer {
     location: number
     name: string
     status: PlayerStatus
+    turnCount: number
 }
 
 class Player {
@@ -26,19 +27,23 @@ class Player {
     private controllerId: number
     private destSpace: number
     private dice: Dice
+    private doublesRolled: boolean
     private name: string
     private sprite: Sprite
     private status: PlayerStatus
+    private turnCount: number
 
     constructor(controllerId: number = 0) {
         this.avatar = -1
         this.bank = Player.STARTING_BANK
         this.destSpace = 0
         this.dice = new Dice(2)
+        this.doublesRolled = false
         this.controllerId = controllerId
         this.name = ''
         this.sprite = null
         this.status = PlayerStatus.WaitingForTurn
+        this.turnCount = 0
     }
 
     /**
@@ -69,6 +74,14 @@ class Player {
 
     public get Dice(): Dice {
         return this.dice
+    }
+
+    public get DoublesRolled(): boolean {
+        return this.doublesRolled
+    }
+
+    public set DoublesRolled(value: boolean) {
+        this.doublesRolled = value
     }
 
     public get Location(): number {
@@ -104,7 +117,8 @@ class Player {
             controllerId: this.controllerId,
             location: this.destSpace,
             name: this.name,
-            status: this.status
+            status: this.status,
+            turnCount: this.turnCount,
         }
     }
 
@@ -114,6 +128,27 @@ class Player {
 
     public set Status(value: PlayerStatus) {
         this.status = value
+    }
+
+    public get TurnCount(): number {
+        return this.turnCount
+    }
+
+    public set TurnCount(value: number) {
+        this.turnCount = value
+        switch (value) {
+            case 3:
+                this.Dice.Skin = DiceSkin.Orange
+                break
+
+            case 2:
+                this.Dice.Skin = DiceSkin.Yellow
+                break
+
+            default:
+                this.Dice.Skin = DiceSkin.White
+                break
+        }
     }
 
     /**
