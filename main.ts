@@ -8,7 +8,7 @@
  * - [X] Implement property states.
  * - [X] Automated roll tests.
  *       - [X] Handle doubles.
- * - [ ] Player information sprites.
+ * - [X] Player information sprites.
  * - [ ] Dialog replacement.
  * - [ ] Card decks.
  *       - [ ] Jail cards as properties.
@@ -144,6 +144,7 @@ function startTurn(): void {
     hidePlayers()
     Background.show()
     Board.draw(g_state.getCurrPlayer().Location)
+    updatePlayerStatus()
     let p: Player = g_state.getCurrPlayer()
     p.TurnCount = 0
     p.DoublesRolled = false
@@ -207,6 +208,29 @@ function update(): void {
             startTurn()
             break
     }
+}
+
+function updatePlayerStatus(): void {
+    let x: number = 0
+    let y: number = 0
+    g_state.Players.forEach((value: Player, index: number) => {
+        value.initStats()
+        value.showStats(x, y)
+        x += 40
+    })
+    let propertyState: Properties.PropertyGroupState[] = g_state.Properties
+    Properties.PROPERTIES.forEach((pgi: Properties.PropertyGroupInfo, pgiIndex: number) => {
+        pgi.properties.forEach((prop: Properties.PropertyInfo, propIndex: number) => {
+            g_state.Players.forEach((p: Player, playerIndex: number) => {
+                let ps: Properties.PropertyState = propertyState[pgiIndex].properties[propIndex]
+                if (ps.owner == playerIndex + 1) {
+                    p.drawStatus(pgiIndex, propIndex, pgi.color, ps.isMortgaged)
+                } else {
+                    p.drawStatus(pgiIndex, propIndex, Properties.COLOR_UNOWNED, false)
+                }
+            })
+        })
+    })
 }
 
 /**

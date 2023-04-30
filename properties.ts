@@ -34,6 +34,8 @@ namespace Properties {
         properties: PropertyState[]
     }
 
+    export const COLOR_MORTGAGED: number = Color.White
+    export const COLOR_UNOWNED: number = Color.Wine
     export const GROUP_JAIL: number = 10
     export const GROUP_RR: number = 8
     export const GROUP_UTIL: number = 9

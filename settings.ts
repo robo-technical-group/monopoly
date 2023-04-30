@@ -5,6 +5,8 @@ namespace GameSettings {
     /**
      * Constants
      */
+    export const CURRENCY_SYMBOL: string = '$'
+    export const CURRENCY_IS_PREFIX: boolean = true
     const TEXT_DONE = 'Start game!'
     const TEXT_HARDWARE_CONTROLLER: string = 'You must use a shared controller when playing this game on hardware.'
     const TEXT_ONE_PLAYER: string = 'This game does not have AI players yet. A one-player game will never end.'

@@ -31,6 +31,7 @@ class Player {
     private name: string
     private sprite: Sprite
     private status: PlayerStatus
+    private stats: Sprite
     private turnCount: number
 
     constructor(controllerId: number = 0) {
@@ -43,6 +44,7 @@ class Player {
         this.name = ''
         this.sprite = null
         this.status = PlayerStatus.WaitingForTurn
+        this.stats = null
         this.turnCount = 0
     }
 
@@ -168,8 +170,56 @@ class Player {
         }
     }
 
+    public drawStatus(group: number, property: number, color: number, mortgaged: boolean): void {
+        let x: number = group * 4
+        let y: number = property * 4 + 6
+        let i: Image = this.stats.image
+        if (mortgaged) {
+            i.drawLine(x, y, x + 2, y, color)
+            i.drawLine(x, y + 1, x + 2, y + 1, Properties.COLOR_MORTGAGED)
+            i.drawLine(x, y + 2, x + 2, y + 2, Properties.COLOR_MORTGAGED)
+        } else {
+            i.drawRect(x, y, 3, 3, color)
+            i.setPixel(x + 1, y + 1, color)
+        }
+    }
+
+    public hide(): void {
+        let sprites: Sprite[] = [this.sprite, this.stats,]
+        sprites.forEach((value: Sprite, index: number) => {
+            if (value != null) {
+                value.setFlag(SpriteFlag.Invisible, true)
+            }
+        })
+        this.dice.hide()
+    }
+
     public hideSprite(): void {
-        this.sprite.setFlag(SpriteFlag.Invisible, true)
+        if (this.sprite != null) {
+            this.sprite.setFlag(SpriteFlag.Invisible, true)
+        }
+    }
+
+    public hideStats(): void {
+        if (this.stats != null) {
+            this.stats.setFlag(SpriteFlag.Invisible, true)
+        }
+    }
+
+    public initStats(): void {
+        if (this.stats == null) {
+            this.stats = sprites.create(image.create(40, 30), SpriteKind.Player)
+        }
+        let i: Image = this.stats.image
+        i.fill(Color.Black)
+        i.print(this.name, 0, 0, Color.Yellow, image.font5)
+        if (GameSettings.CURRENCY_IS_PREFIX) {
+            i.print(GameSettings.CURRENCY_SYMBOL, 0, 25, Color.BrightGreen, image.font5)
+            i.print(this.bank.toString(), 5, 25, Color.White, image.font5)
+        } else {
+            i.print(this.bank.toString(), 0, 25, Color.White, image.font5)
+            i.print(GameSettings.CURRENCY_SYMBOL, this.bank.toString().length * 6, 25, Color.BrightGreen, image.font5)
+        }
     }
 
     public loadState(state: any): boolean {
@@ -233,8 +283,22 @@ class Player {
         this.Dice.release()
     }
 
-    public showSprite(): void {
+    public showStats(left: number, top: number): void {
+        if (this.stats != null) {
+            this.stats.left = left
+            this.stats.top = top
+            this.stats.setFlag(SpriteFlag.Invisible, false)
+        }
+    }
+
+    public showSprite(x: number = 999, y: number = 999): void {
         this.sprite.setFlag(SpriteFlag.Invisible, false)
+        if (x < 999) {
+            this.sprite.x = x
+        }
+        if (y < 999) {
+            this.sprite.y = y
+        }
     }
 
     public startAnimation(direction: number): void {

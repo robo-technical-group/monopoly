@@ -63,6 +63,10 @@ class GameState {
         return this.players
     }
 
+    public get Properties(): Properties.PropertyGroupState[] {
+        return this.properties
+    }
+
     public get State(): IGameState {
         let playerStates: IPlayer[] = []
         this.players.forEach((value: Player, index: number) =>
