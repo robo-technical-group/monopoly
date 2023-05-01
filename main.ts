@@ -9,7 +9,9 @@
  * - [X] Automated roll tests.
  *       - [X] Handle doubles.
  * - [X] Player information sprites.
- * - [ ] Dialog replacement.
+ * - [X] Dialog replacement. Add to multiplayer-prompt.
+ *       - [X] game.splashForPlayer()
+ *       - [X] game.showLongTextForPlayer()
  * - [ ] Card decks.
  *       - [ ] Jail cards as properties.
  * - [ ] Player actions menu (generic, e.g., whlie in jail, buy or auction property).
