@@ -12,9 +12,9 @@
  * - [X] Dialog replacement. Add to multiplayer-prompt.
  *       - [X] game.splashForPlayer()
  *       - [X] game.showLongTextForPlayer()
- * - [ ] Card decks.
- *       - [ ] Jail cards as properties.
- * - [ ] Player actions menu (generic, e.g., whlie in jail, buy or auction property).
+ * - [/] Card decks.
+ *       - [X] Jail cards as properties.
+ * - [ ] Player actions menu (generic, e.g., while in jail, buy or auction property).
  *       - Add key binding sprites dynamically.
  * - [ ] Player actions menu (turn).
  *       - [ ] Bankrupt.
@@ -118,6 +118,98 @@ function movePlayers(): void {
     }
 }
 
+function processRoll(): void {
+    let pId: number = g_state.CurrPlayer
+    let p: Player = g_state.getCurrPlayer()
+    let space = Board.BOARD[p.Location]
+    switch (space.spaceType) {
+        case Board.SpaceType.Card:
+            Cards.drawCard(space.values[0])
+            break
+
+        case Board.SpaceType.Free:
+            break
+
+        case Board.SpaceType.Go:
+            break
+
+        case Board.SpaceType.GoToJail:
+            game.splash("Going to jail!")
+            p.Location = Board.JAIL_SPACE
+            // p.isInJail = true
+            break
+
+        case Board.SpaceType.Jail:
+            break
+
+        case Board.SpaceType.Property:
+            let groupInfo: Properties.PropertyGroupInfo = Properties.PROPERTIES[space.values[0]]
+            let groupState: Properties.PropertyGroupState = g_state.Properties[space.values[0]]
+            let propertyInfo: Properties.PropertyInfo = groupInfo.properties[space.values[1]]
+            let propertyState: Properties.PropertyState = groupState.properties[space.values[1]]
+            if (propertyState.owner <= 0) {
+                // Property is unowned; buy it.
+                game.splashForPlayer(pId, p.Name + " is buying " + propertyInfo.name)
+                p.Bank -= propertyInfo.cost
+                propertyState.owner = g_state.CurrPlayer
+                let monopoly: boolean = true
+                for (let p of groupState.properties) {
+                    if (p.owner != g_state.CurrPlayer) {
+                        monopoly = false
+                        break
+                    }
+                }
+                groupState.isMonopolyOwned = monopoly
+            } else {
+                // Property is owned.
+                if (propertyState.owner != g_state.CurrPlayer) {
+                    // Current player owes money.
+                    let owed: number = 0
+                    switch (groupInfo.propertyType) {
+                        case Properties.PropertyType.Transportation:
+                            let count: number = 0
+                            for (let i: number = 0; i < groupState.properties.length; i++) {
+                                if (groupState.properties[i].owner == propertyState.owner) {
+                                    count++
+                                }
+                            }
+                            owed = propertyInfo.rents[count - 1]
+                            break
+
+                        case Properties.PropertyType.Utility:
+                            owed = p.Dice.Roll *
+                                (groupState.isMonopolyOwned ? propertyInfo.rents[0] : propertyInfo.rents[1])
+                            break
+
+                        default:
+                            if (groupState.isMonopolyOwned && propertyState.houses == 0) {
+                                owed = propertyInfo.rents[0] * 2
+                            } else {
+                                owed = propertyInfo.rents[propertyState.houses]
+                            }
+                    }
+                    let owner: Player = g_state.getPlayer(propertyState.owner)
+                    game.splashForPlayer(pId, p.Name + ' owes ' + GameSettings.CURRENCY_SYMBOL + owed +
+                        ' to ' + owner.Name)
+                    p.Bank -= owed
+                    owner.Bank += owed
+                }
+                else {
+                    game.splashForPlayer(pId, "I'm home!")
+                }
+            }
+            updatePlayerStatus()
+            break
+
+        case Board.SpaceType.Tax:
+            let tax: Tax = TAXES[space.values[0]]
+            game.splashForPlayer(pId, p.Name + ' owes ' + tax.name)
+            p.Bank -= tax.value
+            updatePlayerStatus()
+            break
+    }
+}
+
 function startGame(): void {
     g_state.Mode = GameMode.NotReady
     sprites.allOfKind(SpriteKind.Text).forEach((v: Sprite, index: number) => v.destroy())
@@ -194,6 +286,8 @@ function update(): void {
             break
 
         case PlayerStatus.ProcessingRoll:
+            processRoll()
+            // Start next turn.
             p.Status = PlayerStatus.WaitingForTurn
             if (p.DoublesRolled) {
                 if (g_state.testMode) {

@@ -5,7 +5,7 @@
     "dependencies": {
         "device": "*",
         "pxt-arcade-info-screens": "github:robo-technical-group/pxt-arcade-info-screens#v2.1.0",
-        "pxt-arcade-multiplayer-prompt": "github:robo-technical-group/pxt-arcade-multiplayer-prompt#v2.0.0",
+        "pxt-arcade-multiplayer-prompt": "github:robo-technical-group/pxt-arcade-multiplayer-prompt#v2.0.1",
         "arcade-mini-menu": "github:riknoll/arcade-mini-menu#c8b01b9d47f85a5133c786f1c026b1f376fe4285"
     },
     "files": [
@@ -26,7 +26,9 @@
         "board.ts",
         "background.ts",
         "tests.ts",
-        "properties.ts"
+        "properties.ts",
+        "cards.ts",
+        "taxes.ts"
     ],
     "testFiles": [],
     "targetVersions": {

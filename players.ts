@@ -171,8 +171,12 @@ class Player {
     }
 
     public drawStatus(group: number, property: number, color: number, mortgaged: boolean): void {
-        let x: number = group * 4
+        let x: number = Math.min(group * 4, 36)
         let y: number = property * 4 + 6
+        if (group == 10) {
+            // Jail card indicators go in the last column beneath utilities.
+            y += 8
+        }
         let i: Image = this.stats.image
         if (mortgaged) {
             i.drawLine(x, y, x + 2, y, color)
@@ -215,7 +219,7 @@ class Player {
         i.print(this.name, 0, 0, Color.Yellow, image.font5)
         if (GameSettings.CURRENCY_IS_PREFIX) {
             i.print(GameSettings.CURRENCY_SYMBOL, 0, 25, Color.BrightGreen, image.font5)
-            i.print(this.bank.toString(), 5, 25, Color.White, image.font5)
+            i.print(this.bank.toString(), 6, 25, Color.White, image.font5)
         } else {
             i.print(this.bank.toString(), 0, 25, Color.White, image.font5)
             i.print(GameSettings.CURRENCY_SYMBOL, this.bank.toString().length * 6, 25, Color.BrightGreen, image.font5)
