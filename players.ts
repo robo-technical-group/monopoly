@@ -1,6 +1,10 @@
 /**
  * Player information
  */
+namespace SpriteKind {
+    export const BankBump = SpriteKind.create()
+}
+
 /**
  * Interface that can be converted to/from JSON.
  */
@@ -29,6 +33,7 @@ class Player {
     private dice: Dice
     private doublesRolled: boolean
     private name: string
+    private passedGo: boolean
     private sprite: Sprite
     private status: PlayerStatus
     private stats: Sprite
@@ -46,6 +51,7 @@ class Player {
         this.status = PlayerStatus.WaitingForTurn
         this.stats = null
         this.turnCount = 0
+        this.passedGo = false
     }
 
     /**
@@ -104,6 +110,14 @@ class Player {
         this.name = value
     }
 
+    public get PassedGo(): boolean {
+        return this.passedGo
+    }
+
+    public set PassedGo(value: boolean) {
+        this.passedGo = value
+    }
+
     public get Sprite(): Sprite {
         return this.sprite
     }
@@ -158,6 +172,22 @@ class Player {
      */
     public changeBank(delta: number): void {
         this.bank += delta
+        if (this.stats != null) {
+            let text: string =
+                (delta < 0 ? '' : '+') + delta.toString()
+            let bump: TextSprite = textsprite.create(
+                text,
+                delta < 0 ? Color.Red : Color.BrightGreen,
+                delta < 0 ? Color.White : Color.Yellow
+            )
+            bump.setMaxFontHeight(5)
+            bump.setKind(SpriteKind.BankBump)
+            bump.data['created'] = game.runtime()
+            bump.setBorder(1, Color.White, 2)
+            bump.top = this.stats.bottom + 1
+            bump.left = this.stats.left
+            bump.z = Player.Z - 1
+        }
     }
 
     public changeLocation(delta: number): void {
@@ -186,6 +216,10 @@ class Player {
             i.drawRect(x, y, 3, 3, color)
             i.setPixel(x + 1, y + 1, color)
         }
+    }
+
+    public goToJail(): void {
+        
     }
 
     public hide(): void {
@@ -313,6 +347,21 @@ class Player {
             animation.runImageAnimation(this.sprite, Avatar.AVATARS[this.avatar].rightAnim,
                 Player.ANIM_SPEED, true)
         }
+    }
+
+    public startRoll(): void {
+        this.passedGo = false
+        this.TurnCount++
+        this.dice.Orientation = DiceOrientation.Vertical
+        this.dice.setStartLocation(Board.DICE_BEGIN_X, Board.DICE_BEGIN_Y)
+        this.dice.setStopLocation(Board.DICE_END_X, Board.DICE_END_Y)
+        this.dice.startRoll()
+        this.status = PlayerStatus.Moving
+    }
+
+    public startTurn(): void {
+        this.turnCount = 0
+        this.doublesRolled = false
     }
 
     public stopAnimation(): void {

@@ -7,7 +7,7 @@ namespace Attract {
         ['MakeCode Arcade Port', '(C) 2023'],
         ['(C) 2023', 'Robo Technical Group'],
         ['Programmed in', 'MakeCode Arcade'],
-        ['by', 'AlexK'],
+        ['by', 'Alex K.'],
     ]
     const TEXT_ACTIONS: string[][] = [[
         'For up to four players',

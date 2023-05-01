@@ -187,16 +187,16 @@ namespace Cards {
 
         switch (card.action) {
             case Action.BankPays:
-                player.Bank += card.values[0]
+                player.changeBank(card.values[0])
                 updatePlayerStatus()
                 break
 
             case Action.CollectFromEachPlayer:
                 for (let i: number = 0; i < g_state.NumPlayers; i++) {
                     if (i == playerId) {
-                        player.Bank += card.values[0] * (g_state.NumPlayers - 1)
+                        player.changeBank(card.values[0] * (g_state.NumPlayers - 1))
                     } else {
-                        g_state.Players[i].Bank -= card.values[0]
+                        g_state.Players[i].changeBank(0 - card.values[0])
                     }
                 }
                 updatePlayerStatus()
@@ -208,24 +208,41 @@ namespace Cards {
                 break
 
             case Action.GoToGroup:
+                for (let i: number = 0; i < Board.BOARD.length; i++) {
+                    let space: Board.Space = Board.BOARD[i]
+                    if (space.spaceType == Board.SpaceType.Property &&
+                        space.values[0] == card.values[0] &&
+                        i > player.Location) {
+                        player.Location = i
+                        break
+                    }
+                }
+                Board.direction = 1
+                player.Status = PlayerStatus.Moving
                 break
 
             case Action.GoToSpace:
+                player.Location = card.values[0]
+                Board.direction = 1
+                player.Status = PlayerStatus.Moving
                 break
 
             case Action.MoveBackward:
+                player.changeLocation(0 - card.values[0])
+                Board.direction = -1
+                player.Status = PlayerStatus.Moving
                 break
 
             case Action.PayBank:
-                player.Bank -= card.values[0]
+                player.changeBank(0 - card.values[0])
                 break
 
             case Action.PayEachPlayer:
                 for (let i: number = 0; i < g_state.NumPlayers; i++) {
                     if (i == playerId) {
-                        player.Bank -= card.values[0] * (g_state.NumPlayers - 1)
+                        player.changeBank(0 - card.values[0] * (g_state.NumPlayers - 1))
                     } else {
-                        g_state.Players[i].Bank += card.values[0]
+                        g_state.Players[i].changeBank(card.values[0])
                     }
                 }
                 updatePlayerStatus()

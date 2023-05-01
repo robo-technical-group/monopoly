@@ -199,8 +199,10 @@ namespace Board {
 
     export let currSpace: number = -1
     export let direction: number = 1
-
+    export let spacesMoved: number = 0
+    
     export function draw(location: number): void {
+        spacesMoved = 0
         if (location >= BOARD.length) {
             location -= BOARD.length
         }
@@ -396,6 +398,7 @@ namespace Board {
                     currSpace = BOARD.length - 1
                 }
             }
+            spacesMoved++
         }
     }
 }

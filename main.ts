@@ -14,14 +14,18 @@
  *       - [X] game.showLongTextForPlayer()
  * - [/] Card decks.
  *       - [X] Jail cards as properties.
+ *       - [ ] Implement PlayerState.MovingForCard
+ * - [X] Handle player passing Go.
+ * - [X] Add bank changing bump.
+ * - [ ] Implement Player.goToJail()
  * - [ ] Player actions menu (generic, e.g., while in jail, buy or auction property).
  *       - Add key binding sprites dynamically.
  * - [ ] Player actions menu (turn).
  *       - [ ] Bankrupt.
  *       - [ ] Build/mortgage.
  *       - [ ] Trade.
- * - [ ] Auction property.
  * - [ ] Player actions menu (while in jail).
+ * - [ ] Auction property.
  */
 
 /**
@@ -98,26 +102,6 @@ function hidePlayers(): void {
     })
 }
 
-function movePlayers(): void {
-    for (let i: number = 1; i <= g_state.NumPlayers; i++) {
-        if (i != g_state.CurrPlayer) {
-            let p: Player = g_state.getPlayer(i)
-            let s: Sprite = p.Sprite
-            if (Board.direction >= 0) {
-                s.x++
-                if (s.left > 160) {
-                    p.hideSprite()
-                }
-            } else {
-                s.x--
-                if (s.right < 0) {
-                    p.hideSprite()
-                }
-            }
-        }
-    }
-}
-
 function processRoll(): void {
     let pId: number = g_state.CurrPlayer
     let p: Player = g_state.getCurrPlayer()
@@ -135,8 +119,7 @@ function processRoll(): void {
 
         case Board.SpaceType.GoToJail:
             game.splash("Going to jail!")
-            p.Location = Board.JAIL_SPACE
-            // p.isInJail = true
+            p.goToJail()
             break
 
         case Board.SpaceType.Jail:
@@ -150,7 +133,7 @@ function processRoll(): void {
             if (propertyState.owner <= 0) {
                 // Property is unowned; buy it.
                 game.splashForPlayer(pId, p.Name + " is buying " + propertyInfo.name)
-                p.Bank -= propertyInfo.cost
+                p.changeBank(0 - propertyInfo.cost)
                 propertyState.owner = g_state.CurrPlayer
                 let monopoly: boolean = true
                 for (let p of groupState.properties) {
@@ -191,8 +174,8 @@ function processRoll(): void {
                     let owner: Player = g_state.getPlayer(propertyState.owner)
                     game.splashForPlayer(pId, p.Name + ' owes ' + GameSettings.CURRENCY_SYMBOL + owed +
                         ' to ' + owner.Name)
-                    p.Bank -= owed
-                    owner.Bank += owed
+                    p.changeBank(0 - owed)
+                    owner.changeBank(owed)
                 }
                 else {
                     game.splashForPlayer(pId, "I'm home!")
@@ -204,7 +187,7 @@ function processRoll(): void {
         case Board.SpaceType.Tax:
             let tax: Tax = TAXES[space.values[0]]
             game.splashForPlayer(pId, p.Name + ' owes ' + tax.name)
-            p.Bank -= tax.value
+            p.changeBank(0 - tax.value)
             updatePlayerStatus()
             break
     }
@@ -223,33 +206,30 @@ function startGame(): void {
 }   // startGame()
 
 function startRoll(): void {
-    let p: Player = g_state.getCurrPlayer()
-    let d: Dice = p.Dice
-    p.TurnCount++
-    d.Orientation = DiceOrientation.Vertical
-    d.setStartLocation(Board.DICE_BEGIN_X, Board.DICE_BEGIN_Y)
-    d.setStopLocation(Board.DICE_END_X, Board.DICE_END_Y)
-    d.startRoll()
-    p.Status = PlayerStatus.Moving
+    g_state.getCurrPlayer().startRoll()
 }
 
 function startTurn(): void {
     // Update player status sprites.
     hidePlayers()
     Background.show()
-    Board.draw(g_state.getCurrPlayer().Location)
-    updatePlayerStatus()
     let p: Player = g_state.getCurrPlayer()
-    p.TurnCount = 0
-    p.DoublesRolled = false
+    Board.draw(p.Location)
+    updatePlayerStatus()
+    p.startTurn()
     if (g_state.testMode) {
-        startRoll()
+        p.startRoll()
     } else {
         // Show player actions.
     }
 }
 
 function update(): void {
+    sprites.allOfKind(SpriteKind.BankBump).forEach((value: Sprite, index: number) => {
+        if (game.runtime() >= value.data['created'] + GameSettings.BANK_BUMP_VISIBLE) {
+            value.destroy()
+        }
+    })
     let p: Player = g_state.getCurrPlayer()
     if (p == null) {
         return
@@ -277,7 +257,7 @@ function update(): void {
                 if (p.Location != Board.currSpace || Board.getXCoordinate(p.Location) < p.Sprite.x) {
                     Board.move()
                     Background.move()
-                    movePlayers()
+                    updatePlayers()
                 } else {
                     p.stopAnimation()
                     p.Status = PlayerStatus.ProcessingRoll
@@ -286,23 +266,60 @@ function update(): void {
             break
 
         case PlayerStatus.ProcessingRoll:
-            processRoll()
-            // Start next turn.
             p.Status = PlayerStatus.WaitingForTurn
-            if (p.DoublesRolled) {
-                if (g_state.testMode) {
-                    startRoll()
+            processRoll()
+            // Start next turn if player status has not changed.
+            if (p.Status == PlayerStatus.WaitingForTurn) {
+                if (p.DoublesRolled) {
+                    if (g_state.testMode) {
+                        startRoll()
+                    } else {
+                        // Show player actions.
+                    }
                 } else {
-                    // Show player actions.
+                    g_state.nextPlayer()
                 }
-            } else {
-                g_state.nextPlayer()
             }
             break
 
         case PlayerStatus.WaitingForTurn:
             startTurn()
             break
+    }
+}
+
+function updatePlayers(): void {
+    for (let i: number = 1; i <= g_state.NumPlayers; i++) {
+        let p: Player = g_state.getPlayer(i)
+        let s: Sprite = p.Sprite
+        if (i == g_state.CurrPlayer) {
+            if (Board.spacesMoved > 0 && Board.currSpace == Board.GO_SPACE && !p.PassedGo) {
+                p.PassedGo = true
+                p.changeBank(GameSettings.GO_VALUE)
+                updatePlayerStatus()
+            }
+            let spaces: number = p.Location - Board.currSpace
+            if (Board.direction < 0) {
+                spaces = 0 - spaces
+            }
+            if (spaces < 0) {
+                // Move wraps around the end of the board.
+                spaces += Board.BOARD.length
+            }
+            s.say(spaces == 0 ? '' : spaces)
+        } else {
+            if (Board.direction >= 0) {
+                s.x++
+                if (s.left > 160) {
+                    p.hideSprite()
+                }
+            } else {
+                s.x--
+                if (s.right < 0) {
+                    p.hideSprite()
+                }
+            }
+        }
     }
 }
 
@@ -333,11 +350,11 @@ function updatePlayerStatus(): void {
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
+Tests.startAutomatedGame()
+/*
 if (settings.exists(Tests.TESTING_KEY)) {
     Tests.run()
 } else {
     Attract.start()
 }
-/*
-Tests.startAutomatedGame()
 */
