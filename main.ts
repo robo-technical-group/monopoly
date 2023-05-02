@@ -26,6 +26,8 @@
  *       - [ ] Trade.
  * - [ ] Player actions menu (while in jail).
  * - [ ] Auction property.
+ *       - [ ] Multiplayer
+ *       - [ ] Single controller
  */
 
 /**
