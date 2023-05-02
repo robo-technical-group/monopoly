@@ -215,6 +215,8 @@ function startTurn(): void {
     Background.show()
     let p: Player = g_state.getCurrPlayer()
     Board.draw(p.Location)
+    Board.direction = 1
+    Background.direction = 1
     updatePlayerStatus()
     p.startTurn()
     if (g_state.testMode) {

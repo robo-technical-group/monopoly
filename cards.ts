@@ -218,18 +218,30 @@ namespace Cards {
                     }
                 }
                 Board.direction = 1
+                Background.direction = 1
+                player.startAnimation(1)
                 player.Status = PlayerStatus.Moving
+                player.PassedGo = false
                 break
 
             case Action.GoToSpace:
-                player.Location = card.values[0]
-                Board.direction = 1
-                player.Status = PlayerStatus.Moving
+                if (card.values[0] == Board.JAIL_SPACE) {
+                    player.goToJail()
+                } else {
+                    player.Location = card.values[0]
+                    Board.direction = 1
+                    Background.direction = 1
+                    player.startAnimation(1)
+                    player.Status = PlayerStatus.Moving
+                    player.PassedGo = false
+                }
                 break
 
             case Action.MoveBackward:
                 player.changeLocation(0 - card.values[0])
                 Board.direction = -1
+                Background.direction = -1
+                player.startAnimation(-1)
                 player.Status = PlayerStatus.Moving
                 break
 
@@ -249,6 +261,18 @@ namespace Cards {
                 break
 
             case Action.Repairs:
+                let houses: number = 0
+                let hotels: number = 0
+                g_state.Properties.forEach((pgs: Properties.PropertyGroupState, index: number) => {
+                    pgs.properties.forEach((ps: Properties.PropertyState, index: number) => {
+                        if (ps.houses == 5) {
+                            hotels++
+                        } else {
+                            houses += ps.houses
+                        }
+                    })
+                })
+                player.changeBank(0 - houses * card.values[0] - hotels * card.values[1])
                 break
         }
         moveIndex(deck)

@@ -177,8 +177,8 @@ class Player {
                 (delta < 0 ? '' : '+') + delta.toString()
             let bump: TextSprite = textsprite.create(
                 text,
-                delta < 0 ? Color.Red : Color.BrightGreen,
-                delta < 0 ? Color.White : Color.Yellow
+                delta < 0 ? Color.Red : Color.Aqua,
+                Color.White
             )
             bump.setMaxFontHeight(5)
             bump.setKind(SpriteKind.BankBump)
