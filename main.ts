@@ -28,6 +28,7 @@
  * - [ ] Auction property.
  *       - [ ] Multiplayer
  *       - [ ] Single controller
+ * - [ ] Trade mechanism.
  */
 
 /**
@@ -97,6 +98,22 @@ game.onUpdate(function () {
 /**
  * Other functions
  */
+function finishTurn(): void {
+    // Ensure player's turn has finished.
+    let p: Player = g_state.getCurrPlayer()
+    if (p.Status == PlayerStatus.WaitingForTurn) {
+        if (p.DoublesRolled) {
+            if (g_state.testMode) {
+                startRoll()
+            } else {
+                // Show player actions.
+            }
+        } else {
+            g_state.nextPlayer()
+        }
+    }
+}
+
 function hidePlayers(): void {
     g_state.Players.forEach((p: Player, index: number) => {
         p.hideSprite()
@@ -107,6 +124,8 @@ function hidePlayers(): void {
 function processRoll(): void {
     let pId: number = g_state.CurrPlayer
     let p: Player = g_state.getCurrPlayer()
+    let priorStatus: PlayerStatus = p.Status
+    p.Status = PlayerStatus.WaitingForTurn
     let space = Board.BOARD[p.Location]
     switch (space.spaceType) {
         case Board.SpaceType.Card:
@@ -120,7 +139,7 @@ function processRoll(): void {
             break
 
         case Board.SpaceType.GoToJail:
-            game.splash("Going to jail!")
+            game.splash('Going to jail!')
             p.goToJail()
             break
 
@@ -145,6 +164,7 @@ function processRoll(): void {
                     }
                 }
                 groupState.isMonopolyOwned = monopoly
+                groupState.owner = monopoly ? g_state.CurrPlayer : 0
             } else {
                 // Property is owned.
                 if (propertyState.owner != g_state.CurrPlayer) {
@@ -159,11 +179,19 @@ function processRoll(): void {
                                 }
                             }
                             owed = propertyInfo.rents[count - 1]
+                            if (priorStatus == PlayerStatus.MovingForCard) {
+                                // Player owes double.
+                                owed *= 2
+                            }
                             break
 
                         case Properties.PropertyType.Utility:
-                            owed = p.Dice.Roll *
-                                (groupState.isMonopolyOwned ? propertyInfo.rents[0] : propertyInfo.rents[1])
+                            if (priorStatus == PlayerStatus.MovingForCard) {
+                                // Player needs to re-roll and owes ten times amount rolled.
+                            } else {
+                                owed = p.Dice.Roll *
+                                    (groupState.isMonopolyOwned ? propertyInfo.rents[0] : propertyInfo.rents[1])
+                            }
                             break
 
                         default:
@@ -241,6 +269,7 @@ function update(): void {
     let d: Dice = p.Dice
     switch (p.Status) {
         case PlayerStatus.Moving:
+        case PlayerStatus.MovingForCard:
             if (d.AreRolling) {
                 d.move()
                 if (!d.AreRolling) {
@@ -257,31 +286,17 @@ function update(): void {
                     }
                 }
             }
-            if (!d.AreRolling && p.Status == PlayerStatus.Moving) {
-                if (p.Location != Board.currSpace || Board.getXCoordinate(p.Location) < p.Sprite.x) {
+            if (!d.AreRolling && (p.Status == PlayerStatus.Moving || p.Status == PlayerStatus.MovingForCard)) {
+                if (p.Location != Board.currSpace || 
+                        (Board.direction >= 0 && Board.getXCoordinate(p.Location) < p.Sprite.x) || 
+                        (Board.direction < 0 && Board.getXCoordinate(p.Location) > p.Sprite.x)) {
                     Board.move()
                     Background.move()
                     updatePlayers()
                 } else {
                     p.stopAnimation()
-                    p.Status = PlayerStatus.ProcessingRoll
-                }
-            }
-            break
-
-        case PlayerStatus.ProcessingRoll:
-            p.Status = PlayerStatus.WaitingForTurn
-            processRoll()
-            // Start next turn if player status has not changed.
-            if (p.Status == PlayerStatus.WaitingForTurn) {
-                if (p.DoublesRolled) {
-                    if (g_state.testMode) {
-                        startRoll()
-                    } else {
-                        // Show player actions.
-                    }
-                } else {
-                    g_state.nextPlayer()
+                    processRoll()
+                    finishTurn()
                 }
             }
             break
@@ -348,6 +363,7 @@ function updatePlayerStatus(): void {
             })
         })
     })
+    g_state.updateStatusSprite()
 }
 
 /**

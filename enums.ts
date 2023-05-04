@@ -54,6 +54,6 @@ enum GameMode {
 
 enum PlayerStatus {
     Moving,
-    ProcessingRoll,
+    MovingForCard,
     WaitingForTurn,
 }

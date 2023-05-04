@@ -19,6 +19,7 @@ class GameState {
 
     private currPlayer: number
     private gameMode: GameMode
+    private monopolyStatus: Sprite = null
     private players: Player[]
     private properties: Properties.PropertyGroupState[]
 
@@ -222,6 +223,16 @@ class GameState {
         return settings.list(GameState.KEY_PREFIX).length > 0
     }
 
+    public updateStatusSprite(): void {
+        this.initStatusSprite()
+        let i: Image = this.monopolyStatus.image
+        this.properties.forEach((pgs: Properties.PropertyGroupState, pgsIndex: number) => {
+            let pgi: Properties.PropertyGroupInfo = Properties.PROPERTIES[pgsIndex]
+            i.fillRect(pgsIndex * 4, 0, 3, 3, pgi.color)
+            i.fillRect(pgsIndex * 4, 4, 3, 3, Player.COLORS[pgs.owner])
+        })
+    }
+
     /**
      * Private methods
      */
@@ -230,6 +241,17 @@ class GameState {
         for (let i: number = 0; i < numPlayers; i++) {
             this.players.push(new Player(i + 1))
         }
+    }
+
+    private initStatusSprite(): void {
+        if (this.monopolyStatus == null) {
+            this.monopolyStatus = sprites.create(image.create(44, 8), SpriteKind.Player)
+        }
+        this.monopolyStatus.left = 0
+        this.monopolyStatus.top = 30
+        this.monopolyStatus.z = Player.Z
+        let i: Image = this.monopolyStatus.image
+        i.fill(Color.Black)
     }
 }
 

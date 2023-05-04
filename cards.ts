@@ -88,7 +88,7 @@ namespace Cards {
                 }, {
                     text: "Advance to Saint Charles Place.",
                     action: Action.GoToSpace,
-                    values: [16,],
+                    values: [11,],
                 }, {
                     text: "Your building and loan matures. Collect $150.",
                     action: Action.BankPays,
@@ -220,7 +220,7 @@ namespace Cards {
                 Board.direction = 1
                 Background.direction = 1
                 player.startAnimation(1)
-                player.Status = PlayerStatus.Moving
+                player.Status = PlayerStatus.MovingForCard
                 player.PassedGo = false
                 break
 
@@ -232,6 +232,7 @@ namespace Cards {
                     Board.direction = 1
                     Background.direction = 1
                     player.startAnimation(1)
+                    // Not needed? player.Status = PlayerStatus.MovingForCard
                     player.Status = PlayerStatus.Moving
                     player.PassedGo = false
                 }
@@ -242,6 +243,7 @@ namespace Cards {
                 Board.direction = -1
                 Background.direction = -1
                 player.startAnimation(-1)
+                // Not needed: player.Status = PlayerStatus.MovingForCard
                 player.Status = PlayerStatus.Moving
                 break
 

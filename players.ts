@@ -20,6 +20,8 @@ interface IPlayer {
 
 class Player {
     public static readonly ANIM_SPEED: number = 250
+    public static readonly COLORS: number[] =
+        [Color.Wine, Color.Red, Color.Blue, Color.Orange, Color.BrightGreen,]
     public static readonly STARTING_BANK: number = 1500
     public static readonly Z: number = 20
     public static readonly Z_CURRENT: number = 21
