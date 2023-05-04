@@ -172,12 +172,8 @@ function processRoll(): void {
                     let owed: number = 0
                     switch (groupInfo.propertyType) {
                         case Properties.PropertyType.Transportation:
-                            let count: number = 0
-                            for (let i: number = 0; i < groupState.properties.length; i++) {
-                                if (groupState.properties[i].owner == propertyState.owner) {
-                                    count++
-                                }
-                            }
+                            let count: number = groupState.properties.filter((value: Properties.PropertyState, index: number) =>
+                                value.owner == propertyState.owner).length
                             owed = propertyInfo.rents[count - 1]
                             if (priorStatus == PlayerStatus.MovingForCard) {
                                 // Player owes double.
@@ -190,7 +186,7 @@ function processRoll(): void {
                                 // Player needs to re-roll and owes ten times amount rolled.
                             } else {
                                 owed = p.Dice.Roll *
-                                    (groupState.isMonopolyOwned ? propertyInfo.rents[0] : propertyInfo.rents[1])
+                                    (groupState.isMonopolyOwned ? propertyInfo.rents[1] : propertyInfo.rents[0])
                             }
                             break
 

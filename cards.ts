@@ -193,7 +193,7 @@ namespace Cards {
 
             case Action.CollectFromEachPlayer:
                 for (let i: number = 0; i < g_state.NumPlayers; i++) {
-                    if (i == playerId) {
+                    if (i + 1 == playerId) {
                         player.changeBank(card.values[0] * (g_state.NumPlayers - 1))
                     } else {
                         g_state.Players[i].changeBank(0 - card.values[0])
@@ -253,7 +253,7 @@ namespace Cards {
 
             case Action.PayEachPlayer:
                 for (let i: number = 0; i < g_state.NumPlayers; i++) {
-                    if (i == playerId) {
+                    if (i + 1 == playerId) {
                         player.changeBank(0 - card.values[0] * (g_state.NumPlayers - 1))
                     } else {
                         g_state.Players[i].changeBank(card.values[0])
