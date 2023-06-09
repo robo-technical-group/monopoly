@@ -1,3 +1,58 @@
+/**
+ * IMAGES
+ * Board Sides
+ *  0 = Mediterranean Avenue
+ *  1 = Baltic Avenue
+ *  2 = Arctic Avenue
+ *  3 = Massachusettes Avenue
+ *  4 = Oriental Avenue
+ *  5 = Vermont Avenue
+ *  6 = Connecticut Avenue
+ *  7 = Maryland Avenue
+ *  8 = Saint Charles Place
+ *  9 = States Avenue
+ * 10 = Virgina Avenue
+ * 11 = Saint James Place
+ * 12 = Tennessee Avenue
+ * 13 = New York Avenue
+ * 14 = New Jersey Avenue
+ * 15 = Kentucky Avenue
+ * 16 = Indiana Avenue
+ * 17 = Illinois Avenue
+ * 18 = Michigan Avenue
+ * 19 = Atlantic Avenue
+ * 20 = Ventnor Avenue
+ * 21 = Marvin Gardens
+ * 22 = California Avenue
+ * 23 = Pacific Avenue
+ * 24 = South Carolina Avenue
+ * 25 = North Carolina Avenue
+ * 26 = Pennsylvania Avenue
+ * 27 = Florida Avenue
+ * 28 = Park Place
+ * 29 = Boardwalk
+ * 30 = Reading Railroad
+ * 31 = Pennsylvania Railroad
+ * 32 = B&O Railroad
+ * 33 = Short Line Railroad
+ * 34 = Electric Company
+ * 35 = Water Works
+ * 36 = Gas Company
+ * 37 = Chance
+ * 38 = Community Chest
+ * 39 = Bus Ticket
+ * 40 = Income Tax
+ * 41 = Luxury Tax
+ * 43 = Birthday Gift
+ * 42 = Auction
+ *
+ * Board Corners
+ *  0 = Go
+ *  1 = Jail
+ *  2 = Free Parking
+ *  3 = Go to Jail
+ */
+
 namespace SpriteKind {
     export const BoardSpace = SpriteKind.create()
 }
@@ -30,7 +85,7 @@ namespace Board {
             spaceType: SpaceType.Property,
             values: [0, 0,],
         }, {
-            image: assets.animation`boardSides`[29],
+            image: assets.animation`boardSides`[38],
             spaceType: SpaceType.Card,
             values: [1,],
         }, {
@@ -38,27 +93,27 @@ namespace Board {
             spaceType: SpaceType.Property,
             values: [0, 1,],
         }, {
-            image: assets.animation`boardSides`[30],
+            image: assets.animation`boardSides`[40],
             spaceType: SpaceType.Tax,
             values: [0,],
         }, /* [5] */ {
-            image: assets.animation`boardSides`[22],
+            image: assets.animation`boardSides`[30],
             spaceType: SpaceType.Property,
             values: [8, 0,],
         }, {
-            image: assets.animation`boardSides`[2],
+            image: assets.animation`boardSides`[4],
             spaceType: SpaceType.Property,
             values: [1, 0,],
         }, {
-            image: assets.animation`boardSides`[28],
+            image: assets.animation`boardSides`[37],
             spaceType: SpaceType.Card,
             values: [0,],
         }, {
-            image: assets.animation`boardSides`[3],
+            image: assets.animation`boardSides`[5],
             spaceType: SpaceType.Property,
             values: [1, 1,],
         }, {
-            image: assets.animation`boardSides`[4],
+            image: assets.animation`boardSides`[6],
             spaceType: SpaceType.Property,
             values: [1, 2,],
         }, /* [10] */ {
@@ -66,39 +121,39 @@ namespace Board {
             spaceType: SpaceType.Jail,
             values: [50,],
         }, {
-            image: assets.animation`boardSides`[5],
+            image: assets.animation`boardSides`[8],
             spaceType: SpaceType.Property,
             values: [2, 0,],
         }, {
-            image: assets.animation`boardSides`[26],
+            image: assets.animation`boardSides`[34],
             spaceType: SpaceType.Property,
             values: [9, 0,],
         }, {
-            image: assets.animation`boardSides`[6],
+            image: assets.animation`boardSides`[9],
             spaceType: SpaceType.Property,
             values: [2, 1,],
         }, {
-            image: assets.animation`boardSides`[7],
+            image: assets.animation`boardSides`[10],
             spaceType: SpaceType.Property,
             values: [2, 2,],
         }, /* [15] */ {
-            image: assets.animation`boardSides`[23],
+            image: assets.animation`boardSides`[31],
             spaceType: SpaceType.Property,
             values: [8, 1,],
         }, {
-            image: assets.animation`boardSides`[8],
+            image: assets.animation`boardSides`[11],
             spaceType: SpaceType.Property,
             values: [3, 0,],
         }, {
-            image: assets.animation`boardSides`[29],
+            image: assets.animation`boardSides`[38],
             spaceType: SpaceType.Card,
             values: [1,],
         }, {
-            image: assets.animation`boardSides`[9],
+            image: assets.animation`boardSides`[12],
             spaceType: SpaceType.Property,
             values: [3, 1,],
         }, {
-            image: assets.animation`boardSides`[10],
+            image: assets.animation`boardSides`[13],
             spaceType: SpaceType.Property,
             values: [3, 2,],
         }, /* [20] */ {
@@ -106,39 +161,39 @@ namespace Board {
             spaceType: SpaceType.Free,
             values: [],
         }, {
-            image: assets.animation`boardSides`[11],
+            image: assets.animation`boardSides`[15],
             spaceType: SpaceType.Property,
             values: [4, 0,],
         }, {
-            image: assets.animation`boardSides`[28],
+            image: assets.animation`boardSides`[37],
             spaceType: SpaceType.Card,
             values: [0,],
         }, {
-            image: assets.animation`boardSides`[12],
+            image: assets.animation`boardSides`[16],
             spaceType: SpaceType.Property,
             values: [4, 1,],
         }, {
-            image: assets.animation`boardSides`[13],
+            image: assets.animation`boardSides`[17],
             spaceType: SpaceType.Property,
             values: [4, 2,],
         }, /* [25] */ {
-            image: assets.animation`boardSides`[24],
+            image: assets.animation`boardSides`[32],
             spaceType: SpaceType.Property,
             values: [8, 2,],
         }, {
-            image: assets.animation`boardSides`[14],
+            image: assets.animation`boardSides`[19],
             spaceType: SpaceType.Property,
             values: [5, 0,],
         }, {
-            image: assets.animation`boardSides`[15],
+            image: assets.animation`boardSides`[20],
             spaceType: SpaceType.Property,
             values: [5, 1,],
         }, {
-            image: assets.animation`boardSides`[27],
+            image: assets.animation`boardSides`[35],
             spaceType: SpaceType.Property,
             values: [9, 1,],
         }, {
-            image: assets.animation`boardSides`[16],
+            image: assets.animation`boardSides`[21],
             spaceType: SpaceType.Property,
             values: [5, 2,],
         }, /* [30] */ {
@@ -146,39 +201,39 @@ namespace Board {
             spaceType: SpaceType.GoToJail,
             values: [],
         }, {
-            image: assets.animation`boardSides`[17],
+            image: assets.animation`boardSides`[23],
             spaceType: SpaceType.Property,
             values: [6, 0,],
         }, {
-            image: assets.animation`boardSides`[18],
+            image: assets.animation`boardSides`[25],
             spaceType: SpaceType.Property,
             values: [6, 1,],
         }, {
-            image: assets.animation`boardSides`[29],
+            image: assets.animation`boardSides`[38],
             spaceType: SpaceType.Card,
             values: [1,],
         }, {
-            image: assets.animation`boardSides`[19],
+            image: assets.animation`boardSides`[26],
             spaceType: SpaceType.Property,
             values: [6, 2,],
         }, /* [35] */ {
-            image: assets.animation`boardSides`[25],
+            image: assets.animation`boardSides`[33],
             spaceType: SpaceType.Property,
             values: [8, 3,],
         }, {
-            image: assets.animation`boardSides`[28],
+            image: assets.animation`boardSides`[37],
             spaceType: SpaceType.Card,
             values: [0,],
         }, {
-            image: assets.animation`boardSides`[20],
+            image: assets.animation`boardSides`[28],
             spaceType: SpaceType.Property,
             values: [7, 0,],
         }, {
-            image: assets.animation`boardSides`[31],
+            image: assets.animation`boardSides`[41],
             spaceType: SpaceType.Tax,
             values: [1,],
         }, {
-            image: assets.animation`boardSides`[21],
+            image: assets.animation`boardSides`[29],
             spaceType: SpaceType.Property,
             values: [7, 1,],
         },

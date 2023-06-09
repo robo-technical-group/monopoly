@@ -19,6 +19,7 @@
  * - [X] Add bank changing bump.
  * - [ ] Player actions menu (generic, e.g., while in jail, buy or auction property).
  *       - Add key binding sprites dynamically.
+ *       - Move button actions below d-pad (maybe?)
  * - [X] Implement Player.goToJail()
  * - [ ] Refactor game loops.
  *       - [ ] Player loop (loop among players)
@@ -35,6 +36,11 @@
  *       - [ ] Single controller
  * - [ ] Buy/sell houses.
  * - [ ] Trade mechanism.
+ * - [/] Mega Monopoly accommodations.
+ *       - [X] Add assets.
+ *       - [ ] Add alternate board.
+ *       - [ ] Add speed die.
+ *       - [ ] Add bus tickets.
  */
 
 /**
@@ -410,8 +416,9 @@ function updatePlayerStatus(): void {
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
-Tests.testJailMenu()
+Tests.startAutomatedGame()
 /*
+Tests.testJailMenu()
 if (settings.exists(Tests.TESTING_KEY)) {
     Tests.run()
 } else {
