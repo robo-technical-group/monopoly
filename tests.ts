@@ -13,37 +13,47 @@ namespace Tests {
 
         switch (currTest) {
             case 0:
+                splash('Test action menu.')
+                startTestMenu()
+                break
+
+            case 1:
+                splash('Test in-jail menu.')
+                testJailMenu()
+                break
+
+            case 2:
                 splash('Automated game.')
                 startAutomatedGame()
                 break
 
-            case 1:
+            case 3:
                 splash('Animated board and background tests.')
                 Background.show()
                 BoardTests.setup()
                 break
 
-            case 2:
+            case 4:
                 splash('Game state tests')
                 GameStateTests.start()
                 break
 
-            case 3:
+            case 5:
                 splash('First roll test with four players.')
                 FirstRollTests.start(4)
                 break
 
-            case 4:
+            case 6:
                 splash('First roll test with three players.')
                 FirstRollTests.start(3)
                 break
 
-            case 5:
+            case 7:
                 splash('First roll test with two players.')
                 FirstRollTests.start(2)
                 break
 
-            case 6:
+            case 8:
                 splash('Dice tests: D-pad=change direction, A=roll')
                 DiceTests.start()
                 break
@@ -69,6 +79,28 @@ namespace Tests {
         GameStateTests.loadTestState()
         g_state.CurrPlayer = randint(1, g_state.NumPlayers)
         g_state.testMode = true
-        g_state.Mode = GameMode.Main
+        startGame()
+    }
+
+    export function startTestMenu(): void {
+        scene.setBackgroundImage(assets.image`bg`)
+        GameStateTests.loadTestState()
+        g_state.CurrPlayer = randint(1, g_state.NumPlayers)
+        g_state.testMode = true
+        Board.draw(0)
+        let menu: ActionMenu = new TestActionMenu('Test action menu!')
+        menu.show()
+    }
+
+    export function testJailMenu(): void {
+        scene.setBackgroundImage(assets.image`bg`)
+        GameStateTests.loadTestState()
+        g_state.CurrPlayer = randint(1, g_state.NumPlayers)
+        let p: Player = g_state.getCurrPlayer()
+        g_state.Properties[Properties.GROUP_JAIL].properties[0].owner = g_state.CurrPlayer
+        g_state.Properties[Properties.GROUP_JAIL].properties[1].owner = g_state.CurrPlayer
+        p.goToJail()
+        g_state.testMode = true
+        startGame()
     }
 }

@@ -1,6 +1,16 @@
 /**
  * Controller event handlers
  */
+function mainButtonHandler(button: ControllerButton) {
+    let p: Player = g_state.getCurrPlayer()
+    if (p.Status == PlayerStatus.ActionMenu && g_state.ActionMenu != null) {
+        g_state.ActionMenu.handleButton(button)
+        if (g_state.ActionMenu.Done) {
+            g_state.ActionMenu.hide()
+        }
+    } 
+}
+
 function pressA(player: number): void {
     switch (g_state.Mode) {
         case GameMode.Attract:
@@ -33,6 +43,9 @@ function pressA(player: number): void {
             break
 
         case GameMode.Main:
+            if (g_state.CurrPlayer == player || GameSettings.controllers == ControllerSetting.Single) {
+                mainButtonHandler(ControllerButton.A)
+            }
             break
 
         case GameMode.AvatarTest:
@@ -62,6 +75,9 @@ function pressB(player: number): void {
             break
 
         case GameMode.Main:
+            if (g_state.CurrPlayer == player || GameSettings.controllers == ControllerSetting.Single) {
+                mainButtonHandler(ControllerButton.B)
+            }
             break
 
         case GameMode.AvatarTest:
@@ -93,6 +109,9 @@ function pressDown(player: number): void {
             break
 
         case GameMode.Main:
+            if (g_state.CurrPlayer == player || GameSettings.controllers == ControllerSetting.Single) {
+                mainButtonHandler(ControllerButton.Down)
+            }
             break
 
         case GameMode.AvatarTest:
@@ -131,6 +150,9 @@ function pressLeft(player: number): void {
             break
 
         case GameMode.Main:
+            if (g_state.CurrPlayer == player || GameSettings.controllers == ControllerSetting.Single) {
+                mainButtonHandler(ControllerButton.Left)
+            }
             break
 
         case GameMode.AvatarTest:
@@ -177,6 +199,9 @@ function pressRight(player: number): void {
             break
 
         case GameMode.Main:
+            if (g_state.CurrPlayer == player || GameSettings.controllers == ControllerSetting.Single) {
+                mainButtonHandler(ControllerButton.Right)
+            }
             break
 
         case GameMode.AvatarTest:
@@ -208,6 +233,9 @@ function pressUp(player: number) {
             break
 
         case GameMode.Main:
+            if (g_state.CurrPlayer == player || GameSettings.controllers == ControllerSetting.Single) {
+                mainButtonHandler(ControllerButton.Up)
+            }
             break
 
         case GameMode.AvatarTest:

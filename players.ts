@@ -12,6 +12,8 @@ interface IPlayer {
     avatar: number
     bank: number
     controllerId: number
+    inJail: boolean
+    jailTurns: number
     location: number
     name: string
     status: PlayerStatus
@@ -34,6 +36,8 @@ class Player {
     private destSpace: number
     private dice: Dice
     private doublesRolled: boolean
+    private inJail: boolean
+    private jailTurns: number
     private name: string
     private passedGo: boolean
     private sprite: Sprite
@@ -54,6 +58,8 @@ class Player {
         this.stats = null
         this.turnCount = 0
         this.passedGo = false
+        this.inJail = false
+        this.jailTurns = 0
     }
 
     /**
@@ -104,6 +110,22 @@ class Player {
         }
     }
 
+    public get InJail(): boolean {
+        return this.inJail
+    }
+
+    public set InJail(value: boolean) {
+        this.inJail = value
+    }
+
+    public get JailTurns(): number {
+        return this.jailTurns
+    }
+
+    public set JailTurns(value: number) {
+        this.jailTurns = Math.max(0, value)
+    }
+
     public get Name(): string {
         return this.name
     }
@@ -133,6 +155,8 @@ class Player {
             avatar: this.avatar,
             bank: this.bank,
             controllerId: this.controllerId,
+            inJail: this.inJail,
+            jailTurns: this.jailTurns,
             location: this.destSpace,
             name: this.name,
             status: this.status,
@@ -221,7 +245,11 @@ class Player {
     }
 
     public goToJail(): void {
-        
+        this.destSpace = Board.JAIL_SPACE
+        this.inJail = true
+        this.jailTurns = 0
+        this.doublesRolled = false
+        this.status = PlayerStatus.WaitingForTurn
     }
 
     public hide(): void {
@@ -291,6 +319,14 @@ class Player {
         }
         if (typeof state.status == 'number') {
             this.status = state.status
+        }
+        if (typeof state.inJail == 'boolean') {
+            this.inJail = state.inJail
+        } else if (typeof state.inJail == 'number') {
+            this.inJail = (state.inJail != 0)
+        }
+        if (typeof state.jailTurns == 'number') {
+            this.JailTurns = state.jailTurns
         }
         return true
     }

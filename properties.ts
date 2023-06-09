@@ -238,9 +238,6 @@ namespace Properties {
             },]
         }
     ]
-    export const PROPERTY_GROUP_JAIL_CARDS: number = 10
-    export const PROPERTY_GROUP_RR: number = 8
-    export const PROPERTY_GROUP_UTIL: number = 9
 
     export function buildFromState(state: any): PropertyGroupState[] {
         let toReturn: PropertyGroupState[] = buildDefaultState()

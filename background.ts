@@ -10,7 +10,7 @@ namespace Background {
         assets.image`clouds`,
         assets.image`frontBldgs`,
         assets.image`backBldgs`,
-        assets.image`lowerThird`,
+        assets.image`grass`,
     ]
     const FRAME_DELAYS: number[] = [40, 20, 10, 1,]
     const TOP_VALUES: number[] = [30, 35, 45, 72,]

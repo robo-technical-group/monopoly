@@ -17,17 +17,23 @@
  *       - [ ] Implement PlayerState.MovingForCard
  * - [X] Handle player passing Go.
  * - [X] Add bank changing bump.
- * - [ ] Implement Player.goToJail()
  * - [ ] Player actions menu (generic, e.g., while in jail, buy or auction property).
  *       - Add key binding sprites dynamically.
+ * - [X] Implement Player.goToJail()
+ * - [ ] Refactor game loops.
+ *       - [ ] Player loop (loop among players)
+ *       - [ ] Turn loop (maybe a queue or stack?)
+ * - [ ] Add player flag to skip next turn.
+ * - [ ] Player actions menu (while in jail).
  * - [ ] Player actions menu (turn).
+ *       - [ ] Roll.
  *       - [ ] Bankrupt.
  *       - [ ] Build/mortgage.
  *       - [ ] Trade.
- * - [ ] Player actions menu (while in jail).
  * - [ ] Auction property.
  *       - [ ] Multiplayer
  *       - [ ] Single controller
+ * - [ ] Buy/sell houses.
  * - [ ] Trade mechanism.
  */
 
@@ -103,12 +109,17 @@ function finishTurn(): void {
     let p: Player = g_state.getCurrPlayer()
     if (p.Status == PlayerStatus.WaitingForTurn) {
         if (p.DoublesRolled) {
-            if (g_state.testMode) {
+            if (p.InJail) {
+                p.InJail = false
+                // End turn.
+                g_state.nextPlayer()
+            } else if (g_state.testMode) {
                 startRoll()
             } else {
                 // Show player actions.
             }
         } else {
+            // End turn.
             g_state.nextPlayer()
         }
     }
@@ -127,15 +138,18 @@ function processRoll(): void {
     let priorStatus: PlayerStatus = p.Status
     p.Status = PlayerStatus.WaitingForTurn
     let space = Board.BOARD[p.Location]
+    let d: Dice = p.Dice
     switch (space.spaceType) {
         case Board.SpaceType.Card:
             Cards.drawCard(space.values[0])
             break
 
         case Board.SpaceType.Free:
+            // Splash a message.
             break
 
         case Board.SpaceType.Go:
+            // Splash a message.
             break
 
         case Board.SpaceType.GoToJail:
@@ -144,6 +158,20 @@ function processRoll(): void {
             break
 
         case Board.SpaceType.Jail:
+            if (p.InJail) {
+                if (d.AreDoubles) {
+                    p.changeLocation(d.Roll)
+                    p.Status = PlayerStatus.Moving
+                } else {
+                    p.JailTurns++
+                    if (p.JailTurns == 4) {
+                        g_state.ActionMenu = new InJailActionMenu(ActionMenuText.IN_JAIL_MUST_PAY)
+                        p.Status = PlayerStatus.ActionMenu
+                    }
+                }
+            } else {
+                // Splash a message.
+            }
             break
 
         case Board.SpaceType.Property:
@@ -228,6 +256,7 @@ function startGame(): void {
         p.TurnCount = 0
     })
     scene.setBackgroundColor(Color.Black)
+    scene.setBackgroundImage(assets.image`bg`)
     g_state.Mode = GameMode.Main
 }   // startGame()
 
@@ -245,7 +274,11 @@ function startTurn(): void {
     Background.direction = 1
     updatePlayerStatus()
     p.startTurn()
-    if (g_state.testMode) {
+    if (p.InJail) {
+        p.JailTurns++
+        g_state.ActionMenu = new InJailActionMenu(ActionMenuText.IN_JAIL + p.JailTurns + ')')
+        g_state.ActionMenu.show()
+    } else if (g_state.testMode) {
         p.startRoll()
     } else {
         // Show player actions.
@@ -294,6 +327,15 @@ function update(): void {
                     processRoll()
                     finishTurn()
                 }
+            }
+            break
+
+        case PlayerStatus.RollingInJail:
+            if (d.AreRolling) {
+                d.move()
+            }
+            if (!d.AreRolling) {
+                processRoll()
             }
             break
 
@@ -359,18 +401,21 @@ function updatePlayerStatus(): void {
             })
         })
     })
-    g_state.updateStatusSprite()
+    if (g_state.testMode) {
+        g_state.updateStatusSprite()
+    }
 }
 
 /**
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
-Tests.startAutomatedGame()
+Tests.testJailMenu()
 /*
 if (settings.exists(Tests.TESTING_KEY)) {
     Tests.run()
 } else {
     Attract.start()
 }
+Tests.startAutomatedGame()
 */

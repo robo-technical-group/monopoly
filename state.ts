@@ -17,6 +17,7 @@ class GameState {
 
     public testMode: boolean
 
+    private actionMenu: ActionMenu
     private currPlayer: number
     private gameMode: GameMode
     private monopolyStatus: Sprite = null
@@ -24,6 +25,7 @@ class GameState {
     private properties: Properties.PropertyGroupState[]
 
     constructor(numPlayers: number = 0) {
+        this.actionMenu = null
         this.currPlayer = (numPlayers > 0 ? 1 : 0)
         this.gameMode = GameMode.NotReady
         this.initPlayers(numPlayers)
@@ -34,6 +36,14 @@ class GameState {
     /**
      * Public properties
      */
+    public get ActionMenu(): ActionMenu {
+        return this.actionMenu
+    }
+
+    public set ActionMenu(value: ActionMenu) {
+        this.actionMenu = value
+    }
+    
     public get CurrPlayer(): number {
         return this.currPlayer
     }
@@ -223,6 +233,9 @@ class GameState {
         return settings.list(GameState.KEY_PREFIX).length > 0
     }
 
+    /**
+     * For testing only. Displays status of all monopolies.
+     */
     public updateStatusSprite(): void {
         this.initStatusSprite()
         let i: Image = this.monopolyStatus.image

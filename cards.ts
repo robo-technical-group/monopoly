@@ -52,7 +52,7 @@ namespace Cards {
                 }, {
                     text: "Advance token to nearest utility. If owned, then throw dice and pay 10 times amount thrown.",
                     action: Action.GoToGroup,
-                    values: [Properties.PROPERTY_GROUP_UTIL,],
+                    values: [Properties.GROUP_UTIL,],
                 }, {
                     text: "Take a walk on Boardwalk.",
                     action: Action.GoToSpace,
@@ -76,11 +76,11 @@ namespace Cards {
                 }, {
                     text: "Advance token to nearest railroad. Pay owner double.",
                     action: Action.GoToGroup,
-                    values: [Properties.PROPERTY_GROUP_RR,],
+                    values: [Properties.GROUP_RR,],
                 }, {
                     text: "Advance token to nearest railroad. Pay owner double.",
                     action: Action.GoToGroup,
-                    values: [Properties.PROPERTY_GROUP_RR,],
+                    values: [Properties.GROUP_RR,],
                 }, {
                     text: "Advance to Go!",
                     action: Action.GoToSpace,
@@ -176,7 +176,7 @@ namespace Cards {
         if (decks.length == 0) {
             initDecks()
         }
-        if (deckIndex[deck] == 0 && g_state.Properties[Properties.PROPERTY_GROUP_JAIL_CARDS].properties[deck].owner > 0) {
+        if (deckIndex[deck] == 0 && g_state.Properties[Properties.GROUP_JAIL].properties[deck].owner > 0) {
             // Jail card is owned; skip to next card.
             moveIndex(deck)
         }
@@ -203,7 +203,7 @@ namespace Cards {
                 break
 
             case Action.GetOutOfJail:
-                g_state.Properties[Properties.PROPERTY_GROUP_JAIL_CARDS].properties[deck].owner = playerId
+                g_state.Properties[Properties.GROUP_JAIL].properties[deck].owner = playerId
                 updatePlayerStatus()
                 break
 
