@@ -42,11 +42,11 @@ namespace Cards {
                     action: Action.GoToSpace,
                     values: [5,],
                 }, {
-                    text: "Make general repairs on your properties. Pay $25 per house and $100 per hotel.",
+                    text: "Make general repairs on your properties. Pay M25 per house and M100 per hotel.",
                     action: Action.Repairs,
                     values: [25, 100,],
                 }, {
-                    text: "Pay poor tax of $15",
+                    text: "Pay poor tax of M15",
                     action: Action.PayBank,
                     values: [15,],
                 }, {
@@ -58,7 +58,7 @@ namespace Cards {
                     action: Action.GoToSpace,
                     values: [39,],
                 }, {
-                    text: "Bank pays you dividend of $50.",
+                    text: "Bank pays you dividend of M50.",
                     action: Action.BankPays,
                     values: [50,],
                 }, {
@@ -66,11 +66,11 @@ namespace Cards {
                     action: Action.MoveBackward,
                     values: [3,],
                 }, {
-                    text: "You have been elected chairman of the board. Pay each player $50.",
+                    text: "You have been elected chairman of the board. Pay each player M50.",
                     action: Action.PayEachPlayer,
                     values: [50,],
                 }, {
-                    text: "Go directly to jail! Do not pass Go. Do not collect $200.",
+                    text: "Go directly to jail! Do not pass Go. Do not collect M200.",
                     action: Action.GoToSpace,
                     values: [Board.JAIL_SPACE,],
                 }, {
@@ -90,7 +90,7 @@ namespace Cards {
                     action: Action.GoToSpace,
                     values: [11,],
                 }, {
-                    text: "Your building and loan matures. Collect $150.",
+                    text: "Your building and loan matures. Collect M150.",
                     action: Action.BankPays,
                     values: [150,],
                 }
@@ -105,59 +105,59 @@ namespace Cards {
                     action: Action.GetOutOfJail,
                     values: [],
                 }, {
-                    text: "Grand opera opening! Collect $50 from every player for opening night seats.",
+                    text: "Grand opera opening! Collect M50 from every player for opening night seats.",
                     action: Action.CollectFromEachPlayer,
                     values: [50,],
                 }, {
-                    text: "You have won second prize in a beauty contest! Collect $10.",
+                    text: "You have won second prize in a beauty contest! Collect M10.",
                     action: Action.BankPays,
                     values: [10,],
                 }, {
-                    text: "Pay $50 doctor's fee.",
+                    text: "Pay M50 doctor's fee.",
                     action: Action.PayBank,
                     values: [50,],
                 }, {
-                    text: "You are assessed street repairs. Pay $40 per house and $115 per hotel.",
+                    text: "You are assessed street repairs. Pay M40 per house and M115 per hotel.",
                     action: Action.Repairs,
                     values: [40, 115,],
                 }, {
-                    text: "Go directly to jail! Do not pass Go. Do not collect $200.",
+                    text: "Go directly to jail! Do not pass Go. Do not collect M200.",
                     action: Action.GoToSpace,
                     values: [Board.JAIL_SPACE,],
                 }, {
-                    text: "Pay hospital $100",
+                    text: "Pay hospital M100",
                     action: Action.PayBank,
                     values: [100,],
                 }, {
-                    text: "Income tax refund. Collect $20.",
+                    text: "Income tax refund. Collect M20.",
                     action: Action.BankPays,
                     values: [20,],
                 }, {
-                    text: "Life insurance matures. Collect $100.",
+                    text: "Life insurance matures. Collect M100.",
                     action: Action.BankPays,
                     values: [100,],
                 }, {
-                    text: "From sale of stock, you get $45.",
+                    text: "From sale of stock, you get M45.",
                     action: Action.BankPays,
                     values: [45,],
                 }, {
-                    text: "Receive for services $25.",
+                    text: "Receive for services M25.",
                     action: Action.BankPays,
                     values: [25,],
                 }, {
-                    text: "Bank error in your favor. Collect $200.",
+                    text: "Bank error in your favor. Collect M200.",
                     action: Action.BankPays,
                     values: [200,],
                 }, {
-                    text: "You inherit $100.",
+                    text: "You inherit M100.",
                     action: Action.BankPays,
                     values: [100,],
                 }, {
-                    text: "Pay school tax of $150.",
+                    text: "Pay school tax of M150.",
                     action: Action.PayBank,
                     values: [150,],
                 }, {
-                    text: "Xmas fund matures. Collect $100.",
+                    text: "Xmas fund matures. Collect M100.",
                     action: Action.BankPays,
                     values: [100,],
                 }, {

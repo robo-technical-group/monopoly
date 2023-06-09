@@ -201,15 +201,16 @@ class Dice {
     private resetSprites(): void {
         let x: number = this.startX
         let y: number = this.startY
+        const w: number = assets.animation`d6white`[0].width
         for (let s of this.sprites) {
             s.setPosition(x, y)
             switch (this.orientation) {
                 case DiceOrientation.Horizontal:
-                    x += assets.animation`d6white`[0].width + Dice.MARGIN
+                    x += w + Dice.MARGIN
                     break
 
                 case DiceOrientation.Vertical:
-                    y += assets.animation`d6white`[0].width + Dice.MARGIN
+                    y += w + Dice.MARGIN
                     break
             }
         }
