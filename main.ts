@@ -39,7 +39,7 @@
  * - [/] Mega Monopoly accommodations.
  *       - [X] Add assets.
  *       - [ ] Add alternate board.
- *       - [ ] Add speed die.
+ *       - [X] Add speed die.
  *       - [ ] Add bus tickets.
  */
 
@@ -94,6 +94,18 @@ game.onUpdate(function () {
                 if (!DiceTests.diceTest.AreRolling) {
                     game.splash('Roll: ' + DiceTests.diceTest.Roll +
                         ' Doubles: ' + DiceTests.diceTest.AreDoubles)
+                }
+            }
+            break
+
+        case GameMode.SpeedDieTest:
+            if (DiceTests.diceTest.AreRolling) {
+                DiceTests.diceTest.move()
+                if (!DiceTests.diceTest.AreRolling) {
+                    game.showLongText('Roll: ' + DiceTests.diceTest.Roll +
+                        '\nDoubles: ' + DiceTests.diceTest.AreDoubles +
+                        '\nTriples: ' + DiceTests.diceTest.AreTriples +
+                        '\nSpeed die: ' + DiceTests.diceTest.SpeedDie, DialogLayout.Center)
                 }
             }
             break

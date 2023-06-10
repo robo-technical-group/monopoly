@@ -49,6 +49,7 @@ enum GameMode {
     TurnEnded,
     AvatarTest,
     DiceTest,
+    SpeedDieTest,
     BoardTest,
 }   // GameMode
 

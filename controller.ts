@@ -53,6 +53,7 @@ function pressA(player: number): void {
             break
 
         case GameMode.DiceTest:
+        case GameMode.SpeedDieTest:
             DiceTests.diceTest.startRoll()
 
         case GameMode.BoardTest:
@@ -85,6 +86,7 @@ function pressB(player: number): void {
             break
 
         case GameMode.DiceTest:
+        case GameMode.SpeedDieTest:
             if (DiceTests.diceTest.Skin == DiceSkin.Orange) {
                 DiceTests.diceTest.Skin = DiceSkin.White
             } else {
@@ -119,6 +121,7 @@ function pressDown(player: number): void {
             break
 
         case GameMode.DiceTest:
+        case GameMode.SpeedDieTest:
             DiceTests.diceTest.Orientation = DiceOrientation.Horizontal
             DiceTests.diceTest.setStartLocation(5, 5)
             DiceTests.diceTest.setStopLocation(5, 114)
@@ -160,6 +163,7 @@ function pressLeft(player: number): void {
             break
 
         case GameMode.DiceTest:
+        case GameMode.SpeedDieTest:
             DiceTests.diceTest.Orientation = DiceOrientation.Vertical
             DiceTests.diceTest.setStartLocation(155, 5)
             DiceTests.diceTest.setStopLocation(6, 5)
@@ -209,6 +213,7 @@ function pressRight(player: number): void {
             break
 
         case GameMode.DiceTest:
+        case GameMode.SpeedDieTest:
             DiceTests.diceTest.Orientation = DiceOrientation.Vertical
             DiceTests.diceTest.setStartLocation(5, 5)
             DiceTests.diceTest.setStopLocation(154, 5)
@@ -243,6 +248,7 @@ function pressUp(player: number) {
             break
 
         case GameMode.DiceTest:
+        case GameMode.SpeedDieTest:
             DiceTests.diceTest.Orientation = DiceOrientation.Horizontal
             DiceTests.diceTest.setStartLocation(5, 115)
             DiceTests.diceTest.setStopLocation(5, 6)

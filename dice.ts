@@ -50,7 +50,7 @@ class Dice {
      */
 
     public get AreDoubles(): boolean {
-        if (this.values.length != 2) {
+        if (this.values.length < 2) {
             return false
         }
         return this.values[0] == this.values[1]
@@ -58,6 +58,15 @@ class Dice {
 
     public get AreRolling(): boolean {
         return this.areRolling
+    }
+
+    public get AreTriples(): boolean {
+        if (this.values.length < 3) {
+            return false
+        }
+        return this.values[0] == this.values[1] &&
+            this.values[1] == this.values[2] &&
+            this.values[0] <= 3
     }
 
     public get Count(): number {
@@ -90,11 +99,29 @@ class Dice {
     }
 
     public get Roll(): number {
-        let toReturn = 0
-        for (let v of this.values) {
-            toReturn += v
+        let toReturn: number = 0
+        if (this.values.length < 3) {
+            for (let v of this.values) {
+                toReturn += v
+            }
+        } else {
+            for (let i: number = 0; i < this.values.length - 1; i++) {
+                toReturn += this.values[i]
+            }
+            const speedDie: number = this.values[this.values.length - 1]
+            if (speedDie <= 3) {
+                toReturn += speedDie
+            }
         }
         return toReturn
+    }
+
+    public get SpeedDie(): number {
+        if (this.values.length < 3) {
+            return -1
+        } else {
+            return this.values[this.values.length - 1]
+        }
     }
 
     public get Skin(): DiceSkin {
@@ -217,24 +244,29 @@ class Dice {
     }
 
     private updateSprites(): void {
+        let speedDie: number = Math.max(2, this.values.length - 1)
         for (let i: number = 0; i < this.values.length; i++) {
             let s: Sprite = this.sprites[i]
-            switch (this.skin) {
-                case DiceSkin.White:
-                    s.setImage(assets.animation`d6white`[this.values[i] - 1])
-                    break
+            if (i == speedDie) {
+                s.setImage(assets.animation`d6speed`[this.values[i] - 1])
+            } else {
+                switch (this.skin) {
+                    case DiceSkin.White:
+                        s.setImage(assets.animation`d6white`[this.values[i] - 1])
+                        break
 
-                case DiceSkin.Yellow:
-                    s.setImage(assets.animation`d6yellow`[this.values[i] - 1])
-                    break
+                    case DiceSkin.Yellow:
+                        s.setImage(assets.animation`d6yellow`[this.values[i] - 1])
+                        break
 
-                case DiceSkin.Orange:
-                    s.setImage(assets.animation`d6orange`[this.values[i] - 1])
-                    break
+                    case DiceSkin.Orange:
+                        s.setImage(assets.animation`d6orange`[this.values[i] - 1])
+                        break
 
-                default:
-                    s.setImage(assets.animation`d6white`[this.values[i] - 1])
-                    break
+                    default:
+                        s.setImage(assets.animation`d6white`[this.values[i] - 1])
+                        break
+                }
             }
         }
     }
@@ -245,9 +277,13 @@ class Dice {
  */
 namespace DiceTests {
     export let diceTest: Dice = null
-    export function start() {
+    export function start(count: number = 2) {
         g_state.Mode = GameMode.NotReady
-        diceTest = new Dice(2, DiceOrientation.Vertical)
-        g_state.Mode = GameMode.DiceTest
+        diceTest = new Dice(count, DiceOrientation.Vertical)
+        if (count == 3) {
+            g_state.Mode = GameMode.SpeedDieTest
+        } else {
+            g_state.Mode = GameMode.DiceTest
+        }
     }
 }

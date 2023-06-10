@@ -58,6 +58,11 @@ namespace Tests {
                 DiceTests.start()
                 break
 
+            case 9:
+                splash('Speed die tests: D-pad=change direction, A=roll')
+                DiceTests.start(3)
+                break
+
             default:
                 // Restart tests upon reboot
                 currTest = -1
