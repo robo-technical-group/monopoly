@@ -43,8 +43,8 @@
  * 39 = Bus Ticket
  * 40 = Income Tax
  * 41 = Luxury Tax
- * 43 = Birthday Gift
- * 42 = Auction
+ * 42 = Birthday Gift
+ * 43 = Auction
  *
  * Board Corners
  *  0 = Go
@@ -66,6 +66,9 @@ namespace Board {
         Jail,
         Free,
         GoToJail,
+        BusTicket,
+        Auction,
+        Gift,
     }
 
     export interface Space {
@@ -74,7 +77,9 @@ namespace Board {
         values: number[]
     }
 
-    export const BOARD: Space[] = [
+    const BOARDS: Space[][] = [
+    // Standard board
+    [
         // [0]
         {
             image: assets.animation`boardCorners`[0],
@@ -237,9 +242,227 @@ namespace Board {
             spaceType: SpaceType.Property,
             values: [7, 1,],
         },
+    ],
+    // Mega board
+    [
+        // [0]
+        {
+            image: assets.animation`boardCorners`[0],
+            spaceType: SpaceType.Go,
+            values: [200,],
+        }, {
+            image: assets.animation`boardSides`[0],
+            spaceType: SpaceType.Property,
+            values: [0, 0,],
+        }, {
+            image: assets.animation`boardSides`[38],
+            spaceType: SpaceType.Card,
+            values: [1,],
+        }, {
+            image: assets.animation`boardSides`[1],
+            spaceType: SpaceType.Property,
+            values: [0, 1,],
+        }, {
+            image: assets.animation`boardSides`[2],
+            spaceType: SpaceType.Property,
+            values: [0, 2,],
+        }, /* [5] */ {
+            image: assets.animation`boardSides`[40],
+            spaceType: SpaceType.Tax,
+            values: [0,],
+        }, {
+            image: assets.animation`boardSides`[30],
+            spaceType: SpaceType.Property,
+            values: [8, 0,],
+        }, {
+            image: assets.animation`boardSides`[3],
+            spaceType: SpaceType.Property,
+            values: [1, 0,],
+        }, {
+            image: assets.animation`boardSides`[4],
+            spaceType: SpaceType.Property,
+            values: [1, 1,],
+        }, {
+            image: assets.animation`boardSides`[37],
+            spaceType: SpaceType.Card,
+            values: [0,],
+        }, /* [10] */ {
+            image: assets.animation`boardSides`[36],
+            spaceType: SpaceType.Property,
+            values: [9, 0,],
+        }, {
+            image: assets.animation`boardSides`[5],
+            spaceType: SpaceType.Property,
+            values: [1, 2,],
+        }, {
+            image: assets.animation`boardSides`[6],
+            spaceType: SpaceType.Property,
+            values: [1, 3,],
+        }, {
+            image: assets.animation`boardCorners`[1],
+            spaceType: SpaceType.Jail,
+            values: [50,],
+        }, {
+            image: assets.animation`boardSides`[43],
+            spaceType: SpaceType.Auction,
+            values: [],
+        }, /* [15] */ {
+            image: assets.animation`boardSides`[7],
+            spaceType: SpaceType.Property,
+            values: [2, 0,],
+        }, {
+            image: assets.animation`boardSides`[8],
+            spaceType: SpaceType.Property,
+            values: [2, 1,],
+        }, {
+            image: assets.animation`boardSides`[34],
+            spaceType: SpaceType.Property,
+            values: [9, 1,],
+        }, {
+            image: assets.animation`boardSides`[9],
+            spaceType: SpaceType.Property,
+            values: [2, 2,],
+        }, {
+            image: assets.animation`boardSides`[10],
+            spaceType: SpaceType.Property,
+            values: [2, 3,],
+        }, /* [20] */ {
+            image: assets.animation`boardSides`[31],
+            spaceType: SpaceType.Property,
+            values: [8, 1,],
+        }, {
+            image: assets.animation`boardSides`[11],
+            spaceType: SpaceType.Property,
+            values: [3, 0,],
+        }, {
+            image: assets.animation`boardSides`[38],
+            spaceType: SpaceType.Card,
+            values: [1,],
+        }, {
+            image: assets.animation`boardSides`[12],
+            spaceType: SpaceType.Property,
+            values: [3, 1,],
+        }, {
+            image: assets.animation`boardSides`[13],
+            spaceType: SpaceType.Property,
+            values: [3, 2,],
+        }, /* [25] */ {
+            image: assets.animation`boardSides`[14],
+            spaceType: SpaceType.Property,
+            values: [3, 3,],
+        }, {
+            image: assets.animation`boardCorners`[2],
+            spaceType: SpaceType.Free,
+            values: [],
+        }, {
+            image: assets.animation`boardSides`[15],
+            spaceType: SpaceType.Property,
+            values: [4, 0,],
+        }, {
+            image: assets.animation`boardSides`[37],
+            spaceType: SpaceType.Card,
+            values: [0,],
+        }, {
+            image: assets.animation`boardSides`[16],
+            spaceType: SpaceType.Property,
+            values: [4, 1,],
+        }, /* [30] */ {
+            image: assets.animation`boardSides`[17],
+            spaceType: SpaceType.Property,
+            values: [4, 2,],
+        }, {
+            image: assets.animation`boardSides`[18],
+            spaceType: SpaceType.Property,
+            values: [4, 3,],
+        }, {
+            image: assets.animation`boardSides`[39],
+            spaceType: SpaceType.BusTicket,
+            values: [],
+        }, {
+            image: assets.animation`boardSides`[32],
+            spaceType: SpaceType.Property,
+            values: [8, 2,],
+        }, {
+            image: assets.animation`boardSides`[19],
+            spaceType: SpaceType.Property,
+            values: [5, 0,],
+        }, /* [35] */ {
+            image: assets.animation`boardSides`[20],
+            spaceType: SpaceType.Property,
+            values: [5, 1,],
+        }, {
+            image: assets.animation`boardSides`[35],
+            spaceType: SpaceType.Property,
+            values: [9, 2,],
+        }, {
+            image: assets.animation`boardSides`[21],
+            spaceType: SpaceType.Property,
+            values: [5, 2,],
+        }, {
+            image: assets.animation`boardSides`[22],
+            spaceType: SpaceType.Property,
+            values: [5, 3,],
+        }, {
+            image: assets.animation`boardCorners`[3],
+            spaceType: SpaceType.GoToJail,
+            values: [],
+        }, /* [40] */ {
+            image: assets.animation`boardSides`[23],
+            spaceType: SpaceType.Property,
+            values: [6, 0,],
+        }, {
+            image: assets.animation`boardSides`[24],
+            spaceType: SpaceType.Property,
+            values: [6, 1,],
+        }, {
+            image: assets.animation`boardSides`[25],
+            spaceType: SpaceType.Property,
+            values: [6, 2,],
+        }, {
+            image: assets.animation`boardSides`[38],
+            spaceType: SpaceType.Card,
+            values: [1,],
+        }, {
+            image: assets.animation`boardSides`[26],
+            spaceType: SpaceType.Property,
+            values: [6, 3,],
+        }, /* [45] */ {
+            image: assets.animation`boardSides`[33],
+            spaceType: SpaceType.Property,
+            values: [8, 3,],
+        }, {
+            image: assets.animation`boardSides`[37],
+            spaceType: SpaceType.Card,
+            values: [0,],
+        }, {
+            image: assets.animation`boardSides`[42],
+            spaceType: SpaceType.Gift,
+            values: [100,],
+        }, {
+            image: assets.animation`boardSides`[27],
+            spaceType: SpaceType.Property,
+            values: [7, 0,],
+        }, {
+            image: assets.animation`boardSides`[28],
+            spaceType: SpaceType.Property,
+            values: [7, 1,],
+        }, /* [50] */ {
+            image: assets.animation`boardSides`[41],
+            spaceType: SpaceType.Tax,
+            values: [1,],
+        }, {
+            image: assets.animation`boardSides`[29],
+            spaceType: SpaceType.Property,
+            values: [7, 2,],
+        },
+    ],
     ]
+
+    // These will need to be refactored. Leave for now.
+    export const BOARD: Space[] = BOARDS[1]
     export const GO_SPACE: number = 0
     export const JAIL_SPACE: number = 10
+
     const BOARD_TOP: number = 80
     export const DICE_BEGIN_X: number = 10
     export const DICE_BEGIN_Y: number = 40

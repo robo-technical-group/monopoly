@@ -22,8 +22,11 @@
  *       - Move button actions below d-pad (maybe?)
  * - [X] Implement Player.goToJail()
  * - [ ] Refactor game loops.
- *       - [ ] Player loop (loop among players)
- *       - [ ] Turn loop (maybe a queue or stack?)
+ *       - [ ] Game loop (loop among players)
+ *       - [ ] Player loop (maybe a queue or stack?)
+ *             - [ ] Move turn processing to `Player` class.
+ *             - [ ] Game loop waits for player status to become `WaitingForTurn`.
+ *             - [ ] Give player states a value array (*e.g.*, card deck and number).
  * - [ ] Add player flag to skip next turn.
  * - [ ] Player actions menu (while in jail).
  * - [ ] Player actions menu (turn).
@@ -41,6 +44,9 @@
  *       - [ ] Add alternate board.
  *       - [X] Add speed die.
  *       - [ ] Add bus tickets.
+ *       - [ ] Add game settings.
+ * - [ ] Refactor board and properties.
+ * - [ ] Move strings to central location(s).
  */
 
 /**
@@ -428,7 +434,8 @@ function updatePlayerStatus(): void {
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
-Tests.startAutomatedGame()
+BoardTests.setup()
+// Tests.startAutomatedGame()
 /*
 Tests.testJailMenu()
 if (settings.exists(Tests.TESTING_KEY)) {
