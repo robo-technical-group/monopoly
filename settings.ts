@@ -100,6 +100,12 @@ namespace GameSettings {
         g_state.Mode = GameMode.Settings
     }
 
+    export function update(): void {
+        if (game.runtime() >= settingsScreens.nextTime) {
+            settingsScreens.rotate()
+        }   // if (game.runtime() >= settingsScreens.nextTime)
+    }
+
     export function validate(): boolean {
         let toReturn: boolean = true
         if (HARDWARE && settingsScreens.getSelectionForScreen(1, 0) == 0) {

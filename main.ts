@@ -1,7 +1,7 @@
 /**
  * Monopoly
  * Built on
- * MakeCode Arcade JavaScript Template v. 4.2.1
+ * MakeCode Arcade JavaScript Template v. 4.2.2
  * Template last update: 24 Apr 2023 ak
  * 
  * Immediate TODO List
@@ -65,18 +65,11 @@ let g_state: GameState = new GameState()
 game.onUpdate(function () {
     switch (g_state.Mode) {
         case GameMode.Attract:
-            if (game.runtime() >= Attract.splashScreen.nextTime) {
-                Attract.splashScreen.rotate()
-            }   // if (game.runtime() >= splash.nextTime)
-            if (sprites.allOfKind(SpriteKind.Moving).length === 0) {
-                Attract.splashScreen.showScrollingSprite()
-            }   // if (! sprites.allOfKind(SpriteKind.Moving))
+            Attract.update()
             break
 
         case GameMode.Settings:
-            if (game.runtime() >= GameSettings.settingsScreens.nextTime) {
-                GameSettings.settingsScreens.rotate()
-            }   // if (game.runtime() >= settings.nextTime)
+            GameSettings.update()
             break
 
         case GameMode.FirstRoll:
@@ -416,13 +409,13 @@ function updatePlayerStatus(): void {
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
-Tests.startAutomatedGame(1)
-/*
 if (settings.exists(Tests.TESTING_KEY)) {
     Tests.run()
 } else {
     Attract.start()
 }
+/*
+Tests.startAutomatedGame(1)
 Tests.testJailMenu()
 BoardTests.setup()
 */

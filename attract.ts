@@ -61,4 +61,13 @@ namespace Attract {
         splashScreen.build()
         g_state.Mode = GameMode.Attract
     }   // startAttractMode()
+
+    export function update(): void {
+        if (game.runtime() >= splashScreen.nextTime) {
+            splashScreen.rotate()
+        }   // if (game.runtime() >= splash.nextTime)
+        if (sprites.allOfKind(SpriteKind.Moving).length === 0) {
+            splashScreen.showScrollingSprite()
+        }   // if (! sprites.allOfKind(SpriteKind.Moving))
+    }
 }
