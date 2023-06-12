@@ -24,7 +24,7 @@ namespace Tests {
 
             case 2:
                 splash('Automated game.')
-                startAutomatedGame()
+                startAutomatedGame(0)
                 break
 
             case 3:
@@ -80,10 +80,14 @@ namespace Tests {
             DialogLayout.Full)
     }
 
-    export function startAutomatedGame(): void {
+    export function startAutomatedGame(board: number): void {
         GameStateTests.loadTestState()
         g_state.CurrPlayer = randint(1, g_state.NumPlayers)
         g_state.testMode = true
+        if (board > 0) {
+            g_state.BoardIndex = board
+            g_state.SpeedDie = true
+        }
         startGame()
     }
 
@@ -92,7 +96,7 @@ namespace Tests {
         GameStateTests.loadTestState()
         g_state.CurrPlayer = randint(1, g_state.NumPlayers)
         g_state.testMode = true
-        Board.draw(0)
+        g_state.Board.draw(0)
         let menu: ActionMenu = new TestActionMenu('Test action menu!')
         menu.show()
     }
@@ -102,8 +106,8 @@ namespace Tests {
         GameStateTests.loadTestState()
         g_state.CurrPlayer = randint(1, g_state.NumPlayers)
         let p: Player = g_state.getCurrPlayer()
-        g_state.Properties[Properties.GROUP_JAIL].properties[0].owner = g_state.CurrPlayer
-        g_state.Properties[Properties.GROUP_JAIL].properties[1].owner = g_state.CurrPlayer
+        g_state.Properties.state[Properties.GROUP_JAIL].properties[0].owner = g_state.CurrPlayer
+        g_state.Properties.state[Properties.GROUP_JAIL].properties[1].owner = g_state.CurrPlayer
         p.goToJail()
         g_state.testMode = true
         startGame()

@@ -74,14 +74,23 @@ class Dice {
     }
 
     public set Count(value: number) {
-        this.sprites = []
-        this.values = []
-        for (let i: number = 0; i < value; i++) {
+        if (this.sprites == null || typeof this.sprites != 'object') {
+            this.sprites = []
+        }
+        while (this.sprites.length < value) {
             let s: Sprite = sprites.create(img`.`, SpriteKind.Dice)
             s.setFlag(SpriteFlag.Invisible, true)
             s.z = Dice.Z
             this.sprites.push(s)
-            this.values.push(1)
+        }
+        if (this.sprites.length > value) {
+            this.sprites = this.sprites.slice(0, value - 1)
+        }
+        if (this.values == null || typeof this.values != 'object' || this.values.length != value) {
+            this.values = []
+            for (let i: number = 0; i < value; i++) {
+                this.values.push(1)
+            }
         }
         this.updateSprites()
     }

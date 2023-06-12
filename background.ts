@@ -15,7 +15,6 @@ namespace Background {
     const FRAME_DELAYS: number[] = [40, 20, 10, 1,]
     const TOP_VALUES: number[] = [30, 35, 45, 72,]
 
-    export let direction: number = 1
     let pixelsMoved: number = 0
 
     export function hide(): void {
@@ -41,7 +40,7 @@ namespace Background {
     }
 
     export function move(): void {
-        if (direction >= 0) {
+        if (g_state.Board.Direction >= 0) {
             moveForward()
         } else {
             moveBackward()

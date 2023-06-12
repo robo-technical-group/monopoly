@@ -174,8 +174,8 @@ class InJailActionMenu extends ActionMenu {
             this.showAction(ControllerButton.B, msg)
         }
         let hasJailCard: boolean = false
-        g_state.Properties[Properties.GROUP_JAIL].properties.forEach(
-            (value: Properties.PropertyState, index: number) => {
+        g_state.Properties.state[Properties.GROUP_JAIL].properties.forEach(
+            (value: Properties.State, index: number) => {
                 if (value.owner == pId) {
                     hasJailCard = true
                 }
@@ -189,9 +189,8 @@ class InJailActionMenu extends ActionMenu {
     public actionA(): void {
         let p: Player = g_state.getCurrPlayer()
         if (p.JailTurns < 4) {
-            Board.draw(p.Location)
-            Board.direction = 1
-            Background.direction = 1
+            g_state.Board.draw(p.Location)
+            g_state.Board.Direction = 1
             p.startRoll()
             p.Status = PlayerStatus.RollingInJail
         }
@@ -210,9 +209,9 @@ class InJailActionMenu extends ActionMenu {
     public actionDown(): void {
         let p: Player = g_state.getCurrPlayer()
         let pId: number = g_state.CurrPlayer
-        let cards: Properties.PropertyState[] =
-            g_state.Properties[Properties.GROUP_JAIL].properties.filter(
-                (value: Properties.PropertyState, index: number) =>
+        let cards: Properties.State[] =
+            g_state.Properties.state[Properties.GROUP_JAIL].properties.filter(
+                (value: Properties.State, index: number) =>
                     value.owner == pId
             )
         if (cards.length > 0) {

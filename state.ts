@@ -5,10 +5,12 @@
  * Interface that can be translated to/from JSON.
  */
 interface IGameState {
+    board: number
     currPlayer: number
     gameMode: GameMode
     players: IPlayer[]
-    properties: Properties.PropertyGroupState[]
+    properties: Properties.GroupState[]
+    speedDie: boolean
 }
 
 class GameState {
@@ -18,18 +20,27 @@ class GameState {
     public testMode: boolean
 
     private actionMenu: ActionMenu
+    private board: Board
+    private boardIndex: number
     private currPlayer: number
     private gameMode: GameMode
     private monopolyStatus: Sprite = null
     private players: Player[]
-    private properties: Properties.PropertyGroupState[]
+    private properties: Properties.Properties
+    private speedDie: boolean
 
-    constructor(numPlayers: number = 0) {
+    constructor(numPlayers: number = 0, board: number = 0) {
         this.actionMenu = null
+        this.board = new Board(board)
+        this.boardIndex = board
         this.currPlayer = (numPlayers > 0 ? 1 : 0)
         this.gameMode = GameMode.NotReady
         this.initPlayers(numPlayers)
-        this.properties = Properties.buildFromState(null)
+        this.properties = {
+            info: Properties.PROPERTIES[this.boardIndex],
+            state: Properties.buildFromState(null, this.boardIndex),
+        }
+        this.speedDie = false
         this.testMode = false
     }
 
@@ -42,6 +53,27 @@ class GameState {
 
     public set ActionMenu(value: ActionMenu) {
         this.actionMenu = value
+    }
+
+    public get Board(): Board {
+        return this.board
+    }
+
+    public get BoardIndex(): number {
+        return this.boardIndex
+    }
+
+    public set BoardIndex(value: number) {
+        if (value == 0 || value == 1) {
+            if (value != this.boardIndex) {
+                this.board = new Board(value)
+                this.boardIndex = value
+                this.properties = {
+                    info: Properties.PROPERTIES[value],
+                    state: Properties.buildFromState(null, value),
+                }
+            }
+        }
     }
     
     public get CurrPlayer(): number {
@@ -74,8 +106,20 @@ class GameState {
         return this.players
     }
 
-    public get Properties(): Properties.PropertyGroupState[] {
+    public get Properties(): Properties.Properties {
         return this.properties
+    }
+
+    public get Spaces(): Space[] {
+        return this.board.BoardSpaces
+    }
+
+    public get SpeedDie(): boolean {
+        return this.speedDie
+    }
+
+    public set SpeedDie(value: boolean) {
+        this.speedDie = value
     }
 
     public get State(): IGameState {
@@ -83,10 +127,12 @@ class GameState {
         this.players.forEach((value: Player, index: number) =>
             playerStates.push(value.State))
         return {
+            board: this.boardIndex,
             currPlayer: this.currPlayer,
             gameMode: this.gameMode,
             players: playerStates,
-            properties: this.properties,
+            properties: this.properties.state,
+            speedDie: this.speedDie,
         }
     }
 
@@ -162,11 +208,13 @@ class GameState {
         if (typeof state != 'object') {
             return false
         }
+
         if (typeof state.gameMode == 'number') {
             this.gameMode = state.gameMode
         } else {
             this.gameMode = GameMode.NotReady
         }
+
         if (Array.isArray(state.players)) {
             this.players = []
             let playerList = <object[]>state.players
@@ -181,13 +229,34 @@ class GameState {
         } else {
             return false
         }
+
         if (typeof state.currPlayer == 'number' && state.currPlayer > 0 && state.currPlayer <= this.players.length) {
             this.currPlayer = state.currPlayer
         } else {
             this.currPlayer = 1
         }
+
+        if (typeof state.boardIndex == 'number' &&
+        (state.boardIndex == 0 || state.boardIndex == 1)) {
+            this.boardIndex = state.boardIndex
+        } else {
+            this.boardIndex = 0
+        }
+        this.board = new Board(this.boardIndex)
+
+        if (typeof state.speedDie == 'boolean') {
+            this.speedDie = state.speedDie
+        } else if (typeof state.speedDie == 'number') {
+            this.speedDie = (state.speedDie != 0)
+        } else {
+            this.speedDie = false
+        }
+        
         if (Array.isArray(state.properties)) {
-            this.properties = Properties.buildFromState(state.properties)
+            this.properties = {
+                info: Properties.PROPERTIES[this.boardIndex],
+                state: Properties.buildFromState(state.properties, this.boardIndex),
+            }
         }
         return true
     }
@@ -239,10 +308,17 @@ class GameState {
     public updateStatusSprite(): void {
         this.initStatusSprite()
         let i: Image = this.monopolyStatus.image
-        this.properties.forEach((pgs: Properties.PropertyGroupState, pgsIndex: number) => {
-            let pgi: Properties.PropertyGroupInfo = Properties.PROPERTIES[pgsIndex]
+        this.properties.state.forEach((pgs: Properties.GroupState, pgsIndex: number) => {
+            let pgi: Properties.GroupInfo = this.properties.info[pgsIndex]
             i.fillRect(pgsIndex * 4, 0, 3, 3, pgi.color)
-            i.fillRect(pgsIndex * 4, 4, 3, 3, Player.COLORS[pgs.owner])
+            if (pgs.isMonopolyOwned) {
+                i.fillRect(pgsIndex * 4, 4, 3, 3, Player.COLORS[pgs.owner])
+            } else if (pgs.canBuild) {
+                i.fillRect(pgsIndex * 4, 4, 3, 3, Color.White)
+                i.setPixel(pgsIndex * 4 + 1, 5, Player.COLORS[pgs.owner])
+            } else {
+                i.fillRect(pgsIndex * 4, 4, 3, 3, Player.COLORS[pgs.owner])
+            }
         })
     }
 
@@ -261,7 +337,7 @@ class GameState {
             this.monopolyStatus = sprites.create(image.create(44, 8), SpriteKind.Player)
         }
         this.monopolyStatus.left = 0
-        this.monopolyStatus.top = 30
+        this.monopolyStatus.bottom = 80
         this.monopolyStatus.z = Player.Z
         let i: Image = this.monopolyStatus.image
         i.fill(Color.Black)

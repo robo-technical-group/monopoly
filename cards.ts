@@ -11,6 +11,15 @@ namespace Cards {
         CollectFromEachPlayer,
     }
 
+    export enum CardLocations {
+        Boardwalk,
+        Illinois,
+        Jail,
+        Go,
+        Reading,
+        SaintCharles,
+    }
+
     interface Card {
         action: Action
         text: string
@@ -25,91 +34,91 @@ namespace Cards {
 
     const CARDS: Deck[] = [
         {
-            name: "Chance",
+            name: 'Chance',
             color: Color.Orange,
             cards: [
                 // Card zero is the get out of jail card.
                 {
-                    text: "Get out of jail free!",
+                    text: 'Get out of jail free!',
                     action: Action.GetOutOfJail,
                     values: [],
                 }, {
-                    text: "Advance to Illinois Avenue.",
+                    text: 'Advance to Illinois Avenue.',
                     action: Action.GoToSpace,
-                    values: [24,],
+                    values: [CardLocations.Illinois,],
                 }, {
-                    text: "Take a ride on the Reading.",
+                    text: 'Take a ride on the Reading.',
                     action: Action.GoToSpace,
-                    values: [5,],
+                    values: [CardLocations.Reading],
                 }, {
-                    text: "Make general repairs on your properties. Pay M25 per house and M100 per hotel.",
+                    text: 'Make general repairs on your properties. Pay M25 per house and M100 per hotel.',
                     action: Action.Repairs,
                     values: [25, 100,],
                 }, {
-                    text: "Pay poor tax of M15",
+                    text: 'Pay poor tax of M15',
                     action: Action.PayBank,
                     values: [15,],
                 }, {
-                    text: "Advance token to nearest utility. If owned, then throw dice and pay 10 times amount thrown.",
+                    text: 'Advance token to nearest utility. If owned, then throw dice and pay 10 times amount thrown.',
                     action: Action.GoToGroup,
                     values: [Properties.GROUP_UTIL,],
                 }, {
-                    text: "Take a walk on Boardwalk.",
+                    text: 'Take a walk on Boardwalk.',
                     action: Action.GoToSpace,
-                    values: [39,],
+                    values: [CardLocations.Boardwalk,],
                 }, {
-                    text: "Bank pays you dividend of M50.",
+                    text: 'Bank pays you dividend of M50.',
                     action: Action.BankPays,
                     values: [50,],
                 }, {
-                    text: "Go back 3 spaces.",
+                    text: 'Go back 3 spaces.',
                     action: Action.MoveBackward,
                     values: [3,],
                 }, {
-                    text: "You have been elected chairman of the board. Pay each player M50.",
+                    text: 'You have been elected chairman of the board. Pay each player M50.',
                     action: Action.PayEachPlayer,
                     values: [50,],
                 }, {
-                    text: "Go directly to jail! Do not pass Go. Do not collect M200.",
+                    text: 'Go directly to jail! Do not pass Go. Do not collect M200.',
                     action: Action.GoToSpace,
-                    values: [Board.JAIL_SPACE,],
+                    values: [CardLocations.Jail,],
                 }, {
-                    text: "Advance token to nearest railroad. Pay owner double.",
+                    text: 'Advance token to nearest railroad. Pay owner double.',
                     action: Action.GoToGroup,
                     values: [Properties.GROUP_RR,],
                 }, {
-                    text: "Advance token to nearest railroad. Pay owner double.",
+                    text: 'Advance token to nearest railroad. Pay owner double.',
                     action: Action.GoToGroup,
                     values: [Properties.GROUP_RR,],
                 }, {
-                    text: "Advance to Go!",
+                    text: 'Advance to Go!',
                     action: Action.GoToSpace,
-                    values: [Board.GO_SPACE,],
+                    values: [CardLocations.Go,],
                 }, {
-                    text: "Advance to Saint Charles Place.",
+                    text: 'Advance to Saint Charles Place.',
                     action: Action.GoToSpace,
-                    values: [11,],
+                    values: [CardLocations.SaintCharles,],
                 }, {
-                    text: "Your building and loan matures. Collect M150.",
+                    text: 'Your building and loan matures. Collect M150.',
                     action: Action.BankPays,
                     values: [150,],
                 }
             ],
         }, {
-            name: "Community Chest",
+            name: 'Community Chest',
             color: Color.Yellow,
             cards: [
                 // Card zero is the get out of jail card.
                 {
-                    text: "Get out of jail free!",
+                    text: 'Get out of jail free!',
                     action: Action.GetOutOfJail,
                     values: [],
                 }, {
-                    text: "Grand opera opening! Collect M50 from every player for opening night seats.",
+                    text: 'Grand opera opening! Collect M50 from every player for opening night seats.',
                     action: Action.CollectFromEachPlayer,
                     values: [50,],
                 }, {
-                    text: "You have won second prize in a beauty contest! Collect M10.",
+                    text: 'You have won second prize in a beauty contest! Collect M10.',
                     action: Action.BankPays,
                     values: [10,],
                 }, {
@@ -117,53 +126,53 @@ namespace Cards {
                     action: Action.PayBank,
                     values: [50,],
                 }, {
-                    text: "You are assessed street repairs. Pay M40 per house and M115 per hotel.",
+                    text: 'You are assessed street repairs. Pay M40 per house and M115 per hotel.',
                     action: Action.Repairs,
                     values: [40, 115,],
                 }, {
-                    text: "Go directly to jail! Do not pass Go. Do not collect M200.",
+                    text: 'Go directly to jail! Do not pass Go. Do not collect M200.',
                     action: Action.GoToSpace,
-                    values: [Board.JAIL_SPACE,],
+                    values: [CardLocations.Jail,],
                 }, {
-                    text: "Pay hospital M100",
+                    text: 'Pay hospital M100',
                     action: Action.PayBank,
                     values: [100,],
                 }, {
-                    text: "Income tax refund. Collect M20.",
+                    text: 'Income tax refund. Collect M20.',
                     action: Action.BankPays,
                     values: [20,],
                 }, {
-                    text: "Life insurance matures. Collect M100.",
+                    text: 'Life insurance matures. Collect M100.',
                     action: Action.BankPays,
                     values: [100,],
                 }, {
-                    text: "From sale of stock, you get M45.",
+                    text: 'From sale of stock, you get M45.',
                     action: Action.BankPays,
                     values: [45,],
                 }, {
-                    text: "Receive for services M25.",
+                    text: 'Receive for services M25.',
                     action: Action.BankPays,
                     values: [25,],
                 }, {
-                    text: "Bank error in your favor. Collect M200.",
+                    text: 'Bank error in your favor. Collect M200.',
                     action: Action.BankPays,
                     values: [200,],
                 }, {
-                    text: "You inherit M100.",
+                    text: 'You inherit M100.',
                     action: Action.BankPays,
                     values: [100,],
                 }, {
-                    text: "Pay school tax of M150.",
+                    text: 'Pay school tax of M150.',
                     action: Action.PayBank,
                     values: [150,],
                 }, {
-                    text: "Xmas fund matures. Collect M100.",
+                    text: 'Xmas fund matures. Collect M100.',
                     action: Action.BankPays,
                     values: [100,],
                 }, {
-                    text: "Advance to Go!",
+                    text: 'Advance to Go!',
                     action: Action.GoToSpace,
-                    values: [Board.GO_SPACE,],
+                    values: [CardLocations.Go,],
                 }
             ],
         }
@@ -176,7 +185,7 @@ namespace Cards {
         if (decks.length == 0) {
             initDecks()
         }
-        if (deckIndex[deck] == 0 && g_state.Properties[Properties.GROUP_JAIL].properties[deck].owner > 0) {
+        if (deckIndex[deck] == 0 && g_state.Properties.state[Properties.GROUP_JAIL].properties[deck].owner > 0) {
             // Jail card is owned; skip to next card.
             moveIndex(deck)
         }
@@ -203,34 +212,32 @@ namespace Cards {
                 break
 
             case Action.GetOutOfJail:
-                g_state.Properties[Properties.GROUP_JAIL].properties[deck].owner = playerId
+                g_state.Properties.state[Properties.GROUP_JAIL].properties[deck].owner = playerId
                 updatePlayerStatus()
                 break
 
             case Action.GoToGroup:
-                for (let i: number = 0; i < Board.BOARD.length; i++) {
-                    let space: Board.Space = Board.BOARD[i]
-                    if (space.spaceType == Board.SpaceType.Property &&
+                for (let i: number = 0; i < g_state.Board.BoardSpaces.length; i++) {
+                    let space: Space = g_state.Board.BoardSpaces[i]
+                    if (space.spaceType == SpaceType.Property &&
                         space.values[0] == card.values[0] &&
                         i > player.Location) {
                         player.Location = i
                         break
                     }
                 }
-                Board.direction = 1
-                Background.direction = 1
+                g_state.Board.Direction = 1
                 player.startAnimation(1)
                 player.Status = PlayerStatus.MovingForCard
                 player.PassedGo = false
                 break
 
             case Action.GoToSpace:
-                if (card.values[0] == Board.JAIL_SPACE) {
+                if (card.values[0] == CardLocations.Jail) {
                     player.goToJail()
                 } else {
-                    player.Location = card.values[0]
-                    Board.direction = 1
-                    Background.direction = 1
+                    player.Location = g_state.Board.getCardLocation(card.values[0])
+                    g_state.Board.Direction = 1
                     player.startAnimation(1)
                     // Not needed? player.Status = PlayerStatus.MovingForCard
                     player.Status = PlayerStatus.Moving
@@ -240,8 +247,7 @@ namespace Cards {
 
             case Action.MoveBackward:
                 player.changeLocation(0 - card.values[0])
-                Board.direction = -1
-                Background.direction = -1
+                g_state.Board.Direction = -1
                 player.startAnimation(-1)
                 // Not needed: player.Status = PlayerStatus.MovingForCard
                 player.Status = PlayerStatus.Moving
@@ -265,8 +271,8 @@ namespace Cards {
             case Action.Repairs:
                 let houses: number = 0
                 let hotels: number = 0
-                g_state.Properties.forEach((pgs: Properties.PropertyGroupState, index: number) => {
-                    pgs.properties.forEach((ps: Properties.PropertyState, index: number) => {
+                g_state.Properties.state.forEach((pgs: Properties.GroupState, index: number) => {
+                    pgs.properties.forEach((ps: Properties.State, index: number) => {
                         if (ps.houses == 5) {
                             hotels++
                         } else {

@@ -57,9 +57,8 @@ function pressA(player: number): void {
             DiceTests.diceTest.startRoll()
 
         case GameMode.BoardTest:
-            Board.direction = (Board.direction == 1 ? -1 : 1)
-            info.setScore(Board.direction)
-            Background.direction = Board.direction
+            g_state.Board.Direction = (g_state.Board.Direction == 1 ? -1 : 1)
+            info.setScore(g_state.Board.Direction)
             break
     }   // switch (g_state.Mode)
 }

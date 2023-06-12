@@ -105,7 +105,7 @@ class Player {
     }
 
     public set Location(value: number) {
-        if (value >=0 && value < Board.BOARD.length) {
+        if (value >= 0 && value < g_state.Board.BoardSpaces.length) {
             this.destSpace = value
         }
     }
@@ -219,10 +219,10 @@ class Player {
     public changeLocation(delta: number): void {
         this.destSpace += delta
         if (this.destSpace < 0) {
-            this.destSpace += Board.BOARD.length
+            this.destSpace += g_state.Board.BoardSpaces.length
         }
-        if (this.destSpace >= Board.BOARD.length) {
-            this.destSpace -= Board.BOARD.length
+        if (this.destSpace >= g_state.Board.BoardSpaces.length) {
+            this.destSpace -= g_state.Board.BoardSpaces.length
         }
     }
 
@@ -231,7 +231,7 @@ class Player {
         let y: number = property * 4 + 6
         if (group == 10) {
             // Jail card indicators go in the last column beneath utilities.
-            y += 8
+            y += 4 * g_state.Properties.info[Properties.GROUP_UTIL].properties.length
         }
         let i: Image = this.stats.image
         if (mortgaged) {
@@ -245,7 +245,7 @@ class Player {
     }
 
     public goToJail(): void {
-        this.destSpace = Board.JAIL_SPACE
+        this.destSpace = g_state.Board.Jail
         this.inJail = true
         this.jailTurns = 0
         this.doublesRolled = false

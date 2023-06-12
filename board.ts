@@ -57,29 +57,40 @@ namespace SpriteKind {
     export const BoardSpace = SpriteKind.create()
 }
 
-namespace Board {
-    export enum SpaceType {
-        Property,
-        Go,
-        Card,
-        Tax,
-        Jail,
-        Free,
-        GoToJail,
-        BusTicket,
-        Auction,
-        Gift,
-    }
+enum SpaceType {
+    Property,
+    Go,
+    Card,
+    Tax,
+    Jail,
+    Free,
+    GoToJail,
+    BusTicket,
+    Auction,
+    Gift,
+}
 
-    export interface Space {
-        image: Image
-        spaceType: SpaceType
-        values: number[]
-    }
+interface Space {
+    image: Image
+    spaceType: SpaceType
+    values: number[]
+}
 
-    const BOARDS: Space[][] = [
-    // Standard board
+class Board {
+    /**
+     * Public constants
+     */
+    public static readonly DICE_BEGIN_X: number = 10
+    public static readonly DICE_BEGIN_Y: number = 40
+    public static readonly DICE_END_X: number = 150
+    public static readonly DICE_END_Y: number = 40
+
+    /**
+     * Protected constants
+     */
+    protected static readonly BOARDS: Space[][] = [
     [
+    // Standard board
         // [0]
         {
             image: assets.animation`boardCorners`[0],
@@ -242,9 +253,8 @@ namespace Board {
             spaceType: SpaceType.Property,
             values: [7, 1,],
         },
-    ],
+    ], [
     // Mega board
-    [
         // [0]
         {
             image: assets.animation`boardCorners`[0],
@@ -457,38 +467,84 @@ namespace Board {
         },
     ],
     ]
+    protected static readonly BOARD_TOP: number = 80
+    protected static readonly MARGIN: number = 2
+    protected static readonly PLAYER_BOTTOM: number = 78
+    protected static readonly PLAYER_IN_JAIL_TOP: number = 0
+    protected static readonly PLAYER_IN_JAIL_X_DELTA: number = 0
+    protected static readonly SPEED: number = 1
+    protected static readonly Z: number = 10
 
-    // These will need to be refactored. Leave for now.
-    export const BOARD: Space[] = BOARDS[1]
-    export const GO_SPACE: number = 0
-    export const JAIL_SPACE: number = 10
+    protected board: Space[]
+    protected currSpace: number
+    protected direction: number
+    protected go: number
+    protected index: number
+    protected jail: number
+    protected spacesMoved: number
 
-    const BOARD_TOP: number = 80
-    export const DICE_BEGIN_X: number = 10
-    export const DICE_BEGIN_Y: number = 40
-    export const DICE_END_X: number = 150
-    export const DICE_END_Y: number = 40
-    const MARGIN: number = 2
-    const PLAYER_BOTTOM: number = 78
-    const PLAYER_IN_JAIL_TOP: number = 0
-    const PLAYER_IN_JAIL_X_DELTA: number = 0
-    const SPEED: number = 1
-    const Z: number = 10
+    constructor(board: number = 0) {
+        this.index = board
+        this.board = Board.BOARDS[board]
+        this.go = 0
+        switch (board) {
+            case 0:
+                this.jail = 10
+                break
 
-    export let currSpace: number = -1
-    export let direction: number = 1
-    export let spacesMoved: number = 0
-    
-    export function draw(location: number): void {
-        spacesMoved = 0
-        if (location >= BOARD.length) {
-            location -= BOARD.length
+            case 1:
+                this.jail = 13
+                break
+        }
+        this.currSpace = -1
+        this.direction = 1
+        this.spacesMoved = 0
+    }
+
+    /**
+     * Public properties
+     */
+    public get BoardSpaces(): Space[] {
+        return this.board
+    }
+
+    public get CurrSpace(): number {
+        return this.currSpace
+    }
+
+    public get Direction(): number {
+        return this.direction
+    }
+
+    public set Direction(value: number) {
+        this.direction = value
+    }
+
+    public get Go(): number {
+        return this.go
+    }
+
+    public get Jail(): number {
+        return this.jail
+    }
+
+    public get SpacesMoved(): number {
+        return this.spacesMoved
+    }
+
+    /**
+     * Public methods
+     */
+    public draw(location: number): void {
+        this.spacesMoved = 0
+        if (location >= this.board.length) {
+            location -= this.board.length
         }
         if (location < 0) {
-            location += BOARD.length
+            location += this.board.length
         }
 
-        currSpace = location
+        this.currSpace = location
         // Remove all existing board sprites.
         for (let s of sprites.allOfKind(SpriteKind.BoardSpace)) {
             s.destroy()
@@ -496,7 +552,7 @@ namespace Board {
 
         // Place current location in center of moving board.
         let x: number = 80
-        let currSprite: Sprite = drawSprite(location, x)
+        let currSprite: Sprite = this.drawSprite(location, x)
         let s: Sprite = null
 
         // Draw current player.
@@ -504,7 +560,7 @@ namespace Board {
         if (p != null) {
             s = p.Sprite
             s.x = x
-            s.bottom = PLAYER_BOTTOM
+            s.bottom = Board.PLAYER_BOTTOM
             s.z = Player.Z_CURRENT
             p.showSprite()
         }
@@ -514,13 +570,13 @@ namespace Board {
         let index: number = location
         let left: number = s.left
         while (left < 160) {
-            x = s.right + MARGIN
+            x = s.right + Board.MARGIN
             index--
             if (index < 0) {
-                index = BOARD.length - 1
+                index = this.board.length - 1
             }
-            x += Math.floor(BOARD[index].image.width / 2)
-            s = drawSprite(index, x)
+            x += Math.floor(this.board[index].image.width / 2)
+            s = this.drawSprite(index, x)
             left = s.left
         }
 
@@ -529,34 +585,80 @@ namespace Board {
         index = location
         let right: number = s.right
         while (right > 0) {
-            x = s.left - MARGIN
+            x = s.left - Board.MARGIN
             index++
-            if (index >= BOARD.length) {
+            if (index >= this.board.length) {
                 index = 0
             }
-            x -= Math.floor(BOARD[index].image.width / 2)
-            s = drawSprite(index, x)
+            x -= Math.floor(this.board[index].image.width / 2)
+            s = this.drawSprite(index, x)
             right = s.right
         }
     }
 
-    function drawSprite(location: number, x: number): Sprite {
-        let s: Sprite = sprites.create(BOARD[location].image,
-            SpriteKind.BoardSpace
-        )
-        s.data['boardIndex'] = location
-        s.setFlag(SpriteFlag.Ghost, true)
-        s.x = x
-        s.top = BOARD_TOP
-        s.z = Z
-        if (g_state.CurrPlayer > 0) {
-            showPlayer(location, x)
-        }
+    public getCardLocation(location: Cards.CardLocations): number {
+        let toReturn: number = -1
+        switch (location) {
+            case Cards.CardLocations.Boardwalk:
+                toReturn = this.board.length - 1
+                break
 
-        return s
+            case Cards.CardLocations.Illinois:
+                switch (this.index) {
+                    case 0:
+                        toReturn = 24
+                        break
+
+                    case 1:
+                        toReturn = 30
+                        break
+                }
+                break
+
+            case Cards.CardLocations.Jail:
+                switch (this.index) {
+                    case 0:
+                        toReturn = 10
+                        break
+
+                    case 1:
+                        toReturn = 13
+                        break
+                }
+                break
+
+            case Cards.CardLocations.Go:
+                toReturn = 0
+                break
+
+            case Cards.CardLocations.Reading:
+                switch (this.index) {
+                    case 0:
+                        toReturn = 5
+                        break
+
+                    case 1:
+                        toReturn = 6
+                        break
+                }
+                break
+
+            case Cards.CardLocations.SaintCharles:
+                switch (this.index) {
+                    case 0:
+                        toReturn = 11
+                        break
+
+                    case 1:
+                        toReturn = 16
+                        break
+                }
+                break
+        }
+        return toReturn
     }
 
-    export function getXCoordinate(location: number): number {
+    public getXCoordinate(location: number): number {
         let s: Sprite[] = sprites.allOfKind(SpriteKind.BoardSpace).filter(
             (value: Sprite, index: number) => value.data['boardIndex'] == location
         )
@@ -567,24 +669,43 @@ namespace Board {
         }
     }
 
-    export function locationVisible(location: number): boolean {
+    public locationVisible(location: number): boolean {
         return sprites.allOfKind(SpriteKind.BoardSpace).filter(
             (value: Sprite, index: number) => value.data['boardIndex'] == location
         ).length > 0
     }
 
-    export function move(): void {
-        if (direction >= 0) {
-            moveForward()
+    public move(): void {
+        if (this.direction >= 0) {
+            this.moveForward()
         } else {
-            moveBackward()
+            this.moveBackward()
         }
-        updateLocation()
+        this.updateLocation()
     }
 
-    function moveBackward(): void {
+    /**
+     * Protected methods
+     */
+    protected drawSprite(location: number, x: number): Sprite {
+        let s: Sprite = sprites.create(this.board[location].image,
+            SpriteKind.BoardSpace
+        )
+        s.data['boardIndex'] = location
+        s.setFlag(SpriteFlag.Ghost, true)
+        s.x = x
+        s.top = Board.BOARD_TOP
+        s.z = Board.Z
+        if (g_state.CurrPlayer > 0) {
+            this.showPlayer(location, x)
+        }
+
+        return s
+    }
+
+    protected moveBackward(): void {
         for (let boardSprite of sprites.allOfKind(SpriteKind.BoardSpace)) {
-            boardSprite.x -= SPEED
+            boardSprite.x -= Board.SPEED
             if (boardSprite.right < 0) {
                 // Find sprite furthest to the right.
                 let rightX: number = 0
@@ -597,21 +718,21 @@ namespace Board {
                 }
                 let boardIndex: number = rightIndex - 1
                 if (boardIndex < 0) {
-                    boardIndex = BOARD.length - 1
+                    boardIndex = this.board.length - 1
                 }
-                boardSprite.setImage(BOARD[boardIndex].image)
+                boardSprite.setImage(this.board[boardIndex].image)
                 boardSprite.data['boardIndex'] = boardIndex
-                boardSprite.left = rightX + MARGIN
+                boardSprite.left = rightX + Board.MARGIN
                 if (g_state.CurrPlayer > 0) {
-                    showPlayer(boardIndex, boardSprite.x)
+                    this.showPlayer(boardIndex, boardSprite.x)
                 }
             }
         }
     }
 
-    function moveForward(): void {
+    protected moveForward(): void {
         for (let boardSprite of sprites.allOfKind(SpriteKind.BoardSpace)) {
-            boardSprite.x += SPEED
+            boardSprite.x += Board.SPEED
             if (boardSprite.left > 160) {
                 // Find sprite furthest to the left.
                 let leftX: number = 160
@@ -623,38 +744,38 @@ namespace Board {
                     }
                 }
                 let boardIndex: number = leftIndex + 1
-                if (boardIndex >= BOARD.length) {
+                if (boardIndex >= this.board.length) {
                     boardIndex = 0
                 }
-                boardSprite.setImage(BOARD[boardIndex].image)
+                boardSprite.setImage(this.board[boardIndex].image)
                 boardSprite.data['boardIndex'] = boardIndex
-                boardSprite.right = leftX - MARGIN
+                boardSprite.right = leftX - Board.MARGIN
                 if (g_state.CurrPlayer > 0) {
-                    showPlayer(boardIndex, boardSprite.x)
+                    this.showPlayer(boardIndex, boardSprite.x)
                 }
             }
         }
     }
 
-    function showPlayer(location: number, x: number): void {
+    protected showPlayer(location: number, x: number): void {
         // Draw player if at this location.
         g_state.Players.forEach((p: Player, index: number) => {
             if (index + 1 != g_state.CurrPlayer && p.Location == location) {
                 let s: Sprite = p.Sprite
                 s.x = x
-                s.bottom = PLAYER_BOTTOM
+                s.bottom = Board.PLAYER_BOTTOM
                 s.z = Player.Z
                 p.showSprite()
             }
         })
     }
 
-    function updateLocation(): void {
+    protected updateLocation(): void {
         // Find the current space sprite.
         let currSprite: Sprite =
             sprites.allOfKind(SpriteKind.BoardSpace).find(
                 (value: Sprite, index: number) =>
-                    value.data['boardIndex'] == Board.currSpace
+                    value.data['boardIndex'] == this.currSpace
             )
         if (currSprite == null) {
             // Current location was not found among sprites.
@@ -662,21 +783,21 @@ namespace Board {
             return
         }
         if (
-            (direction >= 0 && currSprite.left + MARGIN >= 80) ||
-            (direction < 0 && currSprite.right + MARGIN <= 80)
+            (this.direction >= 0 && currSprite.left + Board.MARGIN >= 80) ||
+            (this.direction < 0 && currSprite.right + Board.MARGIN <= 80)
         ) {
-            if (direction >= 0) {
-                currSpace++
-                if (currSpace >= BOARD.length) {
-                    currSpace = 0
+            if (this.direction >= 0) {
+                this.currSpace++
+                if (this.currSpace >= this.board.length) {
+                    this.currSpace = 0
                 }
             } else {
-                currSpace--
-                if (currSpace < 0) {
-                    currSpace = BOARD.length - 1
+                this.currSpace--
+                if (this.currSpace < 0) {
+                    this.currSpace = this.board.length - 1
                 }
             }
-            spacesMoved++
+            this.spacesMoved++
         }
     }
 }
@@ -688,7 +809,7 @@ namespace BoardTests {
         let bg: Image = image.create(160, 120)
         bg.drawLine(80, 0, 80, 120, Color.Yellow)
         scene.setBackgroundImage(bg)
-        Board.draw(0)
+        g_state.Board.draw(0)
         currSpace = textsprite.create('0')
         currSpace.left = 0
         currSpace.top = 0

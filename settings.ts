@@ -5,23 +5,32 @@ namespace GameSettings {
     /**
      * Constants
      */
+    // Milliseconds for a bank bump to be visible.
     export const BANK_BUMP_VISIBLE: number = 2000
     // export const CURRENCY_SYMBOL: string = '$'
     export const CURRENCY_SYMBOL: string = 'M'
     export const CURRENCY_IS_PREFIX: boolean = true
-    export const GO_VALUE: number = 200
-    export const JAIL_FEE: number = 50
+    export const GO_VALUE: number = 200 // Not needed? Part of board.
+    export const JAIL_FEE: number = 50 // Not needed? Part of board.
     const TEXT_DONE = 'Start game!'
     const TEXT_HARDWARE_CONTROLLER: string = 'You must use a shared controller when playing this game on hardware.'
     const TEXT_ONE_PLAYER: string = 'This game does not have AI players yet. A one-player game will never end.'
     const TEXT_SETTINGS_HEADLINES: string[] = ['Game Options',]
+    const TEXT_SETTINGS_BOARD_TAB: string = 'Board size'
+    const TEXT_SETTINGS_BOARD: string[][] = [
+        ['Standard board', 'Mega board',],
+    ]
     const TEXT_SETTINGS_PLAYERS_TAB: string = 'Players'
     const TEXT_SETTINGS_PLAYERS: string[][] = [
-        ['1 player', '2 players', '3 players', '4 players'],
+        ['1 player', '2 players', '3 players', '4 players,'],
     ]
     const TEXT_SETTINGS_MULTIPLAYER_TAB: string = 'Multiplayer'
     export const TEXT_SETTINGS_MULTIPLAYER: string[][] = [
-        ['Shared controller', 'Online/Multiple controllers'],
+        ['Shared controller', 'Online/Multiple controllers',],
+    ]
+    const TEXT_SETTINGS_SPEED_DIE_TAB: string = 'Dice'
+    const TEXT_SETTINGS_SPEED_DIE: string[][] = [
+        ['Standard dice', 'Add speed die',],
     ]
 
     /**
@@ -48,15 +57,24 @@ namespace GameSettings {
         settingsScreens.doneText = TEXT_DONE
         settingsScreens.addScreen(TEXT_SETTINGS_PLAYERS_TAB, TEXT_SETTINGS_PLAYERS, false)
         settingsScreens.addScreen(TEXT_SETTINGS_MULTIPLAYER_TAB, TEXT_SETTINGS_MULTIPLAYER, false)
+        settingsScreens.addScreen(TEXT_SETTINGS_SPEED_DIE_TAB, TEXT_SETTINGS_SPEED_DIE, false)
+        settingsScreens.addScreen(TEXT_SETTINGS_BOARD_TAB, TEXT_SETTINGS_BOARD, false)
 
-        // Default settings: two players, local for hardware, multiplayer otherwise.
+        /**
+         * Default settings:
+         * - Two players.
+         * - Local for hardware, multiplayer otherwise.
+         * - No speed die.
+         * - Standard board.
+         */
         settingsScreens.setSelectionForScreen(0, 0, 1)
         if (HARDWARE) {
             settingsScreens.setSelectionForScreen(1, 0, 0)
-
         } else {
             settingsScreens.setSelectionForScreen(1, 0, 1)
         }
+        settingsScreens.setSelectionForScreen(2, 0, 0)
+        settingsScreens.setSelectionForScreen(3, 0, 0)
     }
 
     export function collect(): void {
