@@ -45,6 +45,7 @@
  *       - [X] Add speed die.
  *       - [ ] Add bus tickets.
  *       - [X] Add game settings.
+ *       - [ ] Add train depots.
  * - [X] Refactor board and properties.
  * - [X] Move (most) strings to central location.
  */

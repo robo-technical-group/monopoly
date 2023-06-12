@@ -20,6 +20,10 @@ namespace GameSettings {
     const TEXT_SETTINGS_BOARD: string[][] = [
         ['Standard board', 'Mega board',],
     ]
+    const TEXT_SETTINGS_DEPOTS_TAB: string = 'Depots'
+    const TEXT_SETTINGS_DEPOTS: string[][] = [
+        ['No train depots', 'Add train depots']
+    ]
     const TEXT_SETTINGS_PLAYERS_TAB: string = 'Players'
     const TEXT_SETTINGS_PLAYERS: string[][] = [
         ['1 player', '2 players', '3 players', '4 players,'],
@@ -59,6 +63,7 @@ namespace GameSettings {
         settingsScreens.addScreen(TEXT_SETTINGS_MULTIPLAYER_TAB, TEXT_SETTINGS_MULTIPLAYER, false)
         settingsScreens.addScreen(TEXT_SETTINGS_SPEED_DIE_TAB, TEXT_SETTINGS_SPEED_DIE, false)
         settingsScreens.addScreen(TEXT_SETTINGS_BOARD_TAB, TEXT_SETTINGS_BOARD, false)
+        settingsScreens.addScreen(TEXT_SETTINGS_DEPOTS_TAB, TEXT_SETTINGS_DEPOTS, false)
 
         /**
          * Default settings:
@@ -66,6 +71,7 @@ namespace GameSettings {
          * - Local for hardware, multiplayer otherwise.
          * - No speed die.
          * - Standard board.
+         * - No train depots.
          */
         settingsScreens.setSelectionForScreen(0, 0, 1)
         if (HARDWARE) {
@@ -75,6 +81,7 @@ namespace GameSettings {
         }
         settingsScreens.setSelectionForScreen(2, 0, 0)
         settingsScreens.setSelectionForScreen(3, 0, 0)
+        settingsScreens.setSelectionForScreen(4, 0, 0)
     }
 
     export function collect(): void {
@@ -90,6 +97,7 @@ namespace GameSettings {
         g_state.SpeedDie = (settingsScreens.getSelectionForScreen(2, 0) == 1)
         g_state.BoardIndex = settingsScreens.getSelectionForScreen(3, 0)
         g_state.NumPlayers = settingsScreens.getSelectionForScreen(0, 0) + 1
+        g_state.Depots = (settingsScreens.getSelectionForScreen(4, 0) == 1)
     }
 
     export function start(): void {

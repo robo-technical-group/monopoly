@@ -565,6 +565,9 @@ namespace Properties {
                         pgs.isMonopolyOwned = true
                     }
                 }
+                if (index == GROUP_RR && g_state.Depots) {
+                    pgs.canBuild = true
+                }
             })
         } else {
             state.forEach((pgs: GroupState, index: number) => {

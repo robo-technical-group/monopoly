@@ -8,6 +8,7 @@ interface IGameState {
     auctionQueue: number[]
     board: number
     currPlayer: number
+    depots: boolean
     gameMode: GameMode
     players: IPlayer[]
     properties: Properties.GroupState[]
@@ -26,6 +27,7 @@ class GameState {
     protected board: Board
     protected boardIndex: number
     protected currPlayer: number
+    protected depots: boolean
     protected gameMode: GameMode
     protected monopolyStatus: Sprite
     protected players: Player[]
@@ -38,6 +40,7 @@ class GameState {
         this.board = new Board(board)
         this.boardIndex = board
         this.currPlayer = (numPlayers > 0 ? 1 : 0)
+        this.depots = false
         this.gameMode = GameMode.NotReady
         this.initPlayers(numPlayers)
         this.monopolyStatus = null
@@ -92,6 +95,14 @@ class GameState {
         }
     }
 
+    public get Depots(): boolean {
+        return this.depots
+    }
+
+    public set Depots(value: boolean) {
+        this.depots = value
+    }
+
     public get Mode(): GameMode {
         return this.gameMode
     }
@@ -136,6 +147,7 @@ class GameState {
             auctionQueue: this.auctionQueue,
             board: this.boardIndex,
             currPlayer: this.currPlayer,
+            depots: this.depots,
             gameMode: this.gameMode,
             players: playerStates,
             properties: this.properties.state,
@@ -267,6 +279,14 @@ class GameState {
             this.speedDie = (state.speedDie != 0)
         } else {
             this.speedDie = false
+        }
+
+        if (typeof state.depots == 'boolean') {
+            this.depots = state.depots
+        } else if (typeof state.depots == 'number') {
+            this.depots = (state.depots != 0)
+        } else {
+            this.depots = false
         }
         
         if (Array.isArray(state.properties)) {
