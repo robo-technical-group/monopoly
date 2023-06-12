@@ -3,12 +3,14 @@
  */
 function mainButtonHandler(button: ControllerButton) {
     let p: Player = g_state.getCurrPlayer()
+    /*
     if (p.Status == PlayerStatus.ActionMenu && g_state.ActionMenu != null) {
         g_state.ActionMenu.handleButton(button)
         if (g_state.ActionMenu.Done) {
             g_state.ActionMenu.hide()
         }
     } 
+    */
 }
 
 function pressA(player: number): void {

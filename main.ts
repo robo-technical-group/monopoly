@@ -133,7 +133,7 @@ function updatePlayers(): void {
             if (g_state.Board.SpacesMoved > 0 && g_state.Board.CurrSpace == g_state.Board.Go && !p.PassedGo) {
                 p.PassedGo = true
                 p.changeBank(GameSettings.GO_VALUE)
-                updatePlayerStatus()
+                g_state.updatePlayerStatus()
             }
             let spaces: number = p.Location - g_state.Board.CurrSpace
             if (g_state.Board.Direction < 0) {
@@ -157,32 +157,6 @@ function updatePlayers(): void {
                 }
             }
         }
-    }
-}
-
-function updatePlayerStatus(): void {
-    let x: number = 0
-    let y: number = 0
-    g_state.Players.forEach((value: Player, index: number) => {
-        value.initStats()
-        value.showStats(x, y)
-        x += 40
-    })
-    let propertyState: Properties.GroupState[] = g_state.Properties.state
-    g_state.Properties.info.forEach((pgi: Properties.GroupInfo, pgiIndex: number) => {
-        pgi.properties.forEach((prop: Properties.Info, propIndex: number) => {
-            g_state.Players.forEach((p: Player, playerIndex: number) => {
-                let ps: Properties.State = propertyState[pgiIndex].properties[propIndex]
-                if (ps.owner == playerIndex + 1) {
-                    p.drawStatus(pgiIndex, propIndex, pgi.color, ps.isMortgaged)
-                } else {
-                    p.drawStatus(pgiIndex, propIndex, Properties.COLOR_UNOWNED, false)
-                }
-            })
-        })
-    })
-    if (g_state.testMode) {
-        g_state.updateStatusSprite()
     }
 }
 

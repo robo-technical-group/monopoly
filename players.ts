@@ -12,6 +12,7 @@ interface IPlayer {
     avatar: number
     bank: number
     controllerId: number
+    card: number[]
     inJail: boolean
     jailTurns: number
     location: number
@@ -28,23 +29,25 @@ class Player {
     public static readonly Z: number = 20
     public static readonly Z_CURRENT: number = 21
 
-    private static readonly TEXT_PLAYER: string = 'Player'
+    protected static readonly TEXT_PLAYER: string = 'Player'
 
-    private avatar: number
-    private bank: number
-    private controllerId: number
-    private destSpace: number
-    private dice: Dice
-    private doublesRolled: boolean
-    private inJail: boolean
-    private jailTurns: number
-    private name: string
-    private passedGo: boolean
-    private skip: boolean
-    private sprite: Sprite
-    private status: PlayerStatus
-    private stats: Sprite
-    private turnCount: number
+    protected avatar: number
+    protected bank: number
+    protected card: number[]
+    protected controllerId: number
+    protected destSpace: number
+    protected dice: Dice
+    protected doublesRolled: boolean
+    protected inJail: boolean
+    protected jailTurns: number
+    protected name: string
+    protected passedGo: boolean
+    protected speedDieValue: number
+    protected skip: boolean
+    protected sprite: Sprite
+    protected status: PlayerStatus
+    protected stats: Sprite
+    protected turnCount: number
 
     constructor(controllerId: number = 0) {
         this.avatar = -1
@@ -55,6 +58,7 @@ class Player {
         this.controllerId = controllerId
         this.name = ''
         this.skip = false
+        this.speedDieValue = 0
         this.sprite = null
         this.status = PlayerStatus.WaitingForTurn
         this.stats = null
@@ -62,6 +66,7 @@ class Player {
         this.passedGo = false
         this.inJail = false
         this.jailTurns = 0
+        this.card = []
     }
 
     /**
@@ -88,6 +93,7 @@ class Player {
 
     public set Bank(value: number) {
         this.bank = value
+        this.printBank()
     }
 
     public get Dice(): Dice {
@@ -156,6 +162,7 @@ class Player {
         return {
             avatar: this.avatar,
             bank: this.bank,
+            card: this.card,
             controllerId: this.controllerId,
             inJail: this.inJail,
             jailTurns: this.jailTurns,
@@ -201,6 +208,7 @@ class Player {
      */
     public changeBank(delta: number): void {
         this.bank += delta
+        this.printBank()
         if (this.stats != null) {
             let text: string =
                 (delta < 0 ? '' : '+') + delta.toString()
@@ -284,13 +292,7 @@ class Player {
         let i: Image = this.stats.image
         i.fill(Color.Black)
         i.print(this.name, 0, 0, Color.Yellow, image.font5)
-        if (GameSettings.CURRENCY_IS_PREFIX) {
-            i.print(GameSettings.CURRENCY_SYMBOL, 0, 25, Color.BrightGreen, image.font5)
-            i.print(this.bank.toString(), 6, 25, Color.White, image.font5)
-        } else {
-            i.print(this.bank.toString(), 0, 25, Color.White, image.font5)
-            i.print(GameSettings.CURRENCY_SYMBOL, this.bank.toString().length * 6, 25, Color.BrightGreen, image.font5)
-        }
+        this.printBank()
     }
 
     public loadState(state: any): boolean {
@@ -344,6 +346,15 @@ class Player {
             this.skip = state.skip
         } else if (typeof state.skip == 'number') {
             this.skip = (state.skip != 0)
+        }
+
+        this.card = []
+        if (Array.isArray(state.card) &&
+        (<number[]>state.card).length > 0 &&
+        typeof state.card[0] == 'number') {
+            for (let n of <number[]>state.card) {
+                this.card.push(n)
+            }
         }
         
         return true
@@ -416,7 +427,7 @@ class Player {
         this.dice.setStartLocation(Board.DICE_BEGIN_X, Board.DICE_BEGIN_Y)
         this.dice.setStopLocation(Board.DICE_END_X, Board.DICE_END_Y)
         this.dice.startRoll()
-        this.status = PlayerStatus.Moving
+        this.status = PlayerStatus.ProcessingTurn
     }
 
     public startTurn(): void {
@@ -432,6 +443,21 @@ class Player {
     /**
      * Protected methods
      */
+    protected printBank(): void {
+        if (this.stats == null) {
+            return
+        }
+        let i: Image = this.stats.image
+        i.fillRect(0, 25, i.width, 6, Color.Black)
+        if (GameSettings.CURRENCY_IS_PREFIX) {
+            i.print(GameSettings.CURRENCY_SYMBOL, 0, 25, Color.BrightGreen, image.font5)
+            i.print(this.bank.toString(), 6, 25, Color.White, image.font5)
+        } else {
+            i.print(this.bank.toString(), 0, 25, Color.White, image.font5)
+            i.print(GameSettings.CURRENCY_SYMBOL, this.bank.toString().length * 6, 25, Color.BrightGreen, image.font5)
+        }
+    }
+
     protected setDefaultName(): void {
         this.name = Player.TEXT_PLAYER + ' ' + this.controllerId
     }

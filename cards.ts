@@ -197,7 +197,6 @@ namespace Cards {
         switch (card.action) {
             case Action.BankPays:
                 player.changeBank(card.values[0])
-                updatePlayerStatus()
                 break
 
             case Action.CollectFromEachPlayer:
@@ -208,12 +207,11 @@ namespace Cards {
                         g_state.Players[i].changeBank(0 - card.values[0])
                     }
                 }
-                updatePlayerStatus()
                 break
 
             case Action.GetOutOfJail:
                 g_state.Properties.state[Properties.GROUP_JAIL].properties[deck].owner = playerId
-                updatePlayerStatus()
+                g_state.updatePlayerStatus()
                 break
 
             case Action.GoToGroup:
@@ -228,7 +226,7 @@ namespace Cards {
                 }
                 g_state.Board.Direction = 1
                 player.startAnimation(1)
-                player.Status = PlayerStatus.MovingForCard
+                // player.Status = PlayerStatus.MovingByCard
                 player.PassedGo = false
                 break
 
@@ -240,7 +238,7 @@ namespace Cards {
                     g_state.Board.Direction = 1
                     player.startAnimation(1)
                     // Not needed? player.Status = PlayerStatus.MovingForCard
-                    player.Status = PlayerStatus.Moving
+                    // player.Status = PlayerStatus.MovingByCard
                     player.PassedGo = false
                 }
                 break
@@ -250,7 +248,7 @@ namespace Cards {
                 g_state.Board.Direction = -1
                 player.startAnimation(-1)
                 // Not needed: player.Status = PlayerStatus.MovingForCard
-                player.Status = PlayerStatus.Moving
+                // player.Status = PlayerStatus.MovingByCard
                 break
 
             case Action.PayBank:
@@ -265,7 +263,6 @@ namespace Cards {
                         g_state.Players[i].changeBank(card.values[0])
                     }
                 }
-                updatePlayerStatus()
                 break
 
             case Action.Repairs:

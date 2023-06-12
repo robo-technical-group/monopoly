@@ -5,6 +5,7 @@
  * Interface that can be translated to/from JSON.
  */
 interface IGameState {
+    auctionQueue: number[]
     board: number
     currPlayer: number
     gameMode: GameMode
@@ -14,24 +15,26 @@ interface IGameState {
 }
 
 class GameState {
-    private static readonly KEY_PREFIX: string = 'mpy_'
-    private static readonly SAVE_TEXT: string = 'SAVE GAME'
-    private static readonly STARTING_BALANCES: number[] = [1500, 2500,]
+    protected static readonly KEY_PREFIX: string = 'mpy_'
+    protected static readonly SAVE_TEXT: string = 'SAVE GAME'
+    protected static readonly STARTING_BALANCES: number[] = [1500, 2500,]
 
     public testMode: boolean
 
-    private actionMenu: ActionMenu
-    private board: Board
-    private boardIndex: number
-    private currPlayer: number
-    private gameMode: GameMode
-    private monopolyStatus: Sprite
-    private players: Player[]
-    private properties: Properties.Properties
-    private speedDie: boolean
+    protected actionMenu: ActionMenu
+    protected auctionQueue: number[]
+    protected board: Board
+    protected boardIndex: number
+    protected currPlayer: number
+    protected gameMode: GameMode
+    protected monopolyStatus: Sprite
+    protected players: Player[]
+    protected properties: Properties.Properties
+    protected speedDie: boolean
 
     constructor(numPlayers: number = 0, board: number = 0) {
         this.actionMenu = null
+        this.auctionQueue = []
         this.board = new Board(board)
         this.boardIndex = board
         this.currPlayer = (numPlayers > 0 ? 1 : 0)
@@ -130,6 +133,7 @@ class GameState {
         this.players.forEach((value: Player, index: number) =>
             playerStates.push(value.State))
         return {
+            auctionQueue: this.auctionQueue,
             board: this.boardIndex,
             currPlayer: this.currPlayer,
             gameMode: this.gameMode,
@@ -271,6 +275,16 @@ class GameState {
                 state: Properties.buildFromState(state.properties, this.boardIndex),
             }
         }
+
+        this.auctionQueue = []
+        if (Array.isArray(state.auctionQueue) &&
+        (<number[]>state.auctionQueue).length > 0 &&
+        typeof state.auctionQueue[0] == 'number') {
+            for (let n of <number[]>state.auctionQueue) {
+                this.auctionQueue.push(n)
+            }
+        }
+        
         return true
     }
 
@@ -315,6 +329,31 @@ class GameState {
         return settings.list(GameState.KEY_PREFIX).length > 0
     }
 
+    public updatePlayerStatus(): void {
+        let x: number = 0
+        let y: number = 0
+        this.players.forEach((value: Player, index: number) => {
+            value.initStats()
+            value.showStats(x, y)
+            x += 40
+        })
+        this.properties.info.forEach((pgi: Properties.GroupInfo, pgiIndex: number) => {
+            pgi.properties.forEach((prop: Properties.Info, propIndex: number) => {
+                this.players.forEach((p: Player, playerIndex: number) => {
+                    let ps: Properties.State = this.properties.state[pgiIndex].properties[propIndex]
+                    if (ps.owner == playerIndex + 1) {
+                        p.drawStatus(pgiIndex, propIndex, pgi.color, ps.isMortgaged)
+                    } else {
+                        p.drawStatus(pgiIndex, propIndex, Properties.COLOR_UNOWNED, false)
+                    }
+                })
+            })
+        })
+        if (this.testMode) {
+            this.updateStatusSprite()
+        }
+    }
+
     /**
      * For testing only. Displays status of all monopolies.
      */
@@ -336,9 +375,9 @@ class GameState {
     }
 
     /**
-     * Private methods
+     * protected methods
      */
-    private initPlayers(numPlayers: number): void {
+    protected initPlayers(numPlayers: number): void {
         this.players = []
         for (let i: number = 0; i < numPlayers; i++) {
             let p: Player = new Player(i + 1)
@@ -347,7 +386,7 @@ class GameState {
         }
     }
 
-    private initStatusSprite(): void {
+    protected initStatusSprite(): void {
         if (this.monopolyStatus == null) {
             this.monopolyStatus = sprites.create(image.create(44, 8), SpriteKind.Player)
         }

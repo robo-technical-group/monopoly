@@ -66,7 +66,7 @@ abstract class ActionMenu {
         msgSprite.left = 30
         msgSprite.top = 32
         msgSprite.setKind(SpriteKind.ActionMenu)
-        p.Status = PlayerStatus.ActionMenu
+        // p.Status = PlayerStatus.ActionMenu
         g_state.Mode = priorMode
     }
 
@@ -183,7 +183,7 @@ class InJailActionMenu extends ActionMenu {
             g_state.Board.draw(p.Location)
             g_state.Board.Direction = 1
             p.startRoll()
-            p.Status = PlayerStatus.RollingInJail
+            // p.Status = PlayerStatus.RollingInJail
         }
         this.done = true
     }

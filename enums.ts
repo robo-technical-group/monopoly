@@ -54,9 +54,6 @@ enum GameMode {
 }   // GameMode
 
 enum PlayerStatus {
-    ActionMenu,
-    Moving,
-    MovingForCard,
-    RollingInJail,
+    ProcessingTurn,
     WaitingForTurn,
 }
