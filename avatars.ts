@@ -178,7 +178,7 @@ namespace Avatar {
         }
     }
 
-    export function initSelection(): void {
+    function initSelection(): void {
         selection.currPlayer = 1
         selection.selectedAvatar = 0
         selection.header = textsprite.create(' ', 0, Color.Yellow)
@@ -197,6 +197,23 @@ namespace Avatar {
         selection.right.setPosition(120, 60)
         selection.right.setFlag(SpriteFlag.Ghost, true)
         scene.setBackgroundColor(Color.Wine)
+    }
+
+    export function select(): void {
+        g_state.Players[selection.currPlayer - 1].Avatar = selection.selectedAvatar
+        if (selection.currPlayer < g_state.NumPlayers) {
+            selection.currPlayer++
+            g_state.Players[selection.currPlayer - 1].promptForName()
+            updateSelection()
+        } else {
+            selection.header.destroy()
+            selection.footer1.destroy()
+            selection.footer2.destroy()
+            selection.left.destroy()
+            selection.front.destroy()
+            selection.right.destroy()
+            FirstRoll.setup()
+        }
     }
 
     /**
@@ -231,27 +248,10 @@ namespace Avatar {
         g_state.Mode = GameMode.NotReady
         GameSettings.settingsScreens.release()
         fixAvatars()
-        g_state.Mode = GameMode.AvatarSelect
         initSelection()
+        g_state.Mode = GameMode.AvatarSelect
         g_state.Players[selection.currPlayer - 1].promptForName()
         updateSelection()
-    }
-
-    export function select(): void {
-        g_state.Players[selection.currPlayer - 1].Avatar = selection.selectedAvatar
-        if (selection.currPlayer < g_state.NumPlayers) {
-            selection.currPlayer++
-            g_state.Players[selection.currPlayer - 1].promptForName()
-            updateSelection()
-        } else {
-            selection.header.destroy()
-            selection.footer1.destroy()
-            selection.footer2.destroy()
-            selection.left.destroy()
-            selection.front.destroy()
-            selection.right.destroy()
-            FirstRoll.setup()
-        }
     }
 
     function updateSelection(): void {

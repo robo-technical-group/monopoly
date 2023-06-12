@@ -137,10 +137,10 @@ namespace FirstRoll {
                 (cursor.flags & SpriteFlag.Invisible) == 0)
             nextUpdate = game.runtime() + BLINK_INTERVAL
         }
-        if (foundFirstPlayer) {
+        if (foundFirstPlayer()) {
             g_state.CurrPlayer = firstPlayer
             ready = true
-            let msg: string = Strings.FIRSTROLL_START.replace('%%PLAYERNAME%%',
+            let msg: string = Strings.FIRSTROLL_START.replace('%PLAYERNAME%',
                 g_state.getPlayer(firstPlayer).Name)
             game.splash(msg)
         }
