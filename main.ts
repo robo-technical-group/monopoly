@@ -103,7 +103,6 @@ function startGame(): void {
     g_state.Mode = GameMode.NotReady
     sprites.allOfKind(SpriteKind.Text).forEach((v: Sprite, index: number) => v.destroy())
     g_state.Players.forEach((p: Player, index: number) => {
-        p.Waiting = true
         p.DoublesRolled = false
         p.TurnCount = 0
     })

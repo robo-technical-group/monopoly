@@ -53,7 +53,7 @@ enum GameMode {
     BoardTest,
 }   // GameMode
 
-enum PlayerActions {
+enum PlayerAction {
     GoToJail,
     MoveForCard,
     MoveForRoll,

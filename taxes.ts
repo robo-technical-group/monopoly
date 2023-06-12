@@ -10,5 +10,5 @@ const TAXES: Tax[] = [
     }, {
         name: 'Luxury Tax',
         value: 100,
-    }
+    },
 ]

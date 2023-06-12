@@ -5,6 +5,7 @@
  * Interface that can be translated to/from JSON.
  */
 interface IGameState {
+    actionQueue: ActionQueue.Item[]
     auctionQueue: number[]
     board: number
     currPlayer: number
@@ -22,6 +23,7 @@ class GameState {
 
     public testMode: boolean
 
+    protected actionQueue: ActionQueue.Item[]
     protected actionMenu: ActionMenu
     protected auctionQueue: number[]
     protected board: Board
@@ -35,6 +37,7 @@ class GameState {
     protected speedDie: boolean
 
     constructor(numPlayers: number = 0, board: number = 0) {
+        this.actionQueue = []
         this.actionMenu = null
         this.auctionQueue = []
         this.board = new Board(board)
@@ -144,6 +147,7 @@ class GameState {
         this.players.forEach((value: Player, index: number) =>
             playerStates.push(value.State))
         return {
+            actionQueue: this.actionQueue,
             auctionQueue: this.auctionQueue,
             board: this.boardIndex,
             currPlayer: this.currPlayer,
@@ -304,6 +308,10 @@ class GameState {
                 this.auctionQueue.push(n)
             }
         }
+
+        if (Array.isArray(state.actionQueue)) {
+            this.actionQueue = ActionQueue.buildFromState(state.actionQueue)
+        }
         
         return true
     }
@@ -350,7 +358,11 @@ class GameState {
     }
 
     public update(): void {
-        this.getCurrPlayer().update()
+        if (this.actionQueue.length == 0) {
+            this.nextPlayer()
+        } else {
+            this.actionQueue = ActionQueue.processQueue(this.actionQueue)
+        }
     }
 
     public updatePlayerStatus(): void {
