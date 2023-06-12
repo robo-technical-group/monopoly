@@ -5,25 +5,46 @@
  * Template last update: 11 Jun 2023 ak
  * 
  * Immediate TODO List
- * - [X] Implement property states.
- * - [X] Automated roll tests.
- *       - [X] Handle doubles.
- * - [X] Player information sprites.
- * - [X] Dialog replacement. Add to multiplayer-prompt.
- *       - [X] game.splashForPlayer()
- *       - [X] game.showLongTextForPlayer()
- * - [/] Card decks.
+ * - [X] Card decks.
  *       - [X] Jail cards as properties.
- *       - [ ] Implement PlayerState.MovingForCard
  * - [X] Handle player passing Go.
  * - [X] Add bank changing bump.
  * - [ ] Refactor game loop to use an action queue.
  *       - [ ] Actions go to a common queue.
  *       - [ ] If queue is empty, then it's time to start the next turn.
+ *       - [ ] Handle player roll.
+ *             - [ ] Handle speed die.
+ *       - [ ] Handle board spaces.
+ *             - [ ] Handle free spaces
+ *             - [ ] Handle tax spaces.
+ *             - [ ] Handle property spaces.
+ *                   - [ ] Handle unowned properties.
+ *                   - [ ] Handle property purchase.
+ *                   - [ ] Handle property auctions.
+ *                   - [ ] Handle owned properties.
+ *             - [ ] Handle go-to-jail spaces.
+ *             - [ ] Handle card spaces.
+ *             - [ ] Handle bus spaces.
+ *       - [ ] Handle card actions.
+ *             - [ ] Handle bank payouts.
+ *             - [ ] Handle collect from each player.
+ *             - [ ] Handle get out of jail card.
+ *             - [ ] Handle go to any space.
+ *             - [ ] Handle go to property group.
+ *             - [ ] Handle go to space.
+ *             - [ ] Handle go to space and all pay.
+ *             - [ ] Handle lottery.
+ *             - [ ] Handle move backward.
+ *             - [ ] Handle pay bank.
+ *             - [ ] Handle pay each player.
+ *             - [ ] Handle tax.
+ *             - [ ] Handle property repairs.
+ *             - [ ] Handle roll backward.
+ *             - [ ] Handle skip next turn.
+ *       - [ ] Handle bankrupt player.
  * - [ ] Player actions menu (generic, *e.g.*, while in jail, buy or auction property).
  *       - Add key binding sprites dynamically.
  *       - Move button actions below d-pad (maybe?)
- * - [X] Implement Player.goToJail()
  * - [X] Add player flag to skip next turn.
  *       - [X] Process skipped turn.
  * - [ ] Player actions menu (while in jail).

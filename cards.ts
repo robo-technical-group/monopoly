@@ -1,14 +1,19 @@
 namespace Cards {
     export enum Action {
-        GoToSpace,
-        Repairs,
-        PayBank,
-        GoToGroup,
         BankPays,
-        GetOutOfJail,
-        MoveBackward,
-        PayEachPlayer,
         CollectFromEachPlayer,
+        GetOutOfJail,
+        GoToAny,
+        GoToGroup,
+        GoToSpace,
+        GoToSpaceAllPay,
+        Lottery,
+        MoveBackward,
+        PayBank,
+        PayEachPlayer,
+        PayTax,
+        Repairs,
+        SkipNextTurn,
     }
 
     export enum CardLocations {
