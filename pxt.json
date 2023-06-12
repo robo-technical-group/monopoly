@@ -29,7 +29,8 @@
         "properties.ts",
         "cards.ts",
         "taxes.ts",
-        "actions.ts"
+        "actions.ts",
+        "strings.ts"
     ],
     "testFiles": [],
     "targetVersions": {

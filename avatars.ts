@@ -6,9 +6,6 @@ namespace SpriteKind {
 }
 
 namespace Avatar {
-    const CHANGE_IMAGE_TEXT: string = 'Left/Right = Change image'
-    const SELECT_TEXT: string = 'A = Select Avatar'
-
     export interface Avatar {
         name: string
         frontImage: Image
@@ -186,9 +183,9 @@ namespace Avatar {
         selection.selectedAvatar = 0
         selection.header = textsprite.create(' ', 0, Color.Yellow)
         selection.header.setPosition(80, 4)
-        selection.footer1 = textsprite.create(CHANGE_IMAGE_TEXT, 0, Color.White)
+        selection.footer1 = textsprite.create(Strings.AVATAR_CHANGE_IMAGE_TEXT, 0, Color.White)
         selection.footer1.setPosition(80, 105)
-        selection.footer2 = textsprite.create(SELECT_TEXT, 0, Color.White)
+        selection.footer2 = textsprite.create(Strings.AVATAR_SELECT_TEXT, 0, Color.White)
         selection.footer2.setPosition(80, 115)
         selection.left = sprites.create(img`.`, SpriteKind.Avatar)
         selection.left.setPosition(40, 60)

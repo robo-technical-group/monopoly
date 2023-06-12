@@ -7,8 +7,6 @@ namespace SpriteKind {
 
 namespace FirstRoll {
     const BLINK_INTERVAL: number = 500
-    const HEADING_TEXT: string = 'Highest roll goes first'
-    const FOOTER_TEXT: string = 'Players: Press A to roll!'
 
     /**
      * Global variables
@@ -17,6 +15,7 @@ namespace FirstRoll {
     export let firstPlayer: number = 0
     let cursor: Sprite = null
     let nextUpdate: number = 0
+    export let ready: boolean = false
 
     /**
      * Functions
@@ -24,7 +23,7 @@ namespace FirstRoll {
     /**
      * Returns true when first player has been determined.
      */
-    export function findFirstPlayer(): boolean {
+    function foundFirstPlayer(): boolean {
         let toReturn: boolean = false
         for (let frs of firstRollStarted) {
             if (!frs) {
@@ -75,10 +74,10 @@ namespace FirstRoll {
     export function setup(): void {
         g_state.Mode = GameMode.NotReady
         scene.setBackgroundColor(Color.Wine)
-        let header: TextSprite = textsprite.create(HEADING_TEXT,
+        let header: TextSprite = textsprite.create(Strings.FIRSTROLL_HEADING_TEXT,
             Color.Transparent, Color.Yellow)
         header.setPosition(80, 5)
-        let footer: TextSprite = textsprite.create(FOOTER_TEXT,
+        let footer: TextSprite = textsprite.create(Strings.FIRSTROLL_FOOTER_TEXT,
             Color.Transparent, Color.White)
         footer.setPosition(80, 115)
         let deltaX: number = Math.floor(160 / g_state.NumPlayers)
@@ -136,6 +135,13 @@ namespace FirstRoll {
             cursor.setFlag(SpriteFlag.Invisible,
                 (cursor.flags & SpriteFlag.Invisible) == 0)
             nextUpdate = game.runtime() + BLINK_INTERVAL
+        }
+        if (foundFirstPlayer) {
+            g_state.CurrPlayer = firstPlayer
+            ready = true
+            let msg: string = Strings.FIRSTROLL_START.replace('%%PLAYERNAME%%',
+                g_state.getPlayer(firstPlayer).Name)
+            game.splash(msg)
         }
     }
 }

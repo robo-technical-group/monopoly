@@ -2,7 +2,7 @@
  * Monopoly
  * Built on
  * MakeCode Arcade JavaScript Template v. 4.2.2
- * Template last update: 24 Apr 2023 ak
+ * Template last update: 11 Jun 2023 ak
  * 
  * Immediate TODO List
  * - [X] Implement property states.
@@ -46,7 +46,7 @@
  *       - [ ] Add bus tickets.
  *       - [X] Add game settings.
  * - [X] Refactor board and properties.
- * - [ ] Move strings to central location(s).
+ * - [X] Move (most) strings to central location.
  */
 
 /**
@@ -74,11 +74,7 @@ game.onUpdate(function () {
 
         case GameMode.FirstRoll:
             FirstRoll.update()
-            if (FirstRoll.findFirstPlayer()) {
-                // Start game!
-                game.splash(g_state.getPlayer(FirstRoll.firstPlayer).Name +
-                    ": You're first!")
-                g_state.CurrPlayer = FirstRoll.firstPlayer
+            if (FirstRoll.ready) {
                 startGame()
             }
             break
@@ -165,7 +161,7 @@ function processRoll(): void {
                 } else {
                     p.JailTurns++
                     if (p.JailTurns == 4) {
-                        g_state.ActionMenu = new InJailActionMenu(ActionMenuText.IN_JAIL_MUST_PAY)
+                        g_state.ActionMenu = new InJailActionMenu(Strings.ACTION_IN_JAIL_MUST_PAY)
                         p.Status = PlayerStatus.ActionMenu
                     }
                 }
@@ -275,7 +271,7 @@ function startTurn(): void {
     p.startTurn()
     if (p.InJail) {
         p.JailTurns++
-        g_state.ActionMenu = new InJailActionMenu(ActionMenuText.IN_JAIL + p.JailTurns + ')')
+        g_state.ActionMenu = new InJailActionMenu(Strings.ACTION_IN_JAIL + p.JailTurns + ')')
         g_state.ActionMenu.show()
     } else if (g_state.testMode) {
         p.startRoll()

@@ -2,15 +2,6 @@ namespace SpriteKind {
     export const ActionMenu = SpriteKind.create()
 }
 
-namespace ActionMenuText {
-    // Turn number and closing bracket added automatically.
-    export const IN_JAIL: string = 'In jail (Turn '
-    export const IN_JAIL_MUST_PAY: string = 'Time to leave jail!'
-    export const PAY: string = 'Pay'
-    export const ROLL: string = 'Roll'
-    export const USE_JAIL_CARD: string = 'Get out free'
-}
-
 abstract class ActionMenu {
     protected done: boolean
     protected message: string
@@ -163,9 +154,9 @@ class InJailActionMenu extends ActionMenu {
         super.show()
         let p: Player = g_state.getCurrPlayer()
         let pId: number = g_state.CurrPlayer
-        this.showAction(ControllerButton.A, ActionMenuText.ROLL)
+        this.showAction(ControllerButton.A, Strings.ACTION_ROLL)
         if (p.Bank >= GameSettings.JAIL_FEE) {
-            let msg: string = ActionMenuText.PAY + ' '
+            let msg: string = Strings.ACTION_PAY + ' '
             if (GameSettings.CURRENCY_IS_PREFIX) {
                 msg += GameSettings.CURRENCY_SYMBOL + GameSettings.JAIL_FEE
             } else {
@@ -182,7 +173,7 @@ class InJailActionMenu extends ActionMenu {
             }
         )
         if (hasJailCard) {
-            this.showAction(ControllerButton.Down, ActionMenuText.USE_JAIL_CARD)
+            this.showAction(ControllerButton.Down, Strings.ACTION_USE_JAIL_CARD)
         }
     }
 

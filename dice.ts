@@ -12,22 +12,22 @@ const D6_IMAGES: Image[][] = [
 ]
 
 class Dice {
-    private static readonly MARGIN: number = 2
-    private static readonly MOVES_TO_ROTATE: number = 3
-    private static readonly Z: number = 20
+    protected static readonly MARGIN: number = 2
+    protected static readonly MOVES_TO_ROTATE: number = 3
+    protected static readonly Z: number = 20
 
-    private areRolling: boolean
-    private deltaX: number
-    private deltaY: number
-    private movesSinceLastRotate: number
-    private orientation: DiceOrientation
-    private skin: DiceSkin
-    private sprites: Sprite[]
-    private startX: number
-    private startY: number
-    private stopX: number
-    private stopY: number
-    private values: number[]
+    protected areRolling: boolean
+    protected deltaX: number
+    protected deltaY: number
+    protected movesSinceLastRotate: number
+    protected orientation: DiceOrientation
+    protected skin: DiceSkin
+    protected sprites: Sprite[]
+    protected startX: number
+    protected startY: number
+    protected stopX: number
+    protected stopY: number
+    protected values: number[]
 
     constructor(count: number, orientation: DiceOrientation = DiceOrientation.None,
             startX: number = 5, startY: number = 5, stopX: number = 154, stopY: number = 5,
@@ -225,16 +225,16 @@ class Dice {
     }
 
     /**
-     * Private methods
+     * protected methods
      */
-    private randomize(): void {
+    protected randomize(): void {
         for (let i: number = 0; i < this.values.length; i++) {
             this.values[i] = randint(1, 6)
         }
         this.updateSprites()
     }
 
-    private resetSprites(): void {
+    protected resetSprites(): void {
         let x: number = this.startX
         let y: number = this.startY
         const w: number = assets.animation`d6white`[0].width
@@ -252,7 +252,7 @@ class Dice {
         }
     }
 
-    private updateSprites(): void {
+    protected updateSprites(): void {
         let speedDie: number = Math.max(2, this.values.length - 1)
         for (let i: number = 0; i < this.values.length; i++) {
             let s: Sprite = this.sprites[i]
