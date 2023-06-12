@@ -20,7 +20,7 @@ namespace Cards {
         SaintCharles,
     }
 
-    interface Card {
+    export interface Card {
         action: Action
         text: string
         values: number[]
@@ -181,7 +181,15 @@ namespace Cards {
     let deckIndex: number[] = []
     let decks: number[][] = []
 
-    export function drawCard(deck: number): void {
+    export function deckColor(deck: number): number {
+        return CARDS[deck].color
+    }
+
+    export function deckName(deck: number): string {
+        return CARDS[deck].name
+    }
+
+    export function drawCard(deck: number): Card {
         if (decks.length == 0) {
             initDecks()
         }
@@ -189,98 +197,10 @@ namespace Cards {
             // Jail card is owned; skip to next card.
             moveIndex(deck)
         }
-        let playerId: number = g_state.CurrPlayer
-        let player: Player = g_state.getCurrPlayer()
-        let card: Card = CARDS[deck].cards[decks[deck][deckIndex[deck]]]
-        game.splashForPlayer(playerId, CARDS[deck].name, card.text)
 
-        switch (card.action) {
-            case Action.BankPays:
-                player.changeBank(card.values[0])
-                break
-
-            case Action.CollectFromEachPlayer:
-                for (let i: number = 0; i < g_state.NumPlayers; i++) {
-                    if (i + 1 == playerId) {
-                        player.changeBank(card.values[0] * (g_state.NumPlayers - 1))
-                    } else {
-                        g_state.Players[i].changeBank(0 - card.values[0])
-                    }
-                }
-                break
-
-            case Action.GetOutOfJail:
-                g_state.Properties.state[Properties.GROUP_JAIL].properties[deck].owner = playerId
-                g_state.updatePlayerStatus()
-                break
-
-            case Action.GoToGroup:
-                for (let i: number = 0; i < g_state.Board.BoardSpaces.length; i++) {
-                    let space: Space = g_state.Board.BoardSpaces[i]
-                    if (space.spaceType == SpaceType.Property &&
-                        space.values[0] == card.values[0] &&
-                        i > player.Location) {
-                        player.Location = i
-                        break
-                    }
-                }
-                g_state.Board.Direction = 1
-                player.startAnimation(1)
-                // player.Status = PlayerStatus.MovingByCard
-                player.PassedGo = false
-                break
-
-            case Action.GoToSpace:
-                if (card.values[0] == CardLocations.Jail) {
-                    player.goToJail()
-                } else {
-                    player.Location = g_state.Board.getCardLocation(card.values[0])
-                    g_state.Board.Direction = 1
-                    player.startAnimation(1)
-                    // Not needed? player.Status = PlayerStatus.MovingForCard
-                    // player.Status = PlayerStatus.MovingByCard
-                    player.PassedGo = false
-                }
-                break
-
-            case Action.MoveBackward:
-                player.changeLocation(0 - card.values[0])
-                g_state.Board.Direction = -1
-                player.startAnimation(-1)
-                // Not needed: player.Status = PlayerStatus.MovingForCard
-                // player.Status = PlayerStatus.MovingByCard
-                break
-
-            case Action.PayBank:
-                player.changeBank(0 - card.values[0])
-                break
-
-            case Action.PayEachPlayer:
-                for (let i: number = 0; i < g_state.NumPlayers; i++) {
-                    if (i + 1 == playerId) {
-                        player.changeBank(0 - card.values[0] * (g_state.NumPlayers - 1))
-                    } else {
-                        g_state.Players[i].changeBank(card.values[0])
-                    }
-                }
-                break
-
-            case Action.Repairs:
-                let houses: number = 0
-                let hotels: number = 0
-                g_state.Properties.state.forEach((pgs: Properties.GroupState, index: number) => {
-                    pgs.properties.forEach((ps: Properties.State, index: number) => {
-                        if (ps.houses == 5) {
-                            hotels++
-                        } else {
-                            houses += ps.houses
-                        }
-                    })
-                })
-                player.changeBank(0 - houses * card.values[0] - hotels * card.values[1])
-                break
-        }
+        let toReturn: Card = CARDS[deck].cards[decks[deck][deckIndex[deck]]]
         moveIndex(deck)
+        return toReturn
     }
 
     function initDecks(): void {

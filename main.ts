@@ -17,17 +17,15 @@
  *       - [ ] Implement PlayerState.MovingForCard
  * - [X] Handle player passing Go.
  * - [X] Add bank changing bump.
- * - [ ] Player actions menu (generic, e.g., while in jail, buy or auction property).
+ * - [ ] Refactor game loop to use an action queue.
+ *       - [ ] Actions go to a common queue.
+ *       - [ ] If queue is empty, then it's time to start the next turn.
+ * - [ ] Player actions menu (generic, *e.g.*, while in jail, buy or auction property).
  *       - Add key binding sprites dynamically.
  *       - Move button actions below d-pad (maybe?)
  * - [X] Implement Player.goToJail()
- * - [ ] Refactor game loops.
- *       - [ ] Game loop (loop among players).
- *       - [ ] Player loop (maybe a queue or stack?).
- *             - [ ] Move turn processing to `Player` class.
- *             - [ ] Game loop waits for player status to become `WaitingForTurn`.
- *             - [ ] Give player states a value array (*e.g.*, card deck and number).
  * - [X] Add player flag to skip next turn.
+ *       - [X] Process skipped turn.
  * - [ ] Player actions menu (while in jail).
  * - [ ] Player actions menu (turn).
  *       - [ ] Roll.
@@ -45,7 +43,7 @@
  *       - [X] Add speed die.
  *       - [ ] Add bus tickets.
  *       - [X] Add game settings.
- *       - [ ] Add train depots.
+ *       - [X] Add train depots.
  * - [X] Refactor board and properties.
  * - [X] Move (most) strings to central location.
  */
@@ -105,7 +103,7 @@ function startGame(): void {
     g_state.Mode = GameMode.NotReady
     sprites.allOfKind(SpriteKind.Text).forEach((v: Sprite, index: number) => v.destroy())
     g_state.Players.forEach((p: Player, index: number) => {
-        p.Status = PlayerStatus.WaitingForTurn
+        p.Waiting = true
         p.DoublesRolled = false
         p.TurnCount = 0
     })
@@ -120,10 +118,7 @@ function update(): void {
             value.destroy()
         }
     })
-    let p: Player = g_state.getCurrPlayer()
-    if (p == null) {
-        return
-    }
+    g_state.update()
 }
 
 function updatePlayers(): void {
@@ -165,13 +160,13 @@ function updatePlayers(): void {
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
+Tests.startAutomatedGame(1)
+/*
 if (settings.exists(Tests.TESTING_KEY)) {
     Tests.run()
 } else {
     Attract.start()
 }
-/*
-Tests.startAutomatedGame(1)
 Tests.testJailMenu()
 BoardTests.setup()
 */

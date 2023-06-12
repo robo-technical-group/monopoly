@@ -53,7 +53,18 @@ enum GameMode {
     BoardTest,
 }   // GameMode
 
-enum PlayerStatus {
-    ProcessingTurn,
-    WaitingForTurn,
+enum PlayerActions {
+    GoToJail,
+    MoveForCard,
+    MoveForRoll,
+    MoveForTriples,
+    Moving,
+    NeedMoney,
+    PayMoney,
+    ProcessCard,
+    ProcessRoll,
+    ProcessSpeedDie,
+    ReceiveMoney,
+    Rolling,
+    WaitingForAction,
 }

@@ -349,6 +349,10 @@ class GameState {
         return settings.list(GameState.KEY_PREFIX).length > 0
     }
 
+    public update(): void {
+        this.getCurrPlayer().update()
+    }
+
     public updatePlayerStatus(): void {
         let x: number = 0
         let y: number = 0
