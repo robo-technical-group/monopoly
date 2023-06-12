@@ -16,6 +16,7 @@ interface IPlayer {
     jailTurns: number
     location: number
     name: string
+    skip: boolean
     status: PlayerStatus
     turnCount: number
 }
@@ -24,7 +25,6 @@ class Player {
     public static readonly ANIM_SPEED: number = 250
     public static readonly COLORS: number[] =
         [Color.Wine, Color.Red, Color.Blue, Color.Orange, Color.BrightGreen,]
-    public static readonly STARTING_BANK: number = 1500
     public static readonly Z: number = 20
     public static readonly Z_CURRENT: number = 21
 
@@ -40,6 +40,7 @@ class Player {
     private jailTurns: number
     private name: string
     private passedGo: boolean
+    private skip: boolean
     private sprite: Sprite
     private status: PlayerStatus
     private stats: Sprite
@@ -47,12 +48,13 @@ class Player {
 
     constructor(controllerId: number = 0) {
         this.avatar = -1
-        this.bank = Player.STARTING_BANK
+        this.bank = -1
         this.destSpace = 0
         this.dice = new Dice(2)
         this.doublesRolled = false
         this.controllerId = controllerId
         this.name = ''
+        this.skip = false
         this.sprite = null
         this.status = PlayerStatus.WaitingForTurn
         this.stats = null
@@ -159,6 +161,7 @@ class Player {
             jailTurns: this.jailTurns,
             location: this.destSpace,
             name: this.name,
+            skip: this.skip,
             status: this.status,
             turnCount: this.turnCount,
         }
@@ -294,6 +297,7 @@ class Player {
         if (typeof state != 'object') {
             return false
         }
+
         if (typeof state.avatar == 'number' &&
                 state.avatar > 0 &&
                 state.avatar < Avatar.AVATARS.length) {
@@ -301,33 +305,47 @@ class Player {
         } else {
             return false
         }
+
         if (typeof state.bank == 'number') {
             this.bank = state.bank
         } else {
-            this.bank = Player.STARTING_BANK
+            this.bank = -1
         }
+
         if (typeof state.controllerId == 'number') {
             this.controllerId = state.controllerId
         }
+
         if (typeof state.location == 'number') {
             this.Location = state.location
         }
+
         if (typeof state.name == 'string') {
             this.name = state.name
         } else {
             this.setDefaultName()
         }
+
         if (typeof state.status == 'number') {
             this.status = state.status
         }
+
         if (typeof state.inJail == 'boolean') {
             this.inJail = state.inJail
         } else if (typeof state.inJail == 'number') {
             this.inJail = (state.inJail != 0)
         }
+
         if (typeof state.jailTurns == 'number') {
             this.JailTurns = state.jailTurns
         }
+
+        if (typeof state.skip == 'boolean') {
+            this.skip = state.skip
+        } else if (typeof state.skip == 'number') {
+            this.skip = (state.skip != 0)
+        }
+        
         return true
     }
 
@@ -375,6 +393,10 @@ class Player {
         if (y < 999) {
             this.sprite.y = y
         }
+    }
+
+    public skipNextTurn(): void {
+        this.skip = true
     }
 
     public startAnimation(direction: number): void {

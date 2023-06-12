@@ -78,7 +78,6 @@ namespace GameSettings {
     }
 
     export function collect(): void {
-        g_state.NumPlayers = settingsScreens.getSelectionForScreen(0, 0) + 1
         switch (settingsScreens.getSelectionForScreen(1, 0)) {
             case 0:
                 controllers = ControllerSetting.Single
@@ -88,6 +87,9 @@ namespace GameSettings {
                 controllers = ControllerSetting.Multiple
                 break
         }
+        g_state.SpeedDie = (settingsScreens.getSelectionForScreen(2, 0) == 1)
+        g_state.BoardIndex = settingsScreens.getSelectionForScreen(3, 0)
+        g_state.NumPlayers = settingsScreens.getSelectionForScreen(0, 0) + 1
     }
 
     export function start(): void {

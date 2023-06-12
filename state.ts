@@ -16,6 +16,7 @@ interface IGameState {
 class GameState {
     private static readonly KEY_PREFIX: string = 'mpy_'
     private static readonly SAVE_TEXT: string = 'SAVE GAME'
+    private static readonly STARTING_BALANCES: number[] = [1500, 2500,]
 
     public testMode: boolean
 
@@ -24,7 +25,7 @@ class GameState {
     private boardIndex: number
     private currPlayer: number
     private gameMode: GameMode
-    private monopolyStatus: Sprite = null
+    private monopolyStatus: Sprite
     private players: Player[]
     private properties: Properties.Properties
     private speedDie: boolean
@@ -36,6 +37,8 @@ class GameState {
         this.currPlayer = (numPlayers > 0 ? 1 : 0)
         this.gameMode = GameMode.NotReady
         this.initPlayers(numPlayers)
+        this.monopolyStatus = null
+        this.players = []
         this.properties = {
             info: Properties.PROPERTIES[this.boardIndex],
             state: Properties.buildFromState(null, this.boardIndex),
@@ -209,6 +212,14 @@ class GameState {
             return false
         }
 
+        if (typeof state.boardIndex == 'number' &&
+        (state.boardIndex == 0 || state.boardIndex == 1)) {
+            this.boardIndex = state.boardIndex
+        } else {
+            this.boardIndex = 0
+        }
+        this.board = new Board(this.boardIndex)
+
         if (typeof state.gameMode == 'number') {
             this.gameMode = state.gameMode
         } else {
@@ -223,6 +234,9 @@ class GameState {
                 if (!p.loadState(playerState)) {
                     return false
                 } else {
+                    if (p.Bank == -1) {
+                        p.Bank = GameState.STARTING_BALANCES[this.boardIndex]
+                    }
                     this.players.push(p)
                 }
             }
@@ -235,14 +249,6 @@ class GameState {
         } else {
             this.currPlayer = 1
         }
-
-        if (typeof state.boardIndex == 'number' &&
-        (state.boardIndex == 0 || state.boardIndex == 1)) {
-            this.boardIndex = state.boardIndex
-        } else {
-            this.boardIndex = 0
-        }
-        this.board = new Board(this.boardIndex)
 
         if (typeof state.speedDie == 'boolean') {
             this.speedDie = state.speedDie
@@ -328,7 +334,9 @@ class GameState {
     private initPlayers(numPlayers: number): void {
         this.players = []
         for (let i: number = 0; i < numPlayers; i++) {
-            this.players.push(new Player(i + 1))
+            let p: Player = new Player(i + 1)
+            p.Bank = GameState.STARTING_BALANCES[this.boardIndex]
+            this.players.push(p)
         }
     }
 

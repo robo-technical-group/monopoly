@@ -27,7 +27,7 @@
  *             - [ ] Move turn processing to `Player` class.
  *             - [ ] Game loop waits for player status to become `WaitingForTurn`.
  *             - [ ] Give player states a value array (*e.g.*, card deck and number).
- * - [ ] Add player flag to skip next turn.
+ * - [X] Add player flag to skip next turn.
  * - [ ] Player actions menu (while in jail).
  * - [ ] Player actions menu (turn).
  *       - [ ] Roll.
@@ -95,32 +95,15 @@ game.onUpdate(function () {
             break
 
         case GameMode.DiceTest:
-            if (DiceTests.diceTest.AreRolling) {
-                DiceTests.diceTest.move()
-                if (!DiceTests.diceTest.AreRolling) {
-                    game.splash('Roll: ' + DiceTests.diceTest.Roll +
-                        ' Doubles: ' + DiceTests.diceTest.AreDoubles)
-                }
-            }
+            DiceTests.update()
             break
 
         case GameMode.SpeedDieTest:
-            if (DiceTests.diceTest.AreRolling) {
-                DiceTests.diceTest.move()
-                if (!DiceTests.diceTest.AreRolling) {
-                    game.showLongText('Roll: ' + DiceTests.diceTest.Roll +
-                        '\nDoubles: ' + DiceTests.diceTest.AreDoubles +
-                        '\nTriples: ' + DiceTests.diceTest.AreTriples +
-                        '\nSpeed die: ' + DiceTests.diceTest.SpeedDie, DialogLayout.Center)
-                }
-            }
+            DiceTests.update()
             break
 
         case GameMode.BoardTest:
-            Background.move()
-            g_state.Board.move()
-            BoardTests.currSpace.text = g_state.Board.CurrSpace.toString()
-            BoardTests.currSpace.update()
+            BoardTests.update()
             break
     }   // switch (g_state.Mode)
 })  // game.onUpdate()

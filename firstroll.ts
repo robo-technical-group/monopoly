@@ -123,9 +123,10 @@ namespace FirstRoll {
                     break
                 }
             }
+        } else if (!firstRollStarted[player - 1]) {
+            firstRollStarted[player - 1] = true
+            g_state.getPlayer(player).Dice.startRoll()
         }
-        firstRollStarted[player - 1] = true
-        g_state.getPlayer(player).Dice.startRoll()
     }
 
     export function update(): void {

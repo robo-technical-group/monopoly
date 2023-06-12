@@ -815,4 +815,11 @@ namespace BoardTests {
         currSpace.top = 0
         g_state.Mode = GameMode.BoardTest
     }
+
+    export function update(): void {
+        Background.move()
+        g_state.Board.move()
+        currSpace.text = g_state.Board.CurrSpace.toString()
+        currSpace.update()
+    }
 }

@@ -286,6 +286,7 @@ class Dice {
  */
 namespace DiceTests {
     export let diceTest: Dice = null
+    
     export function start(count: number = 2) {
         g_state.Mode = GameMode.NotReady
         diceTest = new Dice(count, DiceOrientation.Vertical)
@@ -293,6 +294,28 @@ namespace DiceTests {
             g_state.Mode = GameMode.SpeedDieTest
         } else {
             g_state.Mode = GameMode.DiceTest
+        }
+    }
+
+    export function update() {
+        if (diceTest.Count == 2) {
+            if (diceTest.AreRolling) {
+                diceTest.move()
+                if (!diceTest.AreRolling) {
+                    game.splash('Roll: ' + diceTest.Roll +
+                        ' Doubles: ' + diceTest.AreDoubles)
+                }
+            }
+        } else {
+            if (DiceTests.diceTest.AreRolling) {
+                DiceTests.diceTest.move()
+                if (!DiceTests.diceTest.AreRolling) {
+                    game.showLongText('Roll: ' + DiceTests.diceTest.Roll +
+                        '\nDoubles: ' + DiceTests.diceTest.AreDoubles +
+                        '\nTriples: ' + DiceTests.diceTest.AreTriples +
+                        '\nSpeed die: ' + DiceTests.diceTest.SpeedDie, DialogLayout.Center)
+                }
+            }
         }
     }
 }
