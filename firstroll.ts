@@ -86,6 +86,7 @@ namespace FirstRoll {
         g_state.Players.forEach((p: Player, index: number) => {
             p.moveSprite(x, y)
             p.showSprite()
+            p.Dice.Count = 2
             p.Dice.Orientation = DiceOrientation.Horizontal
             p.Dice.setStartLocation(x - 7, y - 20)
             p.Dice.setStopLocation(x - 7, 16)

@@ -57,7 +57,7 @@ abstract class ActionMenu {
     public show(): void {
         let priorMode: GameMode = g_state.Mode
         g_state.Mode = GameMode.NotReady
-        hidePlayers()
+        g_state.hidePlayers()
         Background.hide()
         let p: Player = g_state.getCurrPlayer()
         p.showSprite(10, 40)

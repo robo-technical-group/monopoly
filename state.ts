@@ -185,6 +185,13 @@ class GameState {
         }
     }
 
+    public hidePlayers(): void {
+        this.players.forEach((p: Player, index: number) => {
+            p.hideSprite()
+            p.Dice.hide()
+        })
+    }
+
     public static list(): string[] {
         return settings.list(GameState.KEY_PREFIX).map((value: string, index: number) =>
             value.slice(GameState.KEY_PREFIX.length)
