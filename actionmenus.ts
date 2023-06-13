@@ -182,7 +182,7 @@ class InJailActionMenu extends ActionMenu {
         if (p.JailTurns < 4) {
             g_state.Board.draw(p.Location)
             g_state.Board.Direction = 1
-            p.startRoll()
+            p.startRoll(g_state.SpeedDie ? 3 : 2)
             // p.Status = PlayerStatus.RollingInJail
         }
         this.done = true

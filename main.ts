@@ -9,19 +9,19 @@
  *       - [X] Jail cards as properties.
  * - [X] Handle player passing Go.
  * - [X] Add bank changing bump.
- * - [ ] Refactor game loop to use an action queue.
- *       - [ ] Actions go to a common queue.
- *       - [ ] If queue is empty, then it's time to start the next turn.
- *       - [ ] Handle player roll.
+ * - [/] Refactor game loop to use an action queue.
+ *       - [X] Actions go to a common queue.
+ *       - [X] If queue is empty, then it's time to start the next turn.
+ *       - [X] Handle player roll.
  *             - [ ] Handle speed die.
- *       - [ ] Handle board spaces.
- *             - [ ] Handle free spaces
- *             - [ ] Handle tax spaces.
- *             - [ ] Handle property spaces.
- *                   - [ ] Handle unowned properties.
- *                   - [ ] Handle property purchase.
+ *       - [/] Handle board spaces.
+ *             - [X] Handle free spaces
+ *             - [X] Handle tax spaces.
+ *             - [/] Handle property spaces.
+ *                   - [X] Handle unowned properties.
+ *                   - [X] Handle property purchase.
  *                   - [ ] Handle property auctions.
- *                   - [ ] Handle owned properties.
+ *                   - [X] Handle owned properties.
  *             - [ ] Handle go-to-jail spaces.
  *             - [ ] Handle card spaces.
  *             - [ ] Handle bus spaces.
@@ -129,6 +129,7 @@ function startGame(): void {
     })
     scene.setBackgroundColor(Color.Black)
     scene.setBackgroundImage(assets.image`bg`)
+    g_state.start()
     g_state.Mode = GameMode.Main
 }   // startGame()
 
@@ -139,41 +140,6 @@ function update(): void {
         }
     })
     g_state.update()
-}
-
-function updatePlayers(): void {
-    for (let i: number = 1; i <= g_state.NumPlayers; i++) {
-        let p: Player = g_state.getPlayer(i)
-        let s: Sprite = p.Sprite
-        if (i == g_state.CurrPlayer) {
-            if (g_state.Board.SpacesMoved > 0 && g_state.Board.CurrSpace == g_state.Board.Go && !p.PassedGo) {
-                p.PassedGo = true
-                p.changeBank(GameSettings.GO_VALUE)
-                g_state.updatePlayerStatus()
-            }
-            let spaces: number = p.Location - g_state.Board.CurrSpace
-            if (g_state.Board.Direction < 0) {
-                spaces = 0 - spaces
-            }
-            if (spaces < 0) {
-                // Move wraps around the end of the board.
-                spaces += g_state.Board.BoardSpaces.length
-            }
-            s.say(spaces == 0 ? '' : spaces)
-        } else {
-            if (g_state.Board.Direction >= 0) {
-                s.x++
-                if (s.left > 160) {
-                    p.hideSprite()
-                }
-            } else {
-                s.x--
-                if (s.right < 0) {
-                    p.hideSprite()
-                }
-            }
-        }
-    }
 }
 
 /**

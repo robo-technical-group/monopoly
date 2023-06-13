@@ -41,7 +41,6 @@ class Player {
     protected jailTurns: number
     protected name: string
     protected passedGo: boolean
-    protected speedDieValue: number
     protected skip: boolean
     protected sprite: Sprite
     protected stats: Sprite
@@ -60,7 +59,6 @@ class Player {
         this.name = ''
         this.passedGo = false
         this.skip = false
-        this.speedDieValue = 0
         this.sprite = null
         this.stats = null
         this.turnCount = 0
@@ -206,11 +204,20 @@ class Player {
                 Color.White
             )
             bump.setMaxFontHeight(5)
+            bump.setBorder(1, Color.White, 2)
+            let top: number = this.stats.bottom + 1
+            let left: number = this.stats.left
+            sprites.allOfKind(SpriteKind.BankBump).filter(
+                (value: Sprite, index: number) => value.left == left
+            ).forEach((value: Sprite, index: number) => {
+                if (value.top >= top) {
+                    top = value.bottom + 1
+                }
+            })
+            bump.top = top
+            bump.left = left
             bump.setKind(SpriteKind.BankBump)
             bump.data['created'] = game.runtime()
-            bump.setBorder(1, Color.White, 2)
-            bump.top = this.stats.bottom + 1
-            bump.left = this.stats.left
             bump.z = Player.Z - 1
         }
     }
@@ -341,6 +348,18 @@ class Player {
         return true
     }
 
+    /**
+     * Move the dice.
+     * @return true = still rolling; false = done rolling.
+     */
+    public moveDice(): boolean {
+        let d: Dice = this.dice
+        if (d.AreRolling) {
+            d.move()
+        }
+        return d.AreRolling
+    }
+
     public moveSprite(x: number, y: number): void {
         this.sprite.setPosition(x, y)
     }
@@ -401,29 +420,31 @@ class Player {
         }
     }
 
-    public startRoll(): void {
+    public startRoll(numDice: number): void {
         this.passedGo = false
         this.TurnCount++
         let d: Dice = this.dice
         d.Orientation = DiceOrientation.Vertical
         d.setStartLocation(Board.DICE_BEGIN_X, Board.DICE_BEGIN_Y)
         d.setStopLocation(Board.DICE_END_X, Board.DICE_END_Y)
-        if (g_state.SpeedDie) {
-            d.Count = 3
-        } else {
-            d.Count = 2
-        }
+        d.Count = numDice
         d.startRoll()
     }
 
-    public startTurn(): void {
+    /**
+     * Start a player's turn.
+     * @return true = player started, false = player skipped turn.
+     */
+    public startTurn(): boolean {
         if (this.skip) {
             this.skip = false
             game.splashForPlayer(this.controllerId,
                 Strings.PLAYER_SKIPPED.replace('%PLAYERNAME%', this.name))
+            return false
         } else {
             this.turnCount = 0
             this.doublesRolled = false
+            return true
         }
     }
 

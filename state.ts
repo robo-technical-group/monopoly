@@ -357,11 +357,48 @@ class GameState {
         return settings.list(GameState.KEY_PREFIX).length > 0
     }
 
-    public update(): void {
+    public start(): void {
         if (this.actionQueue.length == 0) {
-            this.nextPlayer()
-        } else {
-            this.actionQueue = ActionQueue.processQueue(this.actionQueue)
+            ActionQueue.startTurn(this.actionQueue)
+        }
+    }
+
+    public update(): void {
+        this.actionQueue = ActionQueue.processQueue(this.actionQueue)
+    }
+
+    public updatePlayerSprites(): void {
+        for (let i: number = 1; i <= this.NumPlayers; i++) {
+            let p: Player = this.getPlayer(i)
+            let s: Sprite = p.Sprite
+            if (i == this.currPlayer) {
+                if (this.board.SpacesMoved > 0 &&
+                        this.board.CurrSpace == this.board.Go && !p.PassedGo) {
+                    p.PassedGo = true
+                    p.changeBank(GameSettings.GO_VALUE)
+                }
+                let spaces: number = p.Location - this.board.CurrSpace
+                if (this.board.Direction < 0) {
+                    spaces = 0 - spaces
+                }
+                if (spaces < 0) {
+                    // Move wraps around the end of the board.
+                    spaces += this.board.BoardSpaces.length
+                }
+                s.say(spaces == 0 ? '' : spaces)
+            } else {
+                if (this.board.Direction >= 0) {
+                    s.x++
+                    if (s.left > 160) {
+                        p.hideSprite()
+                    }
+                } else {
+                    s.x--
+                    if (s.right < 0) {
+                        p.hideSprite()
+                    }
+                }
+            }
         }
     }
 

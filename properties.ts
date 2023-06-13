@@ -512,7 +512,7 @@ namespace Properties {
                 }
             }
         }
-        updatePropertyGroups(toReturn)
+        updatePropertyGroups(toReturn, board)
         return toReturn
     }
 
@@ -538,57 +538,99 @@ namespace Properties {
         return toReturn
     }
 
-    export function updatePropertyGroups(state: GroupState[], board: number = 0): void {
-        if (board > 0) {
-            state.forEach((pgs: GroupState, index: number) => {
-                let numOwned: number[] = []
-                for (let i = 0; i <= g_state.NumPlayers; i++) {
-                    numOwned.push(0)
+    export function calculateRent(groupInfo: GroupInfo, groupState: GroupState,
+    propInfo: Info, propState: State, roll: number, board: number): number {
+        let owed: number = 0
+        let count: number = groupState.properties.filter((value: Properties.State, index: number) =>
+            value.owner == propState.owner).length
+        switch (groupInfo.propertyType) {
+            case Properties.PropertyType.Transportation:
+                owed = propInfo.rents[count - 1]
+                if (propState.houses > 0) {
+                    owed *= 2
                 }
-                pgs.properties.forEach((state: State, index: number) => {
-                    numOwned[state.owner]++
-                })
-                let ownerCount: number
-                let owner: number
-                let buildCount: number = pgs.properties.length - 1
-                ownerCount = numOwned.filter((value: number, index: number): boolean => {
-                    let toReturn: boolean = (value >= buildCount)
-                    if (toReturn) {
-                        owner = index
-                    }
-                    return toReturn
-                }).length
-                if (ownerCount > 0 && owner > 0) {
-                    pgs.owner = owner
-                    pgs.canBuild = true
-                    if (numOwned[owner] == pgs.properties.length) {
-                        pgs.isMonopolyOwned = true
-                    }
-                }
-                if (index == GROUP_RR && g_state.Depots) {
-                    pgs.canBuild = true
-                }
-            })
-        } else {
-            state.forEach((pgs: GroupState, index: number) => {
-                let firstProp: State = pgs.properties[0]
-                if (firstProp.owner > 0) {
-                    let sameOwners: number = pgs.properties.filter(
-                        (value: State, index: number) => value.owner == firstProp.owner
-                    ).length
-                    if (sameOwners == pgs.properties.length) {
-                        pgs.canBuild = true
-                        pgs.isMonopolyOwned = true
-                        pgs.owner = firstProp.owner
+                break
+
+            case Properties.PropertyType.Utility:
+                owed = propInfo.rents[count - 1] * roll
+                break
+
+            default:
+                if (board == 0) {
+                    if (groupState.isMonopolyOwned && propState.houses == 0) {
+                        owed = propInfo.rents[0] * 2
                     } else {
-                        pgs.isMonopolyOwned = false
-                        pgs.owner = 0
+                        owed = propInfo.rents[propState.houses]
                     }
                 } else {
-                    pgs.isMonopolyOwned = false
-                    pgs.owner = 0
+                    if (propState.houses == 0) {
+                        if (groupState.isMonopolyOwned) {
+                            owed = propInfo.rents[0] * 3
+                        } else if (groupState.canBuild) {
+                            owed = propInfo.rents[0] * 2
+                        } else {
+                            owed = propInfo.rents[0]
+                        }
+                    } else {
+                        owed = propInfo.rents[propState.houses]
+                    }
                 }
-            })
         }
+        return owed
+    }
+
+    export function updatePropertyGroup(state: GroupState, index: number, board: number): void {
+        if (board > 0) {
+            let numOwned: number[] = []
+            for (let i = 0; i <= g_state.NumPlayers; i++) {
+                numOwned.push(0)
+            }
+            state.properties.forEach((state: State, index: number) => {
+                numOwned[state.owner]++
+            })
+            let ownerCount: number
+            let owner: number
+            let buildCount: number = state.properties.length - 1
+            ownerCount = numOwned.filter((value: number, index: number): boolean => {
+                let toReturn: boolean = (value >= buildCount)
+                if (toReturn) {
+                    owner = index
+                }
+                return toReturn
+            }).length
+            if (ownerCount > 0 && owner > 0) {
+                state.owner = owner
+                state.canBuild = true
+                if (numOwned[owner] == state.properties.length) {
+                    state.isMonopolyOwned = true
+                }
+            }
+            if (index == GROUP_RR && g_state.Depots) {
+                state.canBuild = true
+            }
+        } else {
+            let firstProp: State = state.properties[0]
+            if (firstProp.owner > 0) {
+                let sameOwners: number = state.properties.filter(
+                    (value: State, index: number) => value.owner == firstProp.owner
+                ).length
+                if (sameOwners == state.properties.length) {
+                    state.canBuild = true
+                    state.isMonopolyOwned = true
+                    state.owner = firstProp.owner
+                } else {
+                    state.isMonopolyOwned = false
+                    state.owner = 0
+                }
+            } else {
+                state.isMonopolyOwned = false
+                state.owner = 0
+            }
+        }
+    }
+
+    export function updatePropertyGroups(states: GroupState[], board: number): void {
+        states.forEach((pgs: GroupState, index: number) =>
+            updatePropertyGroup(pgs, index, board))
     }
 }

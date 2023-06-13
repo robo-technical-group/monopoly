@@ -54,6 +54,8 @@ enum GameMode {
 }   // GameMode
 
 enum PlayerAction {
+    StartTurn,
+    
     GoToJail,
     MoveForCard,
     MoveForRoll,
@@ -62,7 +64,9 @@ enum PlayerAction {
     NeedMoney,
     PayMoney,
     ProcessCard,
+    ProcessMove,
     ProcessRoll,
+    ProcessRollInJail,
     ProcessSpeedDie,
     ReceiveMoney,
     Rolling,
