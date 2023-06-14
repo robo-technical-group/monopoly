@@ -13,7 +13,7 @@
  *       - [X] Actions go to a common queue.
  *       - [X] If queue is empty, then it's time to start the next turn.
  *       - [X] Handle player roll.
- *             - [ ] Handle speed die.
+ *       - [ ] Handle speed die.
  *       - [/] Handle board spaces.
  *             - [X] Handle free spaces
  *             - [X] Handle tax spaces.
@@ -42,23 +42,26 @@
  *             - [ ] Handle roll backward.
  *             - [ ] Handle skip next turn.
  *       - [ ] Handle bankrupt player.
+ * - [X] Add player flag to skip next turn.
+ *       - [X] Process skipped turn.
  * - [ ] Player actions menu (generic, *e.g.*, while in jail, buy or auction property).
  *       - Add key binding sprites dynamically.
  *       - Move button actions below d-pad (maybe?)
- * - [X] Add player flag to skip next turn.
- *       - [X] Process skipped turn.
  * - [ ] Player actions menu (while in jail).
  * - [ ] Player actions menu (turn).
  *       - [ ] Roll.
  *       - [ ] Bankrupt.
  *       - [ ] Build/mortgage.
  *       - [ ] Trade.
+ * - [ ] Player actions menu (unowned property).
+ *       - [ ] Buy.
+ *       - [ ] Auction.
  * - [ ] Auction property.
  *       - [ ] Multiplayer.
  *       - [ ] Single controller.
- * - [ ] Buy/sell houses.
+ * - [ ] Buy/sell houses + mortgage property.
  * - [ ] Trade mechanism.
- * - [/] Mega Monopoly accommodations.
+ * - [/] *Mega Monopoly* accommodations.
  *       - [X] Add assets.
  *       - [X] Add alternate board.
  *       - [X] Add speed die.
