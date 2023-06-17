@@ -5,10 +5,6 @@
  * Template last update: 11 Jun 2023 ak
  * 
  * Immediate TODO List
- * - [X] Card decks.
- *       - [X] Jail cards as properties.
- * - [X] Handle player passing Go.
- * - [X] Add bank changing bump.
  * - [/] Refactor game loop to use an action queue.
  *       - [X] Actions go to a common queue.
  *       - [X] If queue is empty, then it's time to start the next turn.
@@ -22,9 +18,10 @@
  *                   - [X] Handle property purchase.
  *                   - [ ] Handle property auctions.
  *                   - [X] Handle owned properties.
- *             - [ ] Handle go-to-jail spaces.
- *             - [ ] Handle card spaces.
+ *             - [X] Handle go-to-jail spaces.
+ *             - [X] Handle card spaces.
  *             - [ ] Handle bus spaces.
+ *             - [ ] Handle gift spaces.
  *       - [ ] Handle card actions.
  *             - [ ] Handle bank payouts.
  *             - [ ] Handle collect from each player.
@@ -37,13 +34,13 @@
  *             - [ ] Handle move backward.
  *             - [ ] Handle pay bank.
  *             - [ ] Handle pay each player.
- *             - [ ] Handle tax.
+ *             - [ ] Handle selective tax.
  *             - [ ] Handle property repairs.
  *             - [ ] Handle roll backward.
  *             - [ ] Handle skip next turn.
+ *       - [ ] Handle bus options.
+ *       - [ ] Handle gift options.
  *       - [ ] Handle bankrupt player.
- * - [X] Add player flag to skip next turn.
- *       - [X] Process skipped turn.
  * - [ ] Player actions menu (generic, *e.g.*, while in jail, buy or auction property).
  *       - Add key binding sprites dynamically.
  *       - Move button actions below d-pad (maybe?)
@@ -68,8 +65,6 @@
  *       - [ ] Add bus tickets.
  *       - [X] Add game settings.
  *       - [X] Add train depots.
- * - [X] Refactor board and properties.
- * - [X] Move (most) strings to central location.
  */
 
 /**

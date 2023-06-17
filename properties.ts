@@ -472,11 +472,11 @@ namespace Properties {
             propertyType: PropertyType.JailCard,
             properties: [{
                 cost: 0,
-                name: 'Get out of jail free!',
+                name: 'Get out of jail free! (Chance)',
                 rents: []
             }, {
                 cost: 0,
-                name: 'Get out of jail free!',
+                name: 'Get out of jail free! (Community Chest)',
                 rents: []
             },]
         }

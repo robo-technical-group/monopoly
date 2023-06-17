@@ -82,7 +82,10 @@ namespace ActionQueue {
                 break
 
             case SpaceType.Card:
-                // TODO: Implement
+                queue.insertAt(0, {
+                    action: PlayerAction.DrawCard,
+                    values: [space.values[0],],
+                })
                 break
 
             case SpaceType.Free:
@@ -102,7 +105,7 @@ namespace ActionQueue {
             case SpaceType.GoToJail:
                 queue.insertAt(0, {
                     action: PlayerAction.GoToJail,
-                    values: []
+                    values: [],
                 })
                 break
 
@@ -123,6 +126,7 @@ namespace ActionQueue {
                 game.splashForPlayer(g_state.CurrPlayer,
                     Strings.PLAYER_PAY_TAX.replace('%PLAYERNAME%', p.Name).replace(
                     '%TAXNAME%', tax.name).replace('%TAXAMOUNT%', tax.value.toString()))
+                break
         }
     }
 

@@ -56,6 +56,7 @@ enum GameMode {
 enum PlayerAction {
     StartTurn,
     
+    DrawCard,
     GoToJail,
     MoveForCard,
     MoveForRoll,
