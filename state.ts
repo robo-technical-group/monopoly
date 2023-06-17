@@ -364,7 +364,7 @@ class GameState {
     }
 
     public update(): void {
-        this.actionQueue = ActionQueue.processQueue(this.actionQueue)
+        ActionQueue.processQueue(this.actionQueue)
     }
 
     public updatePlayerSprites(): void {
@@ -439,8 +439,8 @@ class GameState {
             if (pgs.isMonopolyOwned) {
                 i.fillRect(pgsIndex * 4, 4, 3, 3, Player.COLORS[pgs.owner])
             } else if (pgs.canBuild) {
-                i.fillRect(pgsIndex * 4, 4, 3, 3, Color.White)
-                i.setPixel(pgsIndex * 4 + 1, 5, Player.COLORS[pgs.owner])
+                i.fillRect(pgsIndex * 4, 4, 3, 3, Player.COLORS[pgs.owner])
+                i.setPixel(pgsIndex * 4 + 1, 5, Color.White)
             } else {
                 i.fillRect(pgsIndex * 4, 4, 3, 3, Player.COLORS[pgs.owner])
             }

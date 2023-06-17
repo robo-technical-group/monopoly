@@ -73,14 +73,37 @@ namespace ActionQueue {
         let p: Player = g_state.getCurrPlayer()
         let space: Space = g_state.Board.BoardSpaces[p.Location]
         switch (space.spaceType) {
+            case SpaceType.Auction:
+                // TODO: Implement
+                break
+
+            case SpaceType.BusTicket:
+                // TODO: Implement
+                break
+
+            case SpaceType.Card:
+                // TODO: Implement
+                break
+
             case SpaceType.Free:
                 game.splashForPlayer(g_state.CurrPlayer, Strings.BOARD_FREE_PARKING,
                     Strings.BOARD_FREE_SPACE)
                 break
 
+            case SpaceType.Gift:
+                // TODO: Implement
+                break
+
             case SpaceType.Go:
                 game.splashForPlayer(g_state.CurrPlayer, Strings.BOARD_GO,
                     Strings.BOARD_FREE_SPACE)
+                break
+
+            case SpaceType.GoToJail:
+                queue.insertAt(0, {
+                    action: PlayerAction.GoToJail,
+                    values: []
+                })
                 break
 
             case SpaceType.Jail:
@@ -93,10 +116,17 @@ namespace ActionQueue {
                     ActionQueueTestMode.processProperty(queue)
                 }
                 break
+
+            case SpaceType.Tax:
+                let tax: Tax = TAXES[space.values[0]]
+                queuePayment(queue, tax.value, g_state.CurrPlayer, 0)
+                game.splashForPlayer(g_state.CurrPlayer,
+                    Strings.PLAYER_PAY_TAX.replace('%PLAYERNAME%', p.Name).replace(
+                    '%TAXNAME%', tax.name).replace('%TAXAMOUNT%', tax.value.toString()))
         }
     }
 
-    export function processQueue(queue: Item[]): Item[] {
+    export function processQueue(queue: Item[]): void {
         if (queue.length == 0) {
             if (g_state.getCurrPlayer().DoublesRolled) {
                 if (g_state.testMode) {
@@ -108,22 +138,47 @@ namespace ActionQueue {
                 g_state.nextPlayer()
                 startTurn(queue)
             }
-            return queue
+            return
         }
 
         let _: Item
+        let p: Player = g_state.getCurrPlayer()
+        let pId: number = g_state.CurrPlayer
         switch (queue[0].action) {
             case PlayerAction.StartTurn:
-                startCurrentPlayer(queue)
                 _ = queue.shift()
+                startCurrentPlayer(queue)
+                break
+
+            case PlayerAction.GoToJail:
+                // Sending a player to jail clears the queue.
+                while (queue.length > 0) {
+                    _ = queue.shift()
+                }
+                p.goToJail()
+                break
+
+            case PlayerAction.MoveForCard:
+                // TODO: Implement
                 break
 
             case PlayerAction.MoveForRoll:
                 startPlayerMove(queue)
                 break
 
+            case PlayerAction.MoveForTriples:
+                // For now, just move the player.
+                game.splashForPlayer(pId, 'Triples!')
+                startPlayerMove(queue)
+                // TODO: Implement properly.
+                break
+
             case PlayerAction.Moving:
                 movePlayer(queue)
+                break
+
+            case PlayerAction.NeedMoney:
+                // TODO: Implement
                 break
 
             case PlayerAction.PayMoney:
@@ -134,14 +189,22 @@ namespace ActionQueue {
                 }
                 break
 
+            case PlayerAction.ProcessCard:
+                // TODO: Implement
+                break
+
             case PlayerAction.ProcessMove:
                 _ = queue.shift()
                 processMove(queue)
                 break
 
             case PlayerAction.ProcessRoll:
-                processRoll(queue)
                 _ = queue.shift()
+                processRoll(queue)
+                break
+
+            case PlayerAction.ProcessRollInJail:
+                // TODO: Implement
                 break
 
             case PlayerAction.ProcessSpeedDie:
@@ -149,11 +212,14 @@ namespace ActionQueue {
                 _ = queue.shift()
                 break
 
+            case PlayerAction.ReceiveMoney:
+                // TODO: Implement
+                break
+
             case PlayerAction.Rolling:
                 moveDice(queue)
                 break
         }
-        return queue
     }
 
     /**
@@ -163,30 +229,39 @@ namespace ActionQueue {
     function processRoll(queue: Item[]): void {
         let p: Player = g_state.getCurrPlayer()
         let d: Dice = p.Dice
-        if (g_state.SpeedDie && d.AreTriples) {
+        if (queue.length > 0) {
+            let item: Item = queue[0]
+            switch (item.action) {
+                case PlayerAction.MoveForCard:
+                    // TODO: Process roll for utility card.
+                    break
+            }
+        } else {
+            if (g_state.SpeedDie && d.AreTriples) {
+                queue.push({
+                    action: PlayerAction.MoveForTriples,
+                    values: [d.Roll,],
+                })
+                return
+            }
+            p.DoublesRolled = d.AreDoubles
+            if (p.DoublesRolled && p.TurnCount == 3) {
+                queue.push({
+                    action: PlayerAction.GoToJail,
+                    values: [],
+                })
+                return
+            }
             queue.push({
-                action: PlayerAction.MoveForTriples,
-                values: [],
+                action: PlayerAction.MoveForRoll,
+                values: [d.Roll,],
             })
-            return
-        }
-        p.DoublesRolled = d.AreDoubles
-        if (p.DoublesRolled && p.TurnCount == 3) {
-            queue.push({
-                action: PlayerAction.GoToJail,
-                values: [],
-            })
-            return
-        }
-        queue.push({
-            action: PlayerAction.MoveForRoll,
-            values: [d.Roll,],
-        })
-        if (g_state.SpeedDie && d.SpeedDie > 3) {
-            queue.push({
-                action: PlayerAction.ProcessSpeedDie,
-                values: [d.SpeedDie,],
-            })
+            if (g_state.SpeedDie && d.SpeedDie > 3) {
+                queue.push({
+                    action: PlayerAction.ProcessSpeedDie,
+                    values: [d.SpeedDie,],
+                })
+            }
         }
     }
 
@@ -293,7 +368,10 @@ namespace ActionQueueTestMode {
         }
         // Property is owned by another player.
         let owed: number = Properties.calculateRent(groupInfo, groupState, propertyInfo,
-            propertyState, p.Dice.Roll, g_state.BoardIndex)
+            propertyState, g_state.BoardIndex)
+        if (space.values[0] == Properties.GROUP_UTIL) {
+            owed *= p.Roll
+        }
         let owner: Player = g_state.getPlayer(propertyState.owner)
         ActionQueue.queuePayment(queue, owed, pId, propertyState.owner)
         game.splashForPlayer(pId,

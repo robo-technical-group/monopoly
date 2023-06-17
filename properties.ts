@@ -539,7 +539,7 @@ namespace Properties {
     }
 
     export function calculateRent(groupInfo: GroupInfo, groupState: GroupState,
-    propInfo: Info, propState: State, roll: number, board: number): number {
+    propInfo: Info, propState: State, board: number): number {
         let owed: number = 0
         let count: number = groupState.properties.filter((value: Properties.State, index: number) =>
             value.owner == propState.owner).length
@@ -552,7 +552,10 @@ namespace Properties {
                 break
 
             case Properties.PropertyType.Utility:
-                owed = propInfo.rents[count - 1] * roll
+                /**
+                 * Return multiplier only.
+                 */
+                owed = propInfo.rents[count - 1]
                 break
 
             default:

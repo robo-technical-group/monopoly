@@ -145,6 +145,10 @@ class Player {
         this.passedGo = value
     }
 
+    public get Roll(): number {
+        return this.dice.Roll
+    }
+
     public get Sprite(): Sprite {
         return this.sprite
     }
