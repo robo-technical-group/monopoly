@@ -182,6 +182,10 @@ namespace Cards {
             ],
         }
     ]
+    
+    // Maximum card deck size.
+    // + Allows for additional cards that can be shuffled into the decks.
+    const CARDS_MAX_LENGTH: number = 16
 
     let deckIndex: number[] = []
     let decks: number[][] = []
@@ -212,20 +216,19 @@ namespace Cards {
         for (let deck: number = 0; deck < CARDS.length; deck++) {
             decks[deck] = []
             deckIndex[deck] = 0
-            for (let card: number = 0; card < CARDS[deck].cards.length; card++) {
+            for (let card: number = 1; card < CARDS[deck].cards.length; card++) {
                 decks[deck].push(card)
             }
-            // Shuffle deck.
-            let t: number = 0
-            let swap: number = 0
-            for (let card: number = 0; card < decks[deck].length; card++) {
-                swap = randint(0, decks[deck].length - 1)
-                if (card != swap) {
-                    t = decks[deck][card]
-                    decks[deck][card] = decks[deck][swap]
-                    decks[deck][swap] = t
+            if (decks[deck].length >= CARDS_MAX_LENGTH) {
+                // Select a random deck of cards.
+                shuffleDeck(decks[deck])
+                while (decks[deck].length >= CARDS_MAX_LENGTH) {
+                    let _: number = decks[deck].pop()
                 }
             }
+            // Add the jail card.
+            decks[deck].push(0)
+            shuffleDeck(decks[deck])
         }
     }
 
@@ -233,6 +236,19 @@ namespace Cards {
         deckIndex[deck]++
         if (deckIndex[deck] >= decks[deck].length) {
             deckIndex[deck] = 0
+        }
+    }
+
+    function shuffleDeck(deck: number[]): void {
+        let t: number = 0
+        let swap: number = 0
+        for (let card: number = 0; card < deck.length; card++) {
+            swap = randint(0, deck.length - 1)
+            if (card != swap) {
+                t = deck[card]
+                deck[card] = deck[swap]
+                deck[swap] = t
+            }
         }
     }
 }

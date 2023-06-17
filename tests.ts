@@ -87,6 +87,7 @@ namespace Tests {
         if (board > 0) {
             g_state.BoardIndex = board
             g_state.SpeedDie = true
+            g_state.Bus = true
         }
         startGame()
     }

@@ -8,6 +8,7 @@ interface IGameState {
     actionQueue: ActionQueue.Item[]
     auctionQueue: number[]
     board: number
+    bus: boolean
     currPlayer: number
     depots: boolean
     gameMode: GameMode
@@ -28,6 +29,7 @@ class GameState {
     protected auctionQueue: number[]
     protected board: Board
     protected boardIndex: number
+    protected bus: boolean
     protected currPlayer: number
     protected depots: boolean
     protected gameMode: GameMode
@@ -42,6 +44,7 @@ class GameState {
         this.auctionQueue = []
         this.board = new Board(board)
         this.boardIndex = board
+        this.bus = false
         this.currPlayer = (numPlayers > 0 ? 1 : 0)
         this.depots = false
         this.gameMode = GameMode.NotReady
@@ -86,6 +89,14 @@ class GameState {
                 }
             }
         }
+    }
+
+    public get Bus(): boolean {
+        return this.bus
+    }
+
+    public set Bus(value: boolean) {
+        this.bus = value
     }
     
     public get CurrPlayer(): number {
@@ -150,6 +161,7 @@ class GameState {
             actionQueue: this.actionQueue,
             auctionQueue: this.auctionQueue,
             board: this.boardIndex,
+            bus: this.bus,
             currPlayer: this.currPlayer,
             depots: this.depots,
             gameMode: this.gameMode,
@@ -291,6 +303,14 @@ class GameState {
             this.depots = (state.depots != 0)
         } else {
             this.depots = false
+        }
+
+        if (typeof state.bus == 'boolean') {
+            this.bus = state.bus
+        } else if (typeof state.bus == 'number') {
+            this.bus = (state.bus != 0)
+        } else {
+            this.bus = false
         }
         
         if (Array.isArray(state.properties)) {

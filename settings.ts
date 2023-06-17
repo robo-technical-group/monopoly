@@ -22,19 +22,20 @@ namespace GameSettings {
     ]
     const TEXT_SETTINGS_DEPOTS_TAB: string = 'Depots'
     const TEXT_SETTINGS_DEPOTS: string[][] = [
-        ['No train depots', 'Add train depots']
+        ['No train depots', 'Add train depots'],
     ]
     const TEXT_SETTINGS_PLAYERS_TAB: string = 'Players'
     const TEXT_SETTINGS_PLAYERS: string[][] = [
-        ['1 player', '2 players', '3 players', '4 players,'],
+        ['1 player', '2 players', '3 players', '4 players',],
     ]
     const TEXT_SETTINGS_MULTIPLAYER_TAB: string = 'Multiplayer'
     export const TEXT_SETTINGS_MULTIPLAYER: string[][] = [
         ['Shared controller', 'Online/Multiple controllers',],
     ]
-    const TEXT_SETTINGS_SPEED_DIE_TAB: string = 'Dice'
-    const TEXT_SETTINGS_SPEED_DIE: string[][] = [
-        ['Standard dice', 'Add speed die',],
+    const TEXT_SETTINGS_MOVEMENT_TAB: string = 'Movement'
+    const TEXT_SETTINGS_MOVEMENT: string[][] = [
+        ['Dice', 'Standard', '+ speed die',],
+        ['Bus Tickets', 'No', 'Yes',],
     ]
 
     /**
@@ -61,7 +62,7 @@ namespace GameSettings {
         settingsScreens.doneText = TEXT_DONE
         settingsScreens.addScreen(TEXT_SETTINGS_PLAYERS_TAB, TEXT_SETTINGS_PLAYERS, false)
         settingsScreens.addScreen(TEXT_SETTINGS_MULTIPLAYER_TAB, TEXT_SETTINGS_MULTIPLAYER, false)
-        settingsScreens.addScreen(TEXT_SETTINGS_SPEED_DIE_TAB, TEXT_SETTINGS_SPEED_DIE, false)
+        settingsScreens.addScreen(TEXT_SETTINGS_MOVEMENT_TAB, TEXT_SETTINGS_MOVEMENT, true)
         settingsScreens.addScreen(TEXT_SETTINGS_BOARD_TAB, TEXT_SETTINGS_BOARD, false)
         settingsScreens.addScreen(TEXT_SETTINGS_DEPOTS_TAB, TEXT_SETTINGS_DEPOTS, false)
 
@@ -69,7 +70,7 @@ namespace GameSettings {
          * Default settings:
          * - Two players.
          * - Local for hardware, multiplayer otherwise.
-         * - No speed die.
+         * - No speed die + no bus tickets.
          * - Standard board.
          * - No train depots.
          */
@@ -80,6 +81,7 @@ namespace GameSettings {
             settingsScreens.setSelectionForScreen(1, 0, 1)
         }
         settingsScreens.setSelectionForScreen(2, 0, 0)
+        settingsScreens.setSelectionForScreen(2, 1, 0)
         settingsScreens.setSelectionForScreen(3, 0, 0)
         settingsScreens.setSelectionForScreen(4, 0, 0)
     }
@@ -95,6 +97,7 @@ namespace GameSettings {
                 break
         }
         g_state.SpeedDie = (settingsScreens.getSelectionForScreen(2, 0) == 1)
+        g_state.Bus = (settingsScreens.getSelectionForScreen(2, 1) == 1)
         g_state.BoardIndex = settingsScreens.getSelectionForScreen(3, 0)
         g_state.NumPlayers = settingsScreens.getSelectionForScreen(0, 0) + 1
         g_state.Depots = (settingsScreens.getSelectionForScreen(4, 0) == 1)
