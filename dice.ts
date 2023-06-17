@@ -77,7 +77,10 @@ class Dice {
         if (this.sprites == null || typeof this.sprites != 'object') {
             this.sprites = []
         }
-        while (this.sprites.length < value) {
+        while (this.sprites.length != value) {
+            this.sprites.forEach((value: Sprite, index: number) =>
+                value.destroy())
+            this.sprites = []
             let s: Sprite = sprites.create(img`.`, SpriteKind.Dice)
             s.setFlag(SpriteFlag.Invisible, true)
             s.z = Dice.Z
@@ -92,7 +95,8 @@ class Dice {
                 this.values.push(1)
             }
         }
-        this.updateSprites()
+        this.resetSprites()
+        this.updateSpriteImages()
     }
 
     public get Orientation(): DiceOrientation {
@@ -231,7 +235,7 @@ class Dice {
         for (let i: number = 0; i < this.values.length; i++) {
             this.values[i] = randint(1, 6)
         }
-        this.updateSprites()
+        this.updateSpriteImages()
     }
 
     protected resetSprites(): void {
@@ -252,7 +256,7 @@ class Dice {
         }
     }
 
-    protected updateSprites(): void {
+    protected updateSpriteImages(): void {
         let speedDie: number = Math.max(2, this.values.length - 1)
         for (let i: number = 0; i < this.values.length; i++) {
             let s: Sprite = this.sprites[i]

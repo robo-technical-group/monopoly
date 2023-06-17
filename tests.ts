@@ -88,6 +88,7 @@ namespace Tests {
             g_state.BoardIndex = board
             g_state.SpeedDie = true
             g_state.Bus = true
+            g_state.Depots = true
         }
         startGame()
     }

@@ -69,6 +69,131 @@ namespace ActionQueue {
         }
     }
 
+    function processCard(queue: Item[]): void {
+        let item: Item = queue.shift()
+        let p: Player = g_state.getCurrPlayer()
+        let pId: number = g_state.CurrPlayer
+        let deck: number = item.values[0]
+        let card: Cards.Card = Cards.drawCard(deck)
+        game.splashForPlayer(pId, Cards.deckName(deck), card.text)
+
+        switch (card.action) {
+            case Cards.Action.BankPays:
+                queuePayment(queue, card.values[0], 0, pId)
+                break
+
+            case Cards.Action.CollectFromEachPlayer:
+                for (let i: number = 1; i <= g_state.NumPlayers; i++) {
+                    if (i != pId) {
+                        queuePayment(queue, card.values[0], i, pId)
+                    }
+                }
+                break
+
+            case Cards.Action.GetOutOfJail:
+                g_state.Properties.state[Properties.GROUP_JAIL].properties[deck]
+                    .owner = pId
+                g_state.updatePlayerStatus()
+                break
+
+            case Cards.Action.GoToGroup:
+                for (let i: number = 0; i < g_state.Board.BoardSpaces.length; i++) {
+                    let space: Space = g_state.Board.BoardSpaces[i]
+                    if (space.spaceType == SpaceType.Property &&
+                            space.values[0] == card.values[0] &&
+                            i > p.Location) {
+                        p.Location = i
+                        break
+                    }
+                }
+                g_state.Board.Direction = 1
+                p.startAnimation(1)
+                p.PassedGo = false
+                queue.insertAt(0, {
+                    action: PlayerAction.MoveForCard,
+                    values: [deck,],
+                })
+                queue.insertAt(0, {
+                    action: PlayerAction.Moving,
+                    values: [],
+                })
+                break
+
+            case Cards.Action.GoToSpace:
+                if (card.values[0] == g_state.Board.Jail) {
+                    queue.insertAt(0, {
+                        action: PlayerAction.GoToJail,
+                        values: [],
+                    })
+                } else {
+                    p.Location = g_state.Board.getCardLocation(card.values[0])
+                    g_state.Board.Direction = 1
+                    p.startAnimation(1)
+                    p.PassedGo = false
+                    queue.insertAt(0, {
+                        action: PlayerAction.MoveForCard,
+                        values: [deck,],
+                    })
+                    queue.insertAt(0, {
+                        action: PlayerAction.Moving,
+                        values: [],
+                    })
+                }
+                break
+
+            case Cards.Action.MoveBackward:
+                p.changeLocation(0 - card.values[0])
+                g_state.Board.Direction = -1
+                p.startAnimation(-1)
+                queue.insertAt(0, {
+                    action: PlayerAction.MoveForCard,
+                    values: [deck,],
+                })
+                queue.insertAt(0, {
+                    action: PlayerAction.Moving,
+                    values: [],
+                })
+                break
+
+            case Cards.Action.PayBank:
+                queuePayment(queue, card.values[0], pId, 0)
+                break
+
+            case Cards.Action.PayEachPlayer:
+                for (let i: number = 1; i <= g_state.NumPlayers; i++) {
+                    if (i != pId) {
+                        queuePayment(queue, card.values[0], 0, i)
+                    }
+                }
+                if (g_state.NumPlayers > 1) {
+                    queuePayment(queue, card.values[0] * g_state.NumPlayers - 1, pId, 0)
+                }
+                break
+
+            case Cards.Action.Repairs:
+                let houses: number = 0
+                let hotels: number = 0
+                let skyscrapers: number = 0
+                g_state.Properties.state.forEach((pgs: Properties.GroupState, index: number) =>
+                    pgs.properties.forEach((ps: Properties.State, index: number) => {
+                        if (ps.houses == 6) {
+                            skyscrapers++
+                        } else if (ps.houses == 5) {
+                            hotels++
+                        } else {
+                            houses += ps.houses
+                        }
+                    }
+                ))
+                let owed: number = houses * card.values[0] + hotels * card.values[1]
+                if (card.values.length > 2) {
+                    owed += skyscrapers * card.values[2]
+                }
+                queuePayment(queue, owed, pId, 0)
+                break
+        }
+    }
+
     function processMove(queue: Item[]): void {
         let p: Player = g_state.getCurrPlayer()
         let space: Space = g_state.Board.BoardSpaces[p.Location]
@@ -128,6 +253,13 @@ namespace ActionQueue {
                     '%TAXNAME%', tax.name).replace('%TAXAMOUNT%', tax.value.toString()))
                 break
         }
+        
+        if (queue.length > 0) {
+            let item: ActionQueue.Item = queue[0]
+            if (item.action == PlayerAction.MoveForCard) {
+                item = queue.shift()
+            }
+        }
     }
 
     export function processQueue(queue: Item[]): void {
@@ -152,6 +284,10 @@ namespace ActionQueue {
             case PlayerAction.StartTurn:
                 _ = queue.shift()
                 startCurrentPlayer(queue)
+                break
+
+            case PlayerAction.DrawCard:
+                processCard(queue)
                 break
 
             case PlayerAction.GoToJail:
@@ -321,34 +457,24 @@ namespace ActionQueueTestMode {
         let propertyInfo: Properties.Info = groupInfo.properties[space.values[1]]
         let propertyState: Properties.State = groupState.properties[space.values[1]]
         game.splashForPlayer(pId,
-            Strings.PLAYER_BUY_PROPERTY.replace('%PLAYERNAME%', p.Name).replace(
-                '%PROPERTY%', propertyInfo.name).replace('%VALUE%', propertyInfo.cost.toString()))
+            Strings.PLAYER_BUY_PROPERTY.replace('%PLAYERNAME%', p.Name)
+                .replace('%PROPERTY%', propertyInfo.name)
+                .replace('%VALUE%', propertyInfo.cost.toString()))
         p.changeBank(0 - propertyInfo.cost)
         propertyState.owner = pId
-        let numOwned: number = groupState.properties.filter(
-            (value: Properties.State, index: number) => value.owner == pId
-        ).length
-        if (numOwned == groupState.properties.length) {
-            groupState.isMonopolyOwned = true
-            groupState.canBuild = true
-            groupState.owner = pId
-        } else if (g_state.BoardIndex > 0 && numOwned == groupState.properties.length - 1) {
-            groupState.isMonopolyOwned = false
-            groupState.canBuild = true
-            groupState.owner = pId
-        } else {
-            groupState.isMonopolyOwned = false
-            groupState.canBuild = false
-            groupState.owner = 0
-        }
+        Properties.updatePropertyGroup(groupState, space.values[0], g_state.BoardIndex)
+        g_state.updatePlayerStatus()
     }
 
     export function moveMoney(queue: ActionQueue.Item[]): void {
         let item: ActionQueue.Item = queue.shift()
         let amount: number = item.values[0]
-        let payer: Player = g_state.getPlayer(item.values[1])
-        payer.changeBank(0 - amount)
-        if (item.values[2] > 0) {
+        let payerId: number = item.values[1]
+        if (payerId > 0) {
+            let payer: Player = g_state.getPlayer(payerId)
+            payer.changeBank(0 - amount)
+        }
+        if (item.values.length > 2 && item.values[2] > 0) {
             let recipient: Player = g_state.getPlayer(item.values[2])
             recipient.changeBank(amount)
         }
@@ -374,13 +500,29 @@ namespace ActionQueueTestMode {
         let owed: number = Properties.calculateRent(groupInfo, groupState, propertyInfo,
             propertyState, g_state.BoardIndex)
         if (space.values[0] == Properties.GROUP_UTIL) {
-            owed *= p.Roll
+            if (queue.length == 0) {
+                owed *= p.Roll
+            } else {
+                let item: ActionQueue.Item = queue[0]
+                if (item.action == PlayerAction.MoveForCard) {
+                    owed = p.Roll * (g_state.BoardIndex == 0 ? 10 : 20)
+                } else {
+                    owed *= p.Roll
+                }
+            }
+        }
+        if (space.values[0] == Properties.GROUP_RR && queue.length > 0) {
+            let item: ActionQueue.Item = queue[0]
+            if (item.action == PlayerAction.MoveForCard) {
+                owed *= 2
+            }
         }
         let owner: Player = g_state.getPlayer(propertyState.owner)
         ActionQueue.queuePayment(queue, owed, pId, propertyState.owner)
         game.splashForPlayer(pId,
-            Strings.PLAYER_OWES_PLAYER.replace('%PLAYERNAME%', p.Name).replace(
-                '%OTHERPLAYER%', owner.Name).replace('%AMOUNT%', owed.toString()))
+            Strings.PLAYER_OWES_PLAYER.replace('%PLAYERNAME%', p.Name)
+                .replace('%OTHERPLAYER%', owner.Name)
+                .replace('%AMOUNT%', owed.toString()))
     }
 
     export function startCurrentPlayer(queue: ActionQueue.Item[]): void {
@@ -394,6 +536,7 @@ namespace ActionQueueTestMode {
             )
             if (jailCards.length > 0) {
                 // Redeem jail card.
+                game.splash('Using jail card.')
                 jailCards[0].owner = 0
                 p.InJail = false
                 // Automatically roll in test mode.
