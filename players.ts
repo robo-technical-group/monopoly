@@ -496,11 +496,11 @@ class Player {
         let i: Image = this.stats.image
         i.fillRect(0, i.height - 5, i.width, 6, Color.Black)
         if (GameSettings.CURRENCY_IS_PREFIX) {
-            i.print(GameSettings.CURRENCY_SYMBOL, 0, 27, Color.BrightGreen, image.font5)
-            i.print(this.bank.toString(), 6, 27, Color.White, image.font5)
+            i.print(GameSettings.CURRENCY_SYMBOL, 0, 26, Color.BrightGreen, image.font5)
+            i.print(this.bank.toString(), 6, 26, Color.White, image.font5)
         } else {
-            i.print(this.bank.toString(), 0, 27, Color.White, image.font5)
-            i.print(GameSettings.CURRENCY_SYMBOL, this.bank.toString().length * 6, 27,
+            i.print(this.bank.toString(), 0, 26, Color.White, image.font5)
+            i.print(GameSettings.CURRENCY_SYMBOL, this.bank.toString().length * 6, 26,
                 Color.BrightGreen, image.font5)
         }
     }
