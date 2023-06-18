@@ -65,6 +65,7 @@
  *       - [X] Add bus tickets.
  *       - [X] Add game settings.
  *       - [X] Add train depots.
+ * - [X] Reverse print in header of player status images.
  */
 
 /**

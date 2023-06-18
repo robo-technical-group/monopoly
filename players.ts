@@ -260,7 +260,7 @@ class Player {
 
     public drawStatus(group: number, property: number, color: number, mortgaged: boolean): void {
         let x: number = Math.min(group * 4, 36)
-        let y: number = property * 4 + 6
+        let y: number = property * 4 + 8
         if (group == 10) {
             // Jail card indicators go in the last column beneath utilities.
             y += 4 * g_state.Properties.info[Properties.GROUP_UTIL].properties.length
@@ -308,12 +308,14 @@ class Player {
 
     public initStats(): void {
         if (this.stats == null) {
-            this.stats = sprites.create(image.create(40, 30), SpriteKind.Player)
+            this.stats = sprites.create(image.create(40, 32), SpriteKind.Player)
         }
         let i: Image = this.stats.image
         i.fill(Color.Black)
         // i.print(this.name, 0, 0, Color.Yellow, image.font5)
-        i.print(this.name, 0, 0, this.Color, image.font5)
+        // i.print(this.name, 0, 0, this.Color, image.font5)
+        i.fillRect(0, 0, 40, 7, this.Color)
+        i.print(this.name, 1, 1, Color.Black, image.font5)
         this.printBank()
     }
 
@@ -492,13 +494,13 @@ class Player {
             return
         }
         let i: Image = this.stats.image
-        i.fillRect(0, 25, i.width, 6, Color.Black)
+        i.fillRect(0, i.height - 5, i.width, 6, Color.Black)
         if (GameSettings.CURRENCY_IS_PREFIX) {
-            i.print(GameSettings.CURRENCY_SYMBOL, 0, 25, Color.BrightGreen, image.font5)
-            i.print(this.bank.toString(), 6, 25, Color.White, image.font5)
+            i.print(GameSettings.CURRENCY_SYMBOL, 0, 27, Color.BrightGreen, image.font5)
+            i.print(this.bank.toString(), 6, 27, Color.White, image.font5)
         } else {
-            i.print(this.bank.toString(), 0, 25, Color.White, image.font5)
-            i.print(GameSettings.CURRENCY_SYMBOL, this.bank.toString().length * 6, 25,
+            i.print(this.bank.toString(), 0, 27, Color.White, image.font5)
+            i.print(GameSettings.CURRENCY_SYMBOL, this.bank.toString().length * 6, 27,
                 Color.BrightGreen, image.font5)
         }
     }
