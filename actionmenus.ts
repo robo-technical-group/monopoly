@@ -155,12 +155,12 @@ class InJailActionMenu extends ActionMenu {
         let p: Player = g_state.getCurrPlayer()
         let pId: number = g_state.CurrPlayer
         this.showAction(ControllerButton.A, Strings.ACTION_ROLL)
-        if (p.Bank >= GameSettings.JAIL_FEE) {
+        if (p.Bank >= 50 /*GameSettings.JAIL_FEE*/) {
             let msg: string = Strings.ACTION_PAY + ' '
             if (GameSettings.CURRENCY_IS_PREFIX) {
-                msg += GameSettings.CURRENCY_SYMBOL + GameSettings.JAIL_FEE
+                msg += GameSettings.CURRENCY_SYMBOL + 50 /*GameSettings.JAIL_FEE*/
             } else {
-                msg += GameSettings.JAIL_FEE + GameSettings.CURRENCY_SYMBOL
+                msg += 50 /*GameSettings.JAIL_FEE*/ + GameSettings.CURRENCY_SYMBOL
             }
             this.showAction(ControllerButton.B, msg)
         }
@@ -190,8 +190,8 @@ class InJailActionMenu extends ActionMenu {
 
     public actionB(): void {
         let p: Player = g_state.getCurrPlayer()
-        if (p.Bank >= GameSettings.JAIL_FEE) {
-            p.changeBank(0 - GameSettings.JAIL_FEE)
+        if (p.Bank >= 50 /*GameSettings.JAIL_FEE*/) {
+            p.changeBank(0 - 50 /*GameSettings.JAIL_FEE*/)
             p.InJail = false
             this.done = true
         }

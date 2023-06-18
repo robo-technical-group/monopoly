@@ -10,8 +10,6 @@ namespace GameSettings {
     // export const CURRENCY_SYMBOL: string = '$'
     export const CURRENCY_SYMBOL: string = 'M'
     export const CURRENCY_IS_PREFIX: boolean = true
-    export const GO_VALUE: number = 200 // Not needed? Part of board.
-    export const JAIL_FEE: number = 50 // Not needed? Part of board.
     const TEXT_DONE = 'Start game!'
     const TEXT_HARDWARE_CONTROLLER: string = 'You must use a shared controller when playing this game on hardware.'
     const TEXT_ONE_PLAYER: string = 'This game does not have AI players yet. A one-player game will never end.'

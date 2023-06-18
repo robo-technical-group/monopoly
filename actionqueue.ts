@@ -97,6 +97,7 @@ namespace ActionQueue {
 
             case Cards.Action.BusTicket:
                 p.BusTickets++
+                g_state.updatePlayerStatus()
                 break
 
             case Cards.Action.BusTicketExpireAll:
@@ -104,6 +105,7 @@ namespace ActionQueue {
                     player.BusTickets = 0
                 }
                 p.BusTickets = 1
+                g_state.updatePlayerStatus()
                 break
 
             case Cards.Action.CollectFromEachPlayer:
@@ -238,6 +240,10 @@ namespace ActionQueue {
         }
     }
 
+    function processGift(queue: Item[]): void {
+        // TODO: Implement.
+    }
+
     function processMove(queue: Item[]): void {
         let p: Player = g_state.getCurrPlayer()
         let space: Space = g_state.Board.BoardSpaces[p.Location]
@@ -275,7 +281,11 @@ namespace ActionQueue {
                 break
 
             case SpaceType.Gift:
-                // TODO: Implement
+                if (g_state.testMode) {
+                    ActionQueueTestMode.processGift(queue)
+                } else {
+                    processGift(queue)
+                }
                 break
 
             case SpaceType.Go:
@@ -649,10 +659,29 @@ namespace ActionQueueTestMode {
         }
     }
 
+    export function processGift(queue: ActionQueue.Item[]): void {
+        let pId: number = g_state.CurrPlayer
+        let p: Player = g_state.getCurrPlayer()
+        let space: Space = g_state.Board.BoardSpaces[p.Location]
+        if (g_state.Bus) {
+            if (Cards.getBusTicketsRemaining() > 0) {
+                queue.insertAt(0, {
+                    action: PlayerAction.DrawCard,
+                    values: [Cards.BUS_DECK,],
+                })
+            } else {
+                ActionQueue.queuePayment(queue, space.values[0], 0, pId)
+            }
+        } else {
+            // TODO: Process as if bus rolled on speed die.
+        }
+    }
+
     export function processJailRoll(queue: ActionQueue.Item[]): void {
         let p: Player = g_state.getCurrPlayer()
         let pId: number = g_state.CurrPlayer
         let d: Dice = p.Dice
+        let jailSpace: Space = g_state.getBoardSpace(g_state.Board.Jail)
         if (d.AreDoubles) {
             game.splash(Strings.ACTION_IN_JAIL_DOUBLES)
             p.InJail = false
@@ -663,7 +692,7 @@ namespace ActionQueueTestMode {
         } else {
             p.JailTurns++
             if (p.JailTurns == 3) {
-                ActionQueue.queuePayment(queue, GameSettings.JAIL_FEE, pId, 0)
+                ActionQueue.queuePayment(queue, jailSpace.values[0], pId, 0)
                 p.InJail = false
                 queue.push({
                     action: PlayerAction.MoveForRoll,

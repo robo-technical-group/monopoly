@@ -9,19 +9,18 @@
  *       - [X] Actions go to a common queue.
  *       - [X] If queue is empty, then it's time to start the next turn.
  *       - [X] Handle player roll.
- *       - [/] Handle speed die.
- *       - [/] Handle board spaces.
+ *       - [X] Handle speed die.
+ *       - [X] Handle board spaces.
  *             - [X] Handle free spaces
  *             - [X] Handle tax spaces.
- *             - [/] Handle property spaces.
+ *             - [X] Handle property spaces.
  *                   - [X] Handle unowned properties.
  *                   - [X] Handle property purchase.
- *                   - [ ] Handle property auctions.
  *                   - [X] Handle owned properties.
  *             - [X] Handle go-to-jail spaces.
  *             - [X] Handle card spaces.
  *             - [X] Handle bus spaces.
- *             - [ ] Handle gift spaces.
+ *             - [X] Handle gift spaces.
  *       - [/] Handle card actions.
  *             - [X] Handle bank payouts.
  *             - [X] Handle collect from each player.

@@ -402,11 +402,12 @@ class GameState {
         for (let i: number = 1; i <= this.NumPlayers; i++) {
             let p: Player = this.getPlayer(i)
             let s: Sprite = p.Sprite
+            let space: Space = g_state.Board.BoardSpaces[this.board.CurrSpace]
             if (i == this.currPlayer) {
                 if (this.board.SpacesMoved > 0 &&
                         this.board.CurrSpace == this.board.Go && !p.PassedGo) {
                     p.PassedGo = true
-                    p.changeBank(GameSettings.GO_VALUE)
+                    p.changeBank(space.values[0])
                 }
                 let spaces: number = p.Location - this.board.CurrSpace
                 if (this.board.Direction < 0) {
