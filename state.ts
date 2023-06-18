@@ -9,6 +9,7 @@ interface IGameState {
     auctionQueue: number[]
     board: number
     bus: boolean
+    busTickets: number
     currPlayer: number
     depots: boolean
     gameMode: GameMode
@@ -162,6 +163,7 @@ class GameState {
             auctionQueue: this.auctionQueue,
             board: this.boardIndex,
             bus: this.bus,
+            busTickets: Cards.getBusTicketsRemaining(),
             currPlayer: this.currPlayer,
             depots: this.depots,
             gameMode: this.gameMode,
@@ -200,6 +202,10 @@ class GameState {
             filename = GameState.KEY_PREFIX + filename
         }
         return settings.exists(filename)
+    }
+
+    public getBoardSpace(location: number): Space {
+        return this.board.getSpace(location)
     }
 
     public getCurrPlayer(): Player {
@@ -332,7 +338,7 @@ class GameState {
         if (Array.isArray(state.actionQueue)) {
             this.actionQueue = ActionQueue.buildFromState(state.actionQueue)
         }
-        
+
         return true
     }
 
@@ -435,18 +441,30 @@ class GameState {
             value.showStats(x, y)
             x += 40
         })
-        this.properties.info.forEach((pgi: Properties.GroupInfo, pgiIndex: number) => {
+        this.properties.info.forEach((pgi: Properties.GroupInfo, pgIndex: number) => {
             pgi.properties.forEach((prop: Properties.Info, propIndex: number) => {
                 this.players.forEach((p: Player, playerIndex: number) => {
-                    let ps: Properties.State = this.properties.state[pgiIndex].properties[propIndex]
+                    let ps: Properties.State = this.properties.state[pgIndex].properties[propIndex]
                     if (ps.owner == playerIndex + 1) {
-                        p.drawStatus(pgiIndex, propIndex, pgi.color, ps.isMortgaged)
+                        p.drawStatus(pgIndex, propIndex, pgi.color, ps.isMortgaged)
                     } else {
-                        p.drawStatus(pgiIndex, propIndex, Properties.COLOR_UNOWNED, false)
+                        p.drawStatus(pgIndex, propIndex, Properties.COLOR_UNOWNED, false)
                     }
                 })
             })
         })
+        if (g_state.Bus) {
+            this.players.forEach((p: Player, playerIndex: number) => {
+                let pgIndex: number = this.properties.info.length - 1
+                let pgi: Properties.GroupInfo = this.properties.info[pgIndex]
+                let propIndex: number = this.properties.info[pgIndex].properties.length
+                if (p.BusTickets > 0) {
+                    p.drawStatus(pgIndex, propIndex, pgi.color, false)
+                } else {
+                    p.drawStatus(pgIndex, propIndex, Properties.COLOR_UNOWNED, false)
+                }
+            })
+        }
         if (this.testMode) {
             this.updateStatusSprite()
         }

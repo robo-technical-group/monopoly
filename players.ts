@@ -12,6 +12,7 @@ interface IPlayer {
     avatar: number
     bank: number
     bankrupt: boolean
+    busTickets: number
     controllerId: number
     inJail: boolean
     jailTurns: number
@@ -33,6 +34,7 @@ class Player {
     protected avatar: number
     protected bank: number
     protected bankrupt: boolean
+    protected busTickets: number
     protected controllerId: number
     protected destSpace: number
     protected dice: Dice
@@ -50,6 +52,7 @@ class Player {
         this.avatar = -1
         this.bank = -1
         this.bankrupt = false
+        this.busTickets = 0
         this.controllerId = controllerId
         this.destSpace = 0
         this.dice = new Dice(2)
@@ -91,6 +94,16 @@ class Player {
         this.printBank()
     }
 
+    public get BusTickets(): number {
+        return this.busTickets
+    }
+
+    public set BusTickets(value: number) {
+        if (value >= 0) {
+            this.busTickets = value
+        }
+    }
+
     public get Dice(): Dice {
         return this.dice
     }
@@ -101,16 +114,6 @@ class Player {
 
     public set DoublesRolled(value: boolean) {
         this.doublesRolled = value
-    }
-
-    public get Location(): number {
-        return this.destSpace
-    }
-
-    public set Location(value: number) {
-        if (value >= 0 && value < g_state.Board.BoardSpaces.length) {
-            this.destSpace = value
-        }
     }
 
     public get InJail(): boolean {
@@ -127,6 +130,16 @@ class Player {
 
     public set JailTurns(value: number) {
         this.jailTurns = Math.max(0, value)
+    }
+
+    public get Location(): number {
+        return this.destSpace
+    }
+
+    public set Location(value: number) {
+        if (value >= 0 && value < g_state.Board.BoardSpaces.length) {
+            this.destSpace = value
+        }
     }
 
     public get Name(): string {
@@ -162,6 +175,7 @@ class Player {
             avatar: this.avatar,
             bank: this.bank,
             bankrupt: this.bankrupt,
+            busTickets: this.busTickets,
             controllerId: this.controllerId,
             inJail: this.inJail,
             jailTurns: this.jailTurns,
@@ -347,6 +361,10 @@ class Player {
             this.bankrupt = state.bankrupt
         } else if (typeof state.bankrupt == 'number') {
             this.bankrupt = (state.bankrupt != 0)
+        }
+
+        if (typeof state.busTickets == 'number') {
+            this.busTickets = state.busTickets
         }
 
         return true

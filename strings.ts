@@ -16,6 +16,9 @@ namespace Strings {
     export const ACTION_IN_JAIL_DOUBLES: string = 'Doubles! Get out of jail free!'
     export const ACTION_PAY: string = 'Pay'
     export const ACTION_ROLL: string = 'Roll'
+    export const ACTION_SPEED_DIE: string = 'Speed die'
+    export const ACTION_SPEED_DIE_MONOPOLY_NO_SPACE: string =
+        "No unowned properties and no unmortgaged properties. You're safe!"
     export const ACTION_USE_JAIL_CARD: string = 'Get out free'
 
     // Strings used in avatars.ts
@@ -36,6 +39,7 @@ namespace Strings {
     export const PLAYER_PROPERTY_OWNED: string = "You're home!"
 
     // Board spaces
+    export const BOARD_BUS: string = 'No bus tickets remaining.'
     export const BOARD_FREE_PARKING: string = 'Free parking'
     export const BOARD_FREE_SPACE: string = 'Free time! Take a break!'
     export const BOARD_GO: string = "It's the Go! space"

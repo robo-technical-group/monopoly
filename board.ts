@@ -658,6 +658,14 @@ class Board {
         return toReturn
     }
 
+    public getSpace(location: number): Space {
+        if (location >= 0 && location < this.board.length) {
+            return this.board[location]
+        } else {
+            return null
+        }
+    }
+
     public getXCoordinate(location: number): number {
         let s: Sprite[] = sprites.allOfKind(SpriteKind.BoardSpace).filter(
             (value: Sprite, index: number) => value.data['boardIndex'] == location

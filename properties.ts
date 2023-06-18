@@ -3,7 +3,7 @@
  */
 namespace Properties {
     export enum PropertyType {
-        JailCard,
+        Card,
         Standard,
         Transportation,
         Utility,
@@ -230,20 +230,20 @@ namespace Properties {
                 rents: [4, 10],
             },],
         },
-        // 10 = Get out of jail cards
+        // 10 = Cards
         {
             color: Color.Aqua,
             houseCost: 0,
-            propertyType: PropertyType.JailCard,
+            propertyType: PropertyType.Card,
             properties: [{
                 cost: 0,
-                name: 'Get out of jail free!',
-                rents: []
+                name: 'Get out of jail free! (Chance)',
+                rents: [],
             }, {
                 cost: 0,
-                name: 'Get out of jail free!',
-                rents: []
-            },]
+                name: 'Get out of jail free! (Community Chest)',
+                rents: [],
+            }]
         }
     ], [
     // Mega board properties
@@ -465,19 +465,19 @@ namespace Properties {
                 rents: [4, 10, 20,],
             },],
         },
-        // 10 = Get out of jail cards
+        // 10 = Cards
         {
             color: Color.Aqua,
             houseCost: 0,
-            propertyType: PropertyType.JailCard,
+            propertyType: PropertyType.Card,
             properties: [{
                 cost: 0,
                 name: 'Get out of jail free! (Chance)',
-                rents: []
+                rents: [],
             }, {
                 cost: 0,
                 name: 'Get out of jail free! (Community Chest)',
-                rents: []
+                rents: [],
             },]
         }
     ],

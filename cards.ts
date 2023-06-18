@@ -1,6 +1,8 @@
 namespace Cards {
     export enum Action {
         BankPays,
+        BusTicket,
+        BusTicketExpireAll,
         CollectFromEachPlayer,
         GetOutOfJail,
         GoToAny,
@@ -180,15 +182,41 @@ namespace Cards {
                     values: [CardLocations.Go,],
                 }
             ],
-        }
+        }, {
+            name: 'Bus Tickets',
+            color: Color.LightBlue,
+            cards: [
+                {
+                    text: 'Save for future use.',
+                    action: Action.BusTicket,
+                    values: [],
+                }, {
+                    text: 'All other player tickets expire.',
+                    action: Action.BusTicketExpireAll,
+                    values: [],
+                },
+            ],
+        },
     ]
-    
+
+    export const BUS_DECK: number = CARDS.length - 1
+    const BUS_TICKETS_EXPIRE_CARDS: number = 3    
     // Maximum card deck size.
     // + Allows for additional cards that can be shuffled into the decks.
     const CARDS_MAX_LENGTH: number = 16
 
     let deckIndex: number[] = []
     let decks: number[][] = []
+
+    function currentCard(deck: number): Card {
+        let index: number = deckIndex[deck]
+        if (index >= decks[deck].length) {
+            return null
+        }
+        let cards: Card[] = CARDS[deck].cards
+        let cardIndex: number = decks[deck][index]
+        return cards[cardIndex]
+    }
 
     export function deckColor(deck: number): number {
         return CARDS[deck].color
@@ -202,40 +230,69 @@ namespace Cards {
         if (decks.length == 0) {
             initDecks()
         }
-        if (deckIndex[deck] == 0 && g_state.Properties.state[Properties.GROUP_JAIL].properties[deck].owner > 0) {
-            // Jail card is owned; skip to next card.
-            moveIndex(deck)
+        if (g_state.Properties.state[Properties.GROUP_JAIL].properties[deck].owner > 0) {
+            let currCard: Card = currentCard(deck)
+            if (currCard.action == Action.GetOutOfJail) {
+                // Jail card is owned; skip to next card.
+                moveIndex(deck)
+            }
         }
 
-        let toReturn: Card = CARDS[deck].cards[decks[deck][deckIndex[deck]]]
+        let toReturn: Card = currentCard(deck)
         moveIndex(deck)
         return toReturn
+    }
+
+    export function getBusTicketsRemaining(): number {
+        if (g_state.Bus) {
+            return CARDS_MAX_LENGTH - deckIndex[CARDS.length - 1]
+        } else {
+            return 0
+        }
     }
 
     function initDecks(): void {
         for (let deck: number = 0; deck < CARDS.length; deck++) {
             decks[deck] = []
             deckIndex[deck] = 0
-            for (let card: number = 1; card < CARDS[deck].cards.length; card++) {
-                decks[deck].push(card)
-            }
-            if (decks[deck].length >= CARDS_MAX_LENGTH) {
-                // Select a random deck of cards.
-                shuffleDeck(decks[deck])
-                while (decks[deck].length >= CARDS_MAX_LENGTH) {
-                    let _: number = decks[deck].pop()
+            if (deck == BUS_DECK) {
+                for (let i: number = 0; i < BUS_TICKETS_EXPIRE_CARDS; i++) {
+                    decks[deck].push(1)
                 }
+                while (decks[deck].length < CARDS_MAX_LENGTH) {
+                    decks[deck].push(0)
+                }
+            } else {
+                for (let card: number = 1; card < CARDS[deck].cards.length; card++) {
+                    decks[deck].push(card)
+                }
+                if (decks[deck].length >= CARDS_MAX_LENGTH) {
+                    // Select a random deck of cards.
+                    shuffleDeck(decks[deck])
+                    while (decks[deck].length >= CARDS_MAX_LENGTH) {
+                        let _: number = decks[deck].pop()
+                    }
+                }
+                // Add the jail card.
+                decks[deck].push(0)
             }
-            // Add the jail card.
-            decks[deck].push(0)
             shuffleDeck(decks[deck])
         }
     }
 
     function moveIndex(deck: number): void {
+        if (deck == BUS_DECK && deckIndex[deck] >= decks[deck].length) {
+            return
+        }
         deckIndex[deck]++
-        if (deckIndex[deck] >= decks[deck].length) {
+        if (deck <= BUS_DECK && deckIndex[deck] >= decks[deck].length) {
             deckIndex[deck] = 0
+        }
+    }
+
+    export function setIndex(deck: number, index: number): void {
+        if (index >= 0 && index < CARDS_MAX_LENGTH) {
+            deckIndex[deck] = index
         }
     }
 

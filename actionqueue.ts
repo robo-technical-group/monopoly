@@ -95,6 +95,17 @@ namespace ActionQueue {
                 queuePayment(queue, card.values[0], 0, pId)
                 break
 
+            case Cards.Action.BusTicket:
+                p.BusTickets++
+                break
+
+            case Cards.Action.BusTicketExpireAll:
+                for (let player of g_state.Players) {
+                    player.BusTickets = 0
+                }
+                p.BusTickets = 1
+                break
+
             case Cards.Action.CollectFromEachPlayer:
                 for (let i: number = 1; i <= g_state.NumPlayers; i++) {
                     if (i != pId) {
@@ -115,7 +126,7 @@ namespace ActionQueue {
 
             case Cards.Action.GoToGroup:
                 for (let i: number = 0; i < g_state.Board.BoardSpaces.length; i++) {
-                    let space: Space = g_state.Board.BoardSpaces[i]
+                    let space: Space = g_state.getBoardSpace(i)
                     if (space.spaceType == SpaceType.Property &&
                             space.values[0] == card.values[0] &&
                             i > p.Location) {
@@ -236,7 +247,19 @@ namespace ActionQueue {
                 break
 
             case SpaceType.BusTicket:
-                // TODO: Implement
+                if (g_state.Bus) {
+                    if (Cards.getBusTicketsRemaining() > 0) {
+                        queue.insertAt(0, {
+                            action: PlayerAction.DrawCard,
+                            values: [Cards.BUS_DECK,],
+                        })
+                    } else {
+                        game.splashForPlayer(g_state.CurrPlayer,
+                            Strings.BOARD_BUS, Strings.BOARD_FREE_SPACE)
+                    }
+                } else {
+                    // TODO: Process as if bus rolled on speed die.
+                }
                 break
 
             case SpaceType.Card:
@@ -381,8 +404,7 @@ namespace ActionQueue {
                 break
 
             case PlayerAction.ProcessSpeedDie:
-                // For now, ignore speed die.
-                _ = queue.shift()
+                processSpeedDie(queue)
                 break
 
             case PlayerAction.ReceiveMoney:
@@ -447,6 +469,95 @@ namespace ActionQueue {
                     values: [d.SpeedDie,],
                 })
             }
+        }
+    }
+
+    function processSpeedDie(queue: Item[]): void {
+        let item: Item = queue.shift()
+        switch (item.values[0]) {
+            case 4:
+                if (g_state.testMode) {
+                    ActionQueueTestMode.processSpeedDieBus(queue)
+                } else {
+                    processSpeedDieBus(queue)
+                }
+                break
+
+            case 5:
+            case 6:
+                processSpeedDieMonopoly(queue)
+                break
+        }
+    }
+
+    function processSpeedDieBus(queue: Item[]): void {
+        // TODO: Implement.
+    }
+
+    function processSpeedDieMonopoly(queue: Item[]): void {
+        // Find nearest unowned property.
+        let pId: number = g_state.CurrPlayer
+        let p: Player = g_state.getCurrPlayer()
+        let newLocation: number = p.Location + 1
+        if (newLocation >= g_state.Board.BoardSpaces.length) {
+            newLocation = 0
+        }
+        while (newLocation != p.Location) {
+            let space: Space = g_state.getBoardSpace(newLocation)
+            if (space.spaceType == SpaceType.Property) {
+                let groupState: Properties.GroupState = g_state.Properties.state[space.values[0]]
+                let propState: Properties.State = groupState.properties[space.values[1]]
+                if (propState.owner == 0) {
+                    break
+                }
+            }
+            newLocation++
+            if (newLocation >= g_state.Board.BoardSpaces.length) {
+                newLocation = 0
+            }
+        }
+        if (newLocation != p.Location) {
+            p.Location = newLocation
+            g_state.Board.Direction = 1
+            p.startAnimation(1)
+            p.PassedGo = false
+            queue.insertAt(0, {
+                action: PlayerAction.Moving,
+                values: [],
+            })
+            return
+        }
+        // Move to next property that is owned and not mortgaged.
+        newLocation = p.Location + 1
+        if (newLocation >= g_state.Board.BoardSpaces.length) {
+            newLocation = 0
+        }
+        while (newLocation != p.Location) {
+            let space: Space = g_state.getBoardSpace(newLocation)
+            if (space.spaceType == SpaceType.Property) {
+                let groupState: Properties.GroupState = g_state.Properties.state[space.values[0]]
+                let propState: Properties.State = groupState.properties[space.values[1]]
+                if (propState.owner > 0 && !propState.isMortgaged) {
+                    break
+                }
+            }
+            newLocation++
+            if (newLocation >= g_state.Board.BoardSpaces.length) {
+                newLocation = 0
+            }
+        }
+        if (newLocation != p.Location) {
+            p.Location = newLocation
+            g_state.Board.Direction = 1
+            p.startAnimation(1)
+            p.PassedGo = false
+            queue.insertAt(0, {
+                action: PlayerAction.Moving,
+                values: [],
+            })
+        } else {
+            game.splashForPlayer(pId, Strings.ACTION_SPEED_DIE,
+                Strings.ACTION_SPEED_DIE_MONOPOLY_NO_SPACE)
         }
     }
 
@@ -612,6 +723,39 @@ namespace ActionQueueTestMode {
             Strings.PLAYER_OWES_PLAYER.replace('%PLAYERNAME%', p.Name)
                 .replace('%OTHERPLAYER%', owner.Name)
                 .replace('%AMOUNT%', owed.toString()))
+    }
+
+    export function processSpeedDieBus(queue: ActionQueue.Item[]): void {
+        // Just move to the next card space.
+        let pId: number = g_state.CurrPlayer
+        let p: Player = g_state.getCurrPlayer()
+        let newLocation: number = p.Location + 1
+        if (newLocation >= g_state.Board.BoardSpaces.length) {
+            newLocation = 0
+        }
+        while (newLocation != p.Location) {
+            let space: Space = g_state.getBoardSpace(newLocation)
+            if (space.spaceType == SpaceType.Card) {
+                break
+            }
+            newLocation++
+            if (newLocation >= g_state.Board.BoardSpaces.length) {
+                newLocation = 0
+            }
+        }
+        if (newLocation != p.Location) {
+            p.Location = newLocation
+            g_state.Board.Direction = 1
+            p.startAnimation(1)
+            p.PassedGo = false
+            queue.insertAt(0, {
+                action: PlayerAction.Moving,
+                values: [],
+            })
+        } else {
+            // This really should not happen.
+            throw 'ActionQueueTestMode.processSpeedDieBus: No space found.'
+        }
     }
 
     export function startCurrentPlayer(queue: ActionQueue.Item[]): void {
