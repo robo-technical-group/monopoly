@@ -537,7 +537,7 @@ namespace ActionQueue {
             if (space.spaceType == SpaceType.Property) {
                 let groupState: Properties.GroupState = g_state.Properties.state[space.values[0]]
                 let propState: Properties.State = groupState.properties[space.values[1]]
-                if (propState.owner > 0 && !propState.isMortgaged) {
+                if (propState.owner != pId && !propState.isMortgaged) {
                     break
                 }
             }
