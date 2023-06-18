@@ -120,7 +120,7 @@ namespace ActionQueue {
                 break
 
             case Cards.Action.GoToSpace:
-                if (card.values[0] == g_state.Board.Jail) {
+                if (card.values[0] == Cards.CardLocations.Jail) {
                     queue.insertAt(0, {
                         action: PlayerAction.GoToJail,
                         values: [],
@@ -339,7 +339,12 @@ namespace ActionQueue {
                 break
 
             case PlayerAction.ProcessRollInJail:
-                // TODO: Implement
+                _ = queue.shift()
+                if (g_state.testMode) {
+                    ActionQueueTestMode.processJailRoll(queue)
+                } else {
+                    // TODO: Process jail roll.
+                }
                 break
 
             case PlayerAction.ProcessSpeedDie:
@@ -398,6 +403,19 @@ namespace ActionQueue {
                 })
             }
         }
+    }
+
+    export function queueJailRoll(queue: Item[]): void {
+        let p: Player = g_state.getCurrPlayer()
+        queue.push({
+            action: PlayerAction.Rolling,
+            values: [],
+        })
+        queue.push({
+            action: PlayerAction.ProcessRollInJail,
+            values: [],
+        })
+        p.startRoll(2)
     }
 
     export function queuePayment(queue: Item[], amount: number, payer: number,
@@ -475,6 +493,32 @@ namespace ActionQueueTestMode {
         }
     }
 
+    export function processJailRoll(queue: ActionQueue.Item[]): void {
+        let p: Player = g_state.getCurrPlayer()
+        let pId: number = g_state.CurrPlayer
+        let d: Dice = p.Dice
+        if (d.AreDoubles) {
+            game.splash(Strings.ACTION_IN_JAIL_DOUBLES)
+            p.InJail = false
+            queue.push({
+                action: PlayerAction.MoveForRoll,
+                values: [d.Roll,],
+            })
+        } else {
+            p.JailTurns++
+            if (p.JailTurns == 3) {
+                ActionQueue.queuePayment(queue, GameSettings.JAIL_FEE, pId, 0)
+                p.InJail = false
+                queue.push({
+                    action: PlayerAction.MoveForRoll,
+                    values: [d.Roll,],
+                })
+            } else {
+                g_state.nextPlayer()
+            }
+        }
+    }
+
     export function processProperty(queue: ActionQueue.Item[]): void {
         let pId: number = g_state.CurrPlayer
         let p: Player = g_state.getCurrPlayer()
@@ -534,6 +578,7 @@ namespace ActionQueueTestMode {
                 game.splash('Using jail card.')
                 jailCards[0].owner = 0
                 p.InJail = false
+                g_state.updatePlayerSprites()
                 // Automatically roll in test mode.
                 queue.push({
                     action: PlayerAction.Rolling,
@@ -541,15 +586,7 @@ namespace ActionQueueTestMode {
                 })
                 p.startRoll(g_state.SpeedDie ? 3 : 2)
             } else {
-                queue.push({
-                    action: PlayerAction.Rolling,
-                    values: [],
-                })
-                queue.push({
-                    action: PlayerAction.ProcessRollInJail,
-                    values: [],
-                })
-                p.startRoll(2)
+                ActionQueue.queueJailRoll(queue)
             }
         } else {
             // Automatically roll in test mode.

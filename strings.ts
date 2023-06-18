@@ -13,6 +13,7 @@ namespace Strings {
     // Strings used in actions.ts
     export const ACTION_IN_JAIL: string = 'In jail (Turn %TURN%)'
     export const ACTION_IN_JAIL_MUST_PAY: string = 'Time to leave jail!'
+    export const ACTION_IN_JAIL_DOUBLES: string = 'Doubles! Get out of jail free!'
     export const ACTION_PAY: string = 'Pay'
     export const ACTION_ROLL: string = 'Roll'
     export const ACTION_USE_JAIL_CARD: string = 'Get out free'

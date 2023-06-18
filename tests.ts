@@ -89,6 +89,9 @@ namespace Tests {
             g_state.SpeedDie = true
             g_state.Bus = true
             g_state.Depots = true
+            for (let p of g_state.Players) {
+                p.Bank = 2500
+            }
         }
         startGame()
     }
