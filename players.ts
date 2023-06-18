@@ -25,7 +25,7 @@ interface IPlayer {
 class Player {
     public static readonly ANIM_SPEED: number = 250
     public static readonly COLORS: number[] =
-        [Color.Wine, Color.Red, Color.Blue, Color.Orange, Color.BrightGreen,]
+        [Color.Wine, Color.Pink, Color.LightBlue, Color.Orange, Color.BrightGreen,]
     public static readonly Z: number = 20
     public static readonly Z_CURRENT: number = 21
 
@@ -101,6 +101,14 @@ class Player {
     public set BusTickets(value: number) {
         if (value >= 0) {
             this.busTickets = value
+        }
+    }
+
+    public get Color(): number {
+        if (this.controllerId >= 0 && this.controllerId < Player.COLORS.length) {
+            return Player.COLORS[this.controllerId]
+        } else {
+            return Player.COLORS[0]
         }
     }
 
@@ -304,7 +312,8 @@ class Player {
         }
         let i: Image = this.stats.image
         i.fill(Color.Black)
-        i.print(this.name, 0, 0, Color.Yellow, image.font5)
+        // i.print(this.name, 0, 0, Color.Yellow, image.font5)
+        i.print(this.name, 0, 0, this.Color, image.font5)
         this.printBank()
     }
 
