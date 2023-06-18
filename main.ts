@@ -10,8 +10,9 @@
  *       - [X] If queue is empty, then it's time to start the next turn.
  *       - [X] Handle player roll.
  *       - [X] Handle speed die.
- *       - [X] Handle board spaces.
- *             - [X] Handle free spaces
+ *       - [/] Handle board spaces.
+ *             - [ ] Handle auction spaces.
+ *             - [X] Handle free spaces.
  *             - [X] Handle tax spaces.
  *             - [X] Handle property spaces.
  *                   - [X] Handle unowned properties.
