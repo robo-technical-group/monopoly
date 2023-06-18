@@ -84,7 +84,7 @@ namespace Properties {
         },
         // 2 = Property group 3 (Purple properties)
         {
-            color: Color.Purple,
+            color: Color.Pink,
             houseCost: 100,
             propertyType: PropertyType.Standard,
             properties: [{
@@ -291,7 +291,7 @@ namespace Properties {
         },
         // 2 = Property group 3 (Purple properties)
         {
-            color: Color.Purple,
+            color: Color.Pink,
             houseCost: 100,
             propertyType: PropertyType.Standard,
             properties: [{
