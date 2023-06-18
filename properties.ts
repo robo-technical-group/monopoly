@@ -569,7 +569,7 @@ namespace Properties {
                     if (propState.houses == 0) {
                         if (groupState.isMonopolyOwned) {
                             owed = propInfo.rents[0] * 3
-                        } else if (groupState.canBuild) {
+                        } else if (groupState.canBuild && groupState.owner == propState.owner) {
                             owed = propInfo.rents[0] * 2
                         } else {
                             owed = propInfo.rents[0]
