@@ -2646,7 +2646,7 @@ ffffffffffffffffffef
 9 f 8 8 8 f f 8 8 f 9 
 9 f f f f f f f f f 9 
 9 9 f f 9 9 9 f f 9 9 
-9 9 f f 9 9 9 f f 9 9 
+9 9 9 9 9 9 9 9 9 9 9 
 9 9 9 9 9 9 9 9 9 9 9 
 `, img`
 9 9 9 9 9 9 9 9 9 9 9 

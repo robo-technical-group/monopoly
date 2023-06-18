@@ -341,6 +341,11 @@ class GameState {
         if (this.currPlayer > this.players.length) {
             this.currPlayer = 1
         }
+        // If, for some reason, actions still exist in the queue,
+        // + then empty it.
+        if (this.actionQueue.length > 0) {
+            this.actionQueue = []
+        }
     }
 
     /**

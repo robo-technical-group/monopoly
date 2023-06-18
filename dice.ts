@@ -77,17 +77,17 @@ class Dice {
         if (this.sprites == null || typeof this.sprites != 'object') {
             this.sprites = []
         }
-        while (this.sprites.length != value) {
+        if (this.sprites.length != value) {
             this.sprites.forEach((value: Sprite, index: number) =>
-                value.destroy())
+                value.destroy()
+            )
             this.sprites = []
-            let s: Sprite = sprites.create(img`.`, SpriteKind.Dice)
-            s.setFlag(SpriteFlag.Invisible, true)
-            s.z = Dice.Z
-            this.sprites.push(s)
-        }
-        if (this.sprites.length > value) {
-            this.sprites = this.sprites.slice(0, value - 1)
+            for (let i: number = 0; i < value; i++) {
+                let s: Sprite = sprites.create(img`.`, SpriteKind.Dice)
+                s.setFlag(SpriteFlag.Invisible, true)
+                s.z = Dice.Z
+                this.sprites.push(s)
+            }
         }
         if (this.values == null || typeof this.values != 'object' || this.values.length != value) {
             this.values = []

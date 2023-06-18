@@ -253,13 +253,6 @@ namespace ActionQueue {
                     '%TAXNAME%', tax.name).replace('%TAXAMOUNT%', tax.value.toString()))
                 break
         }
-        
-        if (queue.length > 0) {
-            let item: ActionQueue.Item = queue[0]
-            if (item.action == PlayerAction.MoveForCard) {
-                item = queue.shift()
-            }
-        }
     }
 
     export function processQueue(queue: Item[]): void {
@@ -299,7 +292,9 @@ namespace ActionQueue {
                 break
 
             case PlayerAction.MoveForCard:
-                // TODO: Implement
+                // If this is the top action in the queue,
+                // + then the move has already been processed.
+                _ = queue.shift()
                 break
 
             case PlayerAction.MoveForRoll:
