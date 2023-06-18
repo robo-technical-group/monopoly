@@ -75,7 +75,20 @@ namespace ActionQueue {
         let pId: number = g_state.CurrPlayer
         let deck: number = item.values[0]
         let card: Cards.Card = Cards.drawCard(deck)
-        game.splashForPlayer(pId, Cards.deckName(deck), card.text)
+        let msg: string = card.text
+        let multiplier: number = 1
+        if (card.action == Cards.Action.GoToGroup && card.values[0] == Properties.GROUP_UTIL) {
+            switch (card.values[0]) {
+                case Properties.GROUP_UTIL:
+                    multiplier = (g_state.BoardIndex == 0 ? card.values[1] : card.values[2])
+                    break
+
+                case Properties.GROUP_RR:
+                    multiplier = card.values[1]
+            }
+            msg = msg.replace('%MULTIPLIER%', multiplier.toString())
+        }
+        game.splashForPlayer(pId, Cards.deckName(deck), msg)
 
         switch (card.action) {
             case Cards.Action.BankPays:
@@ -96,6 +109,10 @@ namespace ActionQueue {
                 g_state.updatePlayerStatus()
                 break
 
+            case Cards.Action.GoToAny:
+                // Use same mechanism as rolling triples.
+                break
+
             case Cards.Action.GoToGroup:
                 for (let i: number = 0; i < g_state.Board.BoardSpaces.length; i++) {
                     let space: Space = g_state.Board.BoardSpaces[i]
@@ -111,7 +128,7 @@ namespace ActionQueue {
                 p.PassedGo = false
                 queue.insertAt(0, {
                     action: PlayerAction.MoveForCard,
-                    values: [deck,],
+                    values: [deck, multiplier,],
                 })
                 queue.insertAt(0, {
                     action: PlayerAction.Moving,
@@ -139,6 +156,14 @@ namespace ActionQueue {
                         values: [],
                     })
                 }
+                break
+
+            case Cards.Action.GoToSpaceAllPay:
+                // TODO: Implement.
+                break
+
+            case Cards.Action.Lottery:
+                // TODO: Implement.
                 break
 
             case Cards.Action.MoveBackward:
@@ -170,6 +195,10 @@ namespace ActionQueue {
                 }
                 break
 
+            case Cards.Action.PayTax:
+                // TODO: Implement.
+                break
+
             case Cards.Action.Repairs:
                 let houses: number = 0
                 let hotels: number = 0
@@ -190,6 +219,10 @@ namespace ActionQueue {
                     owed += skyscrapers * card.values[2]
                 }
                 queuePayment(queue, owed, pId, 0)
+                break
+
+            case Cards.Action.SkipNextTurn:
+                // TODO: Implement.
                 break
         }
     }
@@ -373,7 +406,19 @@ namespace ActionQueue {
             let item: Item = queue[0]
             switch (item.action) {
                 case PlayerAction.MoveForCard:
-                    // TODO: Process roll for utility card.
+                    let pId: number = g_state.CurrPlayer
+                    let space: Space = g_state.Board.BoardSpaces[p.Location]
+                    let groupInfo: Properties.GroupInfo = g_state.Properties.info[space.values[0]]
+                    let groupState: Properties.GroupState = g_state.Properties.state[space.values[0]]
+                    let propertyInfo: Properties.Info = groupInfo.properties[space.values[1]]
+                    let propertyState: Properties.State = groupState.properties[space.values[1]]
+                    if (groupInfo.propertyType == Properties.PropertyType.Utility) {
+                        item = queue.shift()
+                        let owed: number = p.Roll * (g_state.BoardIndex == 0 ?
+                            item.values[1] : item.values[2])
+                        queuePayment(queue, owed, pId, propertyState.owner)
+                    }
+                    // TODO: Process roll for other cards.
                     break
             }
         } else {
@@ -544,7 +589,12 @@ namespace ActionQueueTestMode {
             } else {
                 let item: ActionQueue.Item = queue[0]
                 if (item.action == PlayerAction.MoveForCard) {
-                    owed = p.Roll * (g_state.BoardIndex == 0 ? 10 : 20)
+                    queue.insertAt(0, {
+                        action: PlayerAction.Rolling,
+                        values: [],
+                    })
+                    p.startRoll(2)
+                    return
                 } else {
                     owed *= p.Roll
                 }
@@ -553,7 +603,7 @@ namespace ActionQueueTestMode {
         if (space.values[0] == Properties.GROUP_RR && queue.length > 0) {
             let item: ActionQueue.Item = queue[0]
             if (item.action == PlayerAction.MoveForCard) {
-                owed *= 2
+                owed *= item.values[1]
             }
         }
         let owner: Player = g_state.getPlayer(propertyState.owner)

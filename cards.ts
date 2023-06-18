@@ -54,7 +54,7 @@ namespace Cards {
                 }, {
                     text: 'Take a ride on the Reading.',
                     action: Action.GoToSpace,
-                    values: [CardLocations.Reading],
+                    values: [CardLocations.Reading,],
                 }, {
                     text: 'Make general repairs on your properties. Pay M25 per house and M100 per hotel.',
                     action: Action.Repairs,
@@ -64,9 +64,9 @@ namespace Cards {
                     action: Action.PayBank,
                     values: [15,],
                 }, {
-                    text: 'Advance token to nearest utility. If owned, then throw dice and pay 10 times amount thrown.',
+                    text: 'Advance token to nearest utility. If owned, then throw dice and pay %MULTIPLIER% times amount thrown.',
                     action: Action.GoToGroup,
-                    values: [Properties.GROUP_UTIL,],
+                    values: [Properties.GROUP_UTIL, 10, 20,],
                 }, {
                     text: 'Take a walk on Boardwalk.',
                     action: Action.GoToSpace,
@@ -90,11 +90,11 @@ namespace Cards {
                 }, {
                     text: 'Advance token to nearest railroad. Pay owner double.',
                     action: Action.GoToGroup,
-                    values: [Properties.GROUP_RR,],
+                    values: [Properties.GROUP_RR, 2,],
                 }, {
                     text: 'Advance token to nearest railroad. Pay owner double.',
                     action: Action.GoToGroup,
-                    values: [Properties.GROUP_RR,],
+                    values: [Properties.GROUP_RR, 2,],
                 }, {
                     text: 'Advance to Go!',
                     action: Action.GoToSpace,
