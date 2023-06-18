@@ -9,7 +9,7 @@
  *       - [X] Actions go to a common queue.
  *       - [X] If queue is empty, then it's time to start the next turn.
  *       - [X] Handle player roll.
- *       - [ ] Handle speed die.
+ *       - [/] Handle speed die.
  *       - [/] Handle board spaces.
  *             - [X] Handle free spaces
  *             - [X] Handle tax spaces.
@@ -20,22 +20,22 @@
  *                   - [X] Handle owned properties.
  *             - [X] Handle go-to-jail spaces.
  *             - [X] Handle card spaces.
- *             - [ ] Handle bus spaces.
+ *             - [X] Handle bus spaces.
  *             - [ ] Handle gift spaces.
- *       - [ ] Handle card actions.
- *             - [ ] Handle bank payouts.
- *             - [ ] Handle collect from each player.
- *             - [ ] Handle get out of jail card.
+ *       - [/] Handle card actions.
+ *             - [X] Handle bank payouts.
+ *             - [X] Handle collect from each player.
+ *             - [X] Handle get out of jail card.
  *             - [ ] Handle go to any space.
- *             - [ ] Handle go to property group.
- *             - [ ] Handle go to space.
+ *             - [X] Handle go to property group.
+ *             - [X] Handle go to space.
  *             - [ ] Handle go to space and all pay.
  *             - [ ] Handle lottery.
- *             - [ ] Handle move backward.
- *             - [ ] Handle pay bank.
- *             - [ ] Handle pay each player.
+ *             - [X] Handle move backward.
+ *             - [X] Handle pay bank.
+ *             - [X] Handle pay each player.
  *             - [ ] Handle selective tax.
- *             - [ ] Handle property repairs.
+ *             - [X] Handle property repairs.
  *             - [ ] Handle roll backward.
  *             - [ ] Handle skip next turn.
  *       - [ ] Handle bus options.
@@ -58,11 +58,11 @@
  *       - [ ] Single controller.
  * - [ ] Buy/sell houses + mortgage property.
  * - [ ] Trade mechanism.
- * - [/] *Mega Monopoly* accommodations.
+ * - [X] *Mega Monopoly* accommodations.
  *       - [X] Add assets.
  *       - [X] Add alternate board.
  *       - [X] Add speed die.
- *       - [ ] Add bus tickets.
+ *       - [X] Add bus tickets.
  *       - [X] Add game settings.
  *       - [X] Add train depots.
  */
