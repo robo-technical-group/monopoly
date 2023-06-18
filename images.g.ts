@@ -793,6 +793,80 @@ f2222222222222222222222222222222222f1111
 1111111111111fff1f1f1f1fff11111111111111
 1111111111111111111111111111111111111111
 `];
+            case "d6speed":
+            case "anim7":return [img`
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 f f f 9 9 9 9 
+9 9 9 9 f c f 9 9 9 9 
+9 9 9 9 f f f 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 
+`, img`
+9 9 9 9 9 9 9 9 9 9 9 
+9 f f f 9 9 9 9 9 9 9 
+9 f c f 9 9 9 9 9 9 9 
+9 f f f 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 f f f 9 
+9 9 9 9 9 9 9 f c f 9 
+9 9 9 9 9 9 9 f f f 9 
+9 9 9 9 9 9 9 9 9 9 9 
+`, img`
+9 9 9 9 9 9 9 9 9 9 9 
+9 f f f 9 9 9 9 9 9 9 
+9 f c f 9 9 9 9 9 9 9 
+9 f f f 9 9 9 9 9 9 9 
+9 9 9 9 f f f 9 9 9 9 
+9 9 9 9 f c f 9 9 9 9 
+9 9 9 9 f f f 9 9 9 9 
+9 9 9 9 9 9 9 f f f 9 
+9 9 9 9 9 9 9 f c f 9 
+9 9 9 9 9 9 9 f f f 9 
+9 9 9 9 9 9 9 9 9 9 9 
+`, img`
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 f f f f f f f 9 
+9 9 f 9 9 9 9 9 9 f 9 
+9 f 9 9 f f 9 f 9 f 9 
+9 f 6 6 f f 6 6 6 f 9 
+9 f 8 8 f f 8 8 8 f 9 
+9 f f f f f f f f f 9 
+9 9 f f 9 9 9 f f 9 9 
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 
+`, img`
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 f f 9 9 9 f f 9 9 
+9 f f f f 9 f f f f 9 
+9 f f 9 f f f 9 f f 9 
+9 f f 9 f f f 9 f f 9 
+9 f f 9 9 f 9 9 f f 9 
+9 f f 9 9 f 9 9 f f 9 
+9 f f 9 9 9 9 9 f f 9 
+9 f f 9 9 9 9 9 f f 9 
+9 f f 9 9 9 9 9 f f 9 
+9 9 9 9 9 9 9 9 9 9 9 
+`, img`
+9 9 9 9 9 9 9 9 9 9 9 
+9 9 f f 9 9 9 f f 9 9 
+9 f f f f 9 f f f f 9 
+9 f f 9 f f f 9 f f 9 
+9 f f 9 f f f 9 f f 9 
+9 f f 9 9 f 9 9 f f 9 
+9 f f 9 9 f 9 9 f f 9 
+9 f f 9 9 9 9 9 f f 9 
+9 f f 9 9 9 9 9 f f 9 
+9 f f 9 9 9 9 9 f f 9 
+9 9 9 9 9 9 9 9 9 9 9 
+`];
             case "boardSides":
             case "anim4":return [img`
 eeeeeeeeeeeeeeeeeeee
@@ -2411,23 +2485,23 @@ fff1f11ff1f1f1ffffff
 11111111111111111111
 11111111111111111111
 11111111111111111111
-1fffffffffffffffff11
-1f1111111111111111f1
-1f1ffff1fff1111111f1
-1f1ffff1fff1111111f1
-1f1ffff1fff1fffff1f1
-1f1ffff1fff1f1f1f1f1
-1f1ffff1fff1f1f1f1f1
-1f1111111111f1f1f11f
-1f8888888888f1f1f11f
-1f6666666666f1f1f11f
-1f9999999999fffff11f
-f66888886666f1f1f11f
-f88111118888f1f1f11f
-f11fffff1111f1f1f11f
-f1f11111f11ff1f1ff1f
-f1f11111f11ff1f1ff1f
-fff11f11ffffffffffff
+11ffffffffffffffffff
+1f11111111111111111f
+1f1111111ffff1ffff1f
+1f1111111ffff1ffff1f
+1f1fffff1ffff1ffff1f
+1f1f1f1f1ffff1ffff1f
+1f1f1f1f1ffff1ffff1f
+f11f1f1f11111111111f
+f11f1f1f88888888888f
+f11f1f1f66666666666f
+f11fffff99999999999f
+f11f1f1f66668888866f
+f11f1f1f88881111188f
+f11f1f1f1111fffff11f
+f1ff1f1ff11f11111f1f
+f1ff1f1ff11f11111f1f
+ffffffffffff11f11fff
 11f11111f11f11111f11
 11f11111f11f11111f11
 111fffff1111fffff111
@@ -2598,80 +2672,6 @@ ffffffffffffffffffef
 11111111111111111111
 11111111111111111111
 11111111111111111111
-`];
-            case "d6speed":
-            case "anim7":return [img`
-9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 f f f 9 9 9 9 
-9 9 9 9 f c f 9 9 9 9 
-9 9 9 9 f f f 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 
-`, img`
-9 9 9 9 9 9 9 9 9 9 9 
-9 f f f 9 9 9 9 9 9 9 
-9 f c f 9 9 9 9 9 9 9 
-9 f f f 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 f f f 9 
-9 9 9 9 9 9 9 f c f 9 
-9 9 9 9 9 9 9 f f f 9 
-9 9 9 9 9 9 9 9 9 9 9 
-`, img`
-9 9 9 9 9 9 9 9 9 9 9 
-9 f f f 9 9 9 9 9 9 9 
-9 f c f 9 9 9 9 9 9 9 
-9 f f f 9 9 9 9 9 9 9 
-9 9 9 9 f f f 9 9 9 9 
-9 9 9 9 f c f 9 9 9 9 
-9 9 9 9 f f f 9 9 9 9 
-9 9 9 9 9 9 9 f f f 9 
-9 9 9 9 9 9 9 f c f 9 
-9 9 9 9 9 9 9 f f f 9 
-9 9 9 9 9 9 9 9 9 9 9 
-`, img`
-9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 
-9 f f f f f f f 9 9 9 
-9 f 9 9 9 9 9 9 f 9 9 
-9 f 9 f 9 f f 9 9 f 9 
-9 f 6 6 6 f f 6 6 f 9 
-9 f 8 8 8 f f 8 8 f 9 
-9 f f f f f f f f f 9 
-9 9 f f 9 9 9 f f 9 9 
-9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 
-`, img`
-9 9 9 9 9 9 9 9 9 9 9 
-9 9 f f 9 9 9 f f 9 9 
-9 f f f f 9 f f f f 9 
-9 f f 9 f f f 9 f f 9 
-9 f f 9 f f f 9 f f 9 
-9 f f 9 9 f 9 9 f f 9 
-9 f f 9 9 f 9 9 f f 9 
-9 f f 9 9 9 9 9 f f 9 
-9 f f 9 9 9 9 9 f f 9 
-9 f f 9 9 9 9 9 f f 9 
-9 9 9 9 9 9 9 9 9 9 9 
-`, img`
-9 9 9 9 9 9 9 9 9 9 9 
-9 9 f f 9 9 9 f f 9 9 
-9 f f f f 9 f f f f 9 
-9 f f 9 f f f 9 f f 9 
-9 f f 9 f f f 9 f f 9 
-9 f f 9 9 f 9 9 f f 9 
-9 f f 9 9 f 9 9 f f 9 
-9 f f 9 9 9 9 9 f f 9 
-9 f f 9 9 9 9 9 f f 9 
-9 f f 9 9 9 9 9 f f 9 
-9 9 9 9 9 9 9 9 9 9 9 
 `];
         }
         return null;
