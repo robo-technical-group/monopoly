@@ -230,7 +230,8 @@ namespace Cards {
         if (decks.length == 0) {
             initDecks()
         }
-        if (g_state.Properties.state[Properties.GROUP_JAIL].properties[deck].owner > 0) {
+        if (deck != BUS_DECK &&
+                g_state.Properties.state[Properties.GROUP_JAIL].properties[deck].owner > 0) {
             let currCard: Card = currentCard(deck)
             if (currCard.action == Action.GetOutOfJail) {
                 // Jail card is owned; skip to next card.
