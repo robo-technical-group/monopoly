@@ -66,12 +66,16 @@
  *       - [X] Add game settings.
  *       - [X] Add train depots.
  * - [X] Reverse print in header of player status images.
- * - [ ] Verify payments on railroads - saw an NaN payment after moving for a card.
+ * - [ ] BUG: Verify payments on railroads.
+ *       - Saw an NaN payment after moving for a card.
+ *       - Card may be missing a value or the payment calculation may be looking
+ *         at wrong location in the values array.
  * - [ ] Review logic for paying on Go.
  *       - Landing on Go and then moving for speed die results in double payment.
  *       - Perhaps refactor to count the number of times Go has paid and the
  *         number of times you have passed it. Moving backward over Go would
  *         deduct from counter.
+ * - [ ] BUG: After jail roll, current space for next player is processed.
  */
 
 /**
