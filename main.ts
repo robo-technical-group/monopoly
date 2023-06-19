@@ -76,6 +76,8 @@
  *         number of times you have passed it. Moving backward over Go would
  *         deduct from counter.
  * - [ ] BUG: After jail roll, current space for next player is processed.
+ * - [ ] BUG: PrintBank() is not erasing correct area.
+ * - [ ] Switch automatic processing for triples to pick a random location on the board.
  */
 
 /**
