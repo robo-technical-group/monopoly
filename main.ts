@@ -66,6 +66,12 @@
  *       - [X] Add game settings.
  *       - [X] Add train depots.
  * - [X] Reverse print in header of player status images.
+ * - [ ] Verify payments on railroads - saw an NaN payment after moving for a card.
+ * - [ ] Review logic for paying on Go.
+ *       - Landing on Go and then moving for speed die results in double payment.
+ *       - Perhaps refactor to count the number of times Go has paid and the
+ *         number of times you have passed it. Moving backward over Go would
+ *         deduct from counter.
  */
 
 /**

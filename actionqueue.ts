@@ -204,7 +204,7 @@ namespace ActionQueue {
                     }
                 }
                 if (g_state.NumPlayers > 1) {
-                    queuePayment(queue, card.values[0] * g_state.NumPlayers - 1, pId, 0)
+                    queuePayment(queue, card.values[0] * (g_state.NumPlayers - 1), pId, 0)
                 }
                 break
 
