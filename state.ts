@@ -498,7 +498,11 @@ class GameState {
         this.players = []
         for (let i: number = 0; i < numPlayers; i++) {
             let p: Player = new Player(i + 1)
-            p.Bank = GameState.STARTING_BALANCES[this.boardIndex]
+            if (this.speedDie || this.boardIndex > 0) {
+                p.Bank = GameState.STARTING_BALANCES[1]
+            } else {
+                p.Bank = GameState.STARTING_BALANCES[0]
+            }
             this.players.push(p)
         }
     }
