@@ -469,9 +469,9 @@ class Board {
     ]
     protected static readonly BOARD_TOP: number = 80
     protected static readonly MARGIN: number = 2
+    protected static readonly JAIL_DELTA_X: number = 4
+    protected static readonly JAIL_DELTA_Y: number = 22
     protected static readonly PLAYER_BOTTOM: number = 78
-    protected static readonly PLAYER_IN_JAIL_TOP: number = 0
-    protected static readonly PLAYER_IN_JAIL_X_DELTA: number = 0
     protected static readonly SPEED: number = 1
     protected static readonly Z: number = 10
 
@@ -576,8 +576,8 @@ class Board {
             s.bottom = Board.PLAYER_BOTTOM
             s.z = Player.Z_CURRENT
             if (p.InJail) {
-                s.x += 4
-                s.bottom += 22
+                s.x += Board.JAIL_DELTA_X
+                s.bottom += Board.JAIL_DELTA_Y
             }
             p.showSprite()
         }
@@ -795,8 +795,8 @@ class Board {
                 s.bottom = Board.PLAYER_BOTTOM
                 s.z = Player.Z
                 if (p.InJail) {
-                    s.x += 4
-                    s.bottom += 22
+                    s.x += Board.JAIL_DELTA_X
+                    s.bottom += Board.JAIL_DELTA_Y
                 }
                 p.showSprite()
             }
