@@ -77,6 +77,7 @@ namespace ActionQueue {
         let card: Cards.Card = Cards.drawCard(deck)
         let msg: string = card.text
         let multiplier: number = 1
+        let newLocation: number = -1
         if (card.action == Cards.Action.GoToGroup) {
             switch (card.values[0]) {
                 case Properties.GROUP_UTIL:
@@ -127,6 +128,7 @@ namespace ActionQueue {
                 break
 
             case Cards.Action.GoToGroup:
+                newLocation = p.Location
                 for (let i: number = 0; i < g_state.Board.BoardSpaces.length; i++) {
                     let space: Space = g_state.getBoardSpace(i)
                     if (space.spaceType == SpaceType.Property &&
@@ -136,16 +138,13 @@ namespace ActionQueue {
                         break
                     }
                 }
-                g_state.Board.Direction = 1
-                p.startAnimation(1)
-                p.PassedGo = false
                 queue.insertAt(0, {
                     action: PlayerAction.MoveForCard,
                     values: [deck, multiplier,],
                 })
                 queue.insertAt(0, {
-                    action: PlayerAction.Moving,
-                    values: [],
+                    action: PlayerAction.MoveToLocation,
+                    values: [newLocation,],
                 })
                 break
 
@@ -156,17 +155,13 @@ namespace ActionQueue {
                         values: [],
                     })
                 } else {
-                    p.Location = g_state.Board.getCardLocation(card.values[0])
-                    g_state.Board.Direction = 1
-                    p.startAnimation(1)
-                    p.PassedGo = false
                     queue.insertAt(0, {
                         action: PlayerAction.MoveForCard,
                         values: [deck,],
                     })
                     queue.insertAt(0, {
-                        action: PlayerAction.Moving,
-                        values: [],
+                        action: PlayerAction.MoveToLocation,
+                        values: [g_state.Board.getCardLocation(card.values[0]),],
                     })
                 }
                 break
@@ -180,16 +175,13 @@ namespace ActionQueue {
                 break
 
             case Cards.Action.MoveBackward:
-                p.changeLocation(0 - card.values[0])
-                g_state.Board.Direction = -1
-                p.startAnimation(-1)
                 queue.insertAt(0, {
                     action: PlayerAction.MoveForCard,
                     values: [deck,],
                 })
                 queue.insertAt(0, {
-                    action: PlayerAction.Moving,
-                    values: [],
+                    action: PlayerAction.MoveForRoll,
+                    values: [0 - card.values[0],],
                 })
                 break
 
@@ -372,10 +364,15 @@ namespace ActionQueue {
                 break
 
             case PlayerAction.MoveForTriples:
-                // For now, just move the player.
-                game.splashForPlayer(pId, 'Triples!')
-                startPlayerMove(queue)
-                // TODO: Implement properly.
+                if (g_state.testMode) {
+                    ActionQueueTestMode.processTriples(queue)
+                } else {
+                    // TODO: Implement.
+                }
+                break
+
+            case PlayerAction.MoveToLocation:
+                startPlayerMoveToLocation(queue)
                 break
 
             case PlayerAction.Moving:
@@ -432,7 +429,7 @@ namespace ActionQueue {
     }
 
     /**
-     * Process existing player roll as a roll to move.
+     * Process existing player roll.
      * @param: queue Current action queue.
      */
     function processRoll(queue: Item[]): void {
@@ -458,6 +455,7 @@ namespace ActionQueue {
                     break
             }
         } else {
+            // Process roll as player's move.
             if (g_state.SpeedDie && d.AreTriples) {
                 queue.push({
                     action: PlayerAction.MoveForTriples,
@@ -616,10 +614,31 @@ namespace ActionQueue {
     function startPlayerMove(queue: Item[]): void {
         let p: Player = g_state.getCurrPlayer()
         let spaces: number = queue[0].values[0]
+        if (spaces < 0) {
+            // Player can never collect on Go! when moving backwards.
+            p.PassedGo = true
+        } else {
+            p.PassedGo = (p.Location == g_state.Board.Go)
+        }
         p.changeLocation(spaces)
         g_state.Board.Direction = spaces
         p.startAnimation(spaces)
         queue[0].action = PlayerAction.Moving
+    }
+
+    function startPlayerMoveToLocation(queue: Item[]): void {
+        let p: Player = g_state.getCurrPlayer()
+        let newLocation: number = queue[0].values[0]
+        if (newLocation != p.Location) {
+            p.PassedGo = (p.Location == g_state.Board.Go)
+            p.Location = newLocation
+            g_state.Board.Direction = 1
+            p.startAnimation(1)
+            queue[0].action = PlayerAction.Moving
+        } else {
+            // Already at requested location.
+            let _: Item = queue.shift()
+        }
     }
 
     export function startTurn(queue: Item[]): void {
@@ -695,13 +714,9 @@ namespace ActionQueueTestMode {
             }
         }
         if (newLocation != p.Location) {
-            p.Location = newLocation
-            g_state.Board.Direction = 1
-            p.startAnimation(1)
-            p.PassedGo = false
             queue.insertAt(0, {
-                action: PlayerAction.Moving,
-                values: [],
+                action: PlayerAction.MoveToLocation,
+                values: [newLocation,],
             })
         }
     }
@@ -826,18 +841,25 @@ namespace ActionQueueTestMode {
             }
         }
         if (newLocation != p.Location) {
-            p.Location = newLocation
-            g_state.Board.Direction = 1
-            p.startAnimation(1)
-            p.PassedGo = false
             queue.insertAt(0, {
-                action: PlayerAction.Moving,
-                values: [],
+                action: PlayerAction.MoveToLocation,
+                values: [newLocation,],
             })
         } else {
             // This really should not happen.
             throw 'ActionQueueTestMode.processSpeedDieBus: No space found.'
         }
+    }
+
+    export function processTriples(queue: ActionQueue.Item[]): void {
+        let pId: number = g_state.CurrPlayer
+        let p: Player = g_state.getCurrPlayer()
+        game.splashForPlayer(pId, 'Triples!')
+        // Move to a random location.
+        queue.insertAt(0, {
+            action: PlayerAction.MoveToLocation,
+            values: [randint(0, g_state.Board.BoardSpaces.length - 1),],
+        })
     }
 
     export function startCurrentPlayer(queue: ActionQueue.Item[]): void {

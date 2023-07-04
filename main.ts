@@ -42,9 +42,9 @@
  *       - Perhaps refactor to count the number of times Go has paid and the
  *         number of times you have passed it. Moving backward over Go would
  *         deduct from counter.
- * - [ ] BUG: After jail roll, current space for next player is processed.
+ * - [X] BUG: After jail roll, current space for next player is processed.
  * - [X] BUG: PrintBank() is not erasing correct area.
- * - [ ] Switch automatic processing for triples to pick a random location on the board.
+ * - [X] Switch automatic processing for triples to pick a random location on the board.
  * - [X] Incorporate auction space after all properties are sold into automatic processing.
  * - [X] Move avatar into jail space if player is in jail.
  */

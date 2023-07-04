@@ -61,6 +61,7 @@ enum PlayerAction {
     MoveForCard,
     MoveForRoll,
     MoveForTriples,
+    MoveToLocation,
     Moving,
     NeedMoney,
     PayMoney,
