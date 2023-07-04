@@ -223,6 +223,25 @@ class GameState {
         }
     }
 
+    public getPropertyInfo(location: number): Properties.FullInfo {
+        let space: Space = this.getBoardSpace(location)
+        if (space.spaceType != SpaceType.Property) {
+            return null
+        }
+        let groupIndex: number = space.values[0]
+        let propIndex: number = space.values[1]
+        let groupInfo: Properties.GroupInfo = this.properties.info[groupIndex]
+        let groupState: Properties.GroupState = this.properties.state[groupIndex]
+        let propInfo: Properties.Info = groupInfo.properties[propIndex]
+        let propState: Properties.State = groupState.properties[propIndex]
+        let toReturn: Properties.FullInfo
+        toReturn.groupInfo = groupInfo
+        toReturn.groupState = groupState
+        toReturn.propInfo = propInfo
+        toReturn.propState = propState
+        return toReturn
+    }
+
     public hidePlayers(): void {
         this.players.forEach((p: Player, index: number) => {
             p.hideSprite()

@@ -77,7 +77,7 @@ namespace ActionQueue {
         let card: Cards.Card = Cards.drawCard(deck)
         let msg: string = card.text
         let multiplier: number = 1
-        if (card.action == Cards.Action.GoToGroup && card.values[0] == Properties.GROUP_UTIL) {
+        if (card.action == Cards.Action.GoToGroup) {
             switch (card.values[0]) {
                 case Properties.GROUP_UTIL:
                     multiplier = (g_state.BoardIndex == 0 ? card.values[1] : card.values[2])
@@ -249,7 +249,11 @@ namespace ActionQueue {
         let space: Space = g_state.Board.BoardSpaces[p.Location]
         switch (space.spaceType) {
             case SpaceType.Auction:
-                // TODO: Implement
+                if (g_state.testMode) {
+                    ActionQueueTestMode.processAuctionSpace(queue)
+                } else {
+                    // TODO: Implement
+                }
                 break
 
             case SpaceType.BusTicket:
@@ -659,6 +663,49 @@ namespace ActionQueueTestMode {
         }
     }
 
+    export function processAuctionSpace(queue: ActionQueue.Item[]): void {
+        // For now, just find the space with the highest rent.
+        let pId: number = g_state.CurrPlayer
+        let p: Player = g_state.getCurrPlayer()
+        let newLocation: number = p.Location
+        let rentOwed: number = 0
+        let reviewing: number = p.Location + 1
+        let spaceReviewed: Space = null
+        let propFullInfo: Properties.FullInfo = null
+        while (reviewing != p.Location) {
+            if (reviewing >= g_state.Board.BoardSpaces.length) {
+                reviewing = 0
+            }
+            spaceReviewed = g_state.getBoardSpace(reviewing)
+            if (spaceReviewed.spaceType == SpaceType.Property) {
+                propFullInfo = g_state.getPropertyInfo(reviewing)
+                if (propFullInfo.propState.owner > 0 &&
+                        propFullInfo.propState.owner != pId) {
+                    let rent: number =
+                        Properties.calculateRent(propFullInfo, g_state.BoardIndex)
+                    if (rent > rentOwed) {
+                        rentOwed = rent
+                        newLocation = reviewing
+                    }
+                }
+            }
+            reviewing++
+            if (reviewing >= g_state.Board.BoardSpaces.length) {
+                reviewing = 0
+            }
+        }
+        if (newLocation != p.Location) {
+            p.Location = newLocation
+            g_state.Board.Direction = 1
+            p.startAnimation(1)
+            p.PassedGo = false
+            queue.insertAt(0, {
+                action: PlayerAction.Moving,
+                values: [],
+            })
+        }
+    }
+
     export function processGift(queue: ActionQueue.Item[]): void {
         let pId: number = g_state.CurrPlayer
         let p: Player = g_state.getCurrPlayer()
@@ -721,8 +768,12 @@ namespace ActionQueueTestMode {
             return
         }
         // Property is owned by another player.
-        let owed: number = Properties.calculateRent(groupInfo, groupState, propertyInfo,
-            propertyState, g_state.BoardIndex)
+        let owed: number = Properties.calculateRent({
+                groupInfo: groupInfo,
+                groupState: groupState,
+                propInfo: propertyInfo,
+                propState: propertyState,
+            }, g_state.BoardIndex)
         if (space.values[0] == Properties.GROUP_UTIL) {
             if (queue.length == 0) {
                 owed *= p.Roll

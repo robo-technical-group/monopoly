@@ -486,16 +486,9 @@ class Board {
     constructor(board: number = 0) {
         this.index = board
         this.board = Board.BOARDS[board]
-        this.go = 0
-        switch (board) {
-            case 0:
-                this.jail = 10
-                break
-
-            case 1:
-                this.jail = 13
-                break
-        }
+        // Find the special spaces later.
+        this.go = -1
+        this.jail = -1
         this.currSpace = -1
         this.direction = 1
         this.spacesMoved = 0
@@ -521,10 +514,30 @@ class Board {
     }
 
     public get Go(): number {
+        if (this.go == -1) {
+            this.board.forEach((value: Space, index: number) => {
+                if (value.spaceType == SpaceType.Go) {
+                    this.go = index
+                }
+            })
+        }
+        if (this.go == -1) {
+            throw 'get Go: Go! space has not been defined in this board.'
+        }
         return this.go
     }
 
     public get Jail(): number {
+        if (this.jail == -1) {
+            this.board.forEach((value: Space, index: number) => {
+                if (value.spaceType == SpaceType.Jail) {
+                    this.jail = index
+                }
+            })
+        }
+        if (this.jail == -1) {
+            throw 'get Jail: Jail space has not been defined in this board.'
+        }
         return this.jail
     }
 
