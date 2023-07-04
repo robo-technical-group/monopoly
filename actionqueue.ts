@@ -128,14 +128,19 @@ namespace ActionQueue {
                 break
 
             case Cards.Action.GoToGroup:
-                newLocation = p.Location
-                for (let i: number = 0; i < g_state.Board.BoardSpaces.length; i++) {
-                    let space: Space = g_state.getBoardSpace(i)
+                newLocation = p.Location + 1
+                while (newLocation != p.Location) {
+                    if (newLocation >= g_state.Board.BoardSpaces.length) {
+                        newLocation = 0
+                    }
+                    let space: Space = g_state.getBoardSpace(newLocation)
                     if (space.spaceType == SpaceType.Property &&
-                            space.values[0] == card.values[0] &&
-                            i > p.Location) {
-                        p.Location = i
+                            space.values[0] == card.values[0]) {
                         break
+                    }
+                    newLocation++
+                    if (newLocation >= g_state.Board.BoardSpaces.length) {
+                        newLocation = 0
                     }
                 }
                 queue.insertAt(0, {

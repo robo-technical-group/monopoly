@@ -48,6 +48,7 @@
  * - [X] Incorporate auction space after all properties are sold into automatic processing.
  * - [X] Move avatar into jail space if player is in jail.
  * - [X] BUG: Triples gets stuck in a loop.
+ * - [ ] BUG: Card type GoToGroup no longer working.
  */
 
 /**
