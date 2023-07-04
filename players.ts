@@ -42,10 +42,12 @@ class Player {
     protected inJail: boolean
     protected jailTurns: number
     protected name: string
-    protected passedGo: boolean
+    protected onGo: boolean
     protected skip: boolean
     protected sprite: Sprite
     protected stats: Sprite
+    protected timesGoPaid: number
+    protected timesPassedGo: number
     protected turnCount: number
 
     constructor(controllerId: number = 0) {
@@ -60,10 +62,12 @@ class Player {
         this.inJail = false
         this.jailTurns = 0
         this.name = ''
-        this.passedGo = false
+        this.onGo = false
         this.skip = false
         this.sprite = null
         this.stats = null
+        this.timesGoPaid = 0
+        this.timesPassedGo = 0
         this.turnCount = 0
     }
 
@@ -100,7 +104,7 @@ class Player {
 
     public set BusTickets(value: number) {
         if (value >= 0) {
-            this.busTickets = value
+            this.busTickets = Math.floor(value)
         }
     }
 
@@ -137,7 +141,7 @@ class Player {
     }
 
     public set JailTurns(value: number) {
-        this.jailTurns = Math.max(0, value)
+        this.jailTurns = Math.max(0, Math.floor(value))
     }
 
     public get Location(): number {
@@ -146,7 +150,7 @@ class Player {
 
     public set Location(value: number) {
         if (value >= 0 && value < g_state.Board.BoardSpaces.length) {
-            this.destSpace = value
+            this.destSpace = Math.floor(value)
         }
     }
 
@@ -158,12 +162,12 @@ class Player {
         this.name = value
     }
 
-    public get PassedGo(): boolean {
-        return this.passedGo
+    public get OnGo(): boolean {
+        return this.onGo
     }
 
-    public set PassedGo(value: boolean) {
-        this.passedGo = value
+    public set OnGo(value: boolean) {
+        this.onGo = value
     }
 
     public get Roll(): number {
@@ -192,6 +196,22 @@ class Player {
             skip: this.skip,
             turnCount: this.turnCount,
         }
+    }
+
+    public get TimesGoPaid(): number {
+        return this.timesGoPaid
+    }
+
+    public set TimesGoPaid(value: number) {
+        this.timesGoPaid = Math.max(0, Math.floor(value))
+    }
+
+    public get TimesPassedGo(): number {
+        return this.timesPassedGo
+    }
+
+    public set TimesPassedGo(value: number) {
+        this.timesPassedGo = Math.floor(value)
     }
 
     public get TurnCount(): number {
@@ -249,7 +269,7 @@ class Player {
     }
 
     public changeLocation(delta: number): void {
-        this.destSpace += delta
+        this.destSpace += Math.floor(delta)
         if (this.destSpace < 0) {
             this.destSpace += g_state.Board.BoardSpaces.length
         }
@@ -399,6 +419,19 @@ class Player {
         this.sprite.setPosition(x, y)
     }
 
+    public processGo(direction: number, payAmount: number): void {
+        this.onGo = true
+        if (direction < 0) {
+            this.timesPassedGo--
+        } else {
+            this.timesPassedGo++
+            while (this.timesPassedGo > this.timesGoPaid) {
+                this.changeBank(payAmount)
+                this.timesGoPaid++
+            }
+        }
+    }
+
     public promptForName(): void {
         let prompt: string = `Player ${this.controllerId} enter name.`
         let n: string | undefined = undefined
@@ -456,7 +489,7 @@ class Player {
     }
 
     public startRoll(numDice: number): void {
-        this.passedGo = false
+        this.onGo = false
         this.TurnCount++
         let d: Dice = this.dice
         d.Orientation = DiceOrientation.Vertical

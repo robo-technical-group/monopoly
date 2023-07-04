@@ -425,9 +425,8 @@ class GameState {
             let space: Space = g_state.Board.BoardSpaces[this.board.CurrSpace]
             if (i == this.currPlayer) {
                 if (this.board.SpacesMoved > 0 &&
-                        this.board.CurrSpace == this.board.Go && !p.PassedGo) {
-                    p.PassedGo = true
-                    p.changeBank(space.values[0])
+                        this.board.CurrSpace == this.board.Go && !p.OnGo) {
+                    p.processGo(this.board.Direction, space.values[0])
                 }
                 let spaces: number = p.Location - this.board.CurrSpace
                 if (this.board.Direction < 0) {

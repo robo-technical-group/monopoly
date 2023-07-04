@@ -47,6 +47,8 @@
  * - [X] Switch automatic processing for triples to pick a random location on the board.
  * - [X] Incorporate auction space after all properties are sold into automatic processing.
  * - [X] Move avatar into jail space if player is in jail.
+ * - [ ] BUG: Bus ticket space - bus ticket deck is empty?
+ * - [ ] BUG: Triples gets stuck in a loop.
  */
 
 /**

@@ -529,13 +529,9 @@ namespace ActionQueue {
             }
         }
         if (newLocation != p.Location) {
-            p.Location = newLocation
-            g_state.Board.Direction = 1
-            p.startAnimation(1)
-            p.PassedGo = false
             queue.insertAt(0, {
-                action: PlayerAction.Moving,
-                values: [],
+                action: PlayerAction.MoveToLocation,
+                values: [newLocation,],
             })
             return
         }
@@ -559,13 +555,9 @@ namespace ActionQueue {
             }
         }
         if (newLocation != p.Location) {
-            p.Location = newLocation
-            g_state.Board.Direction = 1
-            p.startAnimation(1)
-            p.PassedGo = false
             queue.insertAt(0, {
-                action: PlayerAction.Moving,
-                values: [],
+                action: PlayerAction.MoveToLocation,
+                values: [newLocation,],
             })
         } else {
             game.splashForPlayer(pId, Strings.ACTION_SPEED_DIE,
@@ -614,12 +606,7 @@ namespace ActionQueue {
     function startPlayerMove(queue: Item[]): void {
         let p: Player = g_state.getCurrPlayer()
         let spaces: number = queue[0].values[0]
-        if (spaces < 0) {
-            // Player can never collect on Go! when moving backwards.
-            p.PassedGo = true
-        } else {
-            p.PassedGo = (p.Location == g_state.Board.Go)
-        }
+        p.OnGo = (p.Location == g_state.Board.Go)
         p.changeLocation(spaces)
         g_state.Board.Direction = spaces
         p.startAnimation(spaces)
@@ -630,7 +617,7 @@ namespace ActionQueue {
         let p: Player = g_state.getCurrPlayer()
         let newLocation: number = queue[0].values[0]
         if (newLocation != p.Location) {
-            p.PassedGo = (p.Location == g_state.Board.Go)
+            p.OnGo = (p.Location == g_state.Board.Go)
             p.Location = newLocation
             g_state.Board.Direction = 1
             p.startAnimation(1)
