@@ -6,36 +6,11 @@
  * 
  * Immediate TODO List
  * - [/] Refactor game loop to use an action queue.
- *       - [X] Actions go to a common queue.
- *       - [X] If queue is empty, then it's time to start the next turn.
- *       - [X] Handle player roll.
- *       - [X] Handle speed die.
- *       - [X] Handle board spaces.
- *             - [X] Handle auction spaces.
- *             - [X] Handle free spaces.
- *             - [X] Handle tax spaces.
- *             - [X] Handle property spaces.
- *                   - [X] Handle unowned properties.
- *                   - [X] Handle property purchase.
- *                   - [X] Handle owned properties.
- *             - [X] Handle go-to-jail spaces.
- *             - [X] Handle card spaces.
- *             - [X] Handle bus spaces.
- *             - [X] Handle gift spaces.
  *       - [/] Handle card actions.
- *             - [X] Handle bank payouts.
- *             - [X] Handle collect from each player.
- *             - [X] Handle get out of jail card.
  *             - [ ] Handle go to any space.
- *             - [X] Handle go to property group.
- *             - [X] Handle go to space.
  *             - [ ] Handle go to space and all pay.
  *             - [ ] Handle lottery.
- *             - [X] Handle move backward.
- *             - [X] Handle pay bank.
- *             - [X] Handle pay each player.
  *             - [ ] Handle selective tax.
- *             - [X] Handle property repairs.
  *             - [ ] Handle roll backward.
  *             - [ ] Handle skip next turn.
  *       - [ ] Handle bus options.
@@ -58,14 +33,6 @@
  *       - [ ] Single controller.
  * - [ ] Buy/sell houses + mortgage property.
  * - [ ] Trade mechanism.
- * - [X] *Mega Monopoly* accommodations.
- *       - [X] Add assets.
- *       - [X] Add alternate board.
- *       - [X] Add speed die.
- *       - [X] Add bus tickets.
- *       - [X] Add game settings.
- *       - [X] Add train depots.
- * - [X] Reverse print in header of player status images.
  * - [ ] BUG: Verify payments on railroads.
  *       - Saw an NaN payment after moving for a card.
  *       - Card may be missing a value or the payment calculation may be looking
@@ -78,7 +45,7 @@
  * - [ ] BUG: After jail roll, current space for next player is processed.
  * - [ ] BUG: PrintBank() is not erasing correct area.
  * - [ ] Switch automatic processing for triples to pick a random location on the board.
- * - [ ] Incorporate auction space after all properties are sold into automatic processing.
+ * - [X] Incorporate auction space after all properties are sold into automatic processing.
  * - [ ] Move avatar into jail space if player is in jail.
  */
 
