@@ -364,6 +364,7 @@ namespace ActionQueue {
                 break
 
             case PlayerAction.MoveForTriples:
+                _ = queue.shift()
                 if (g_state.testMode) {
                     ActionQueueTestMode.processTriples(queue)
                 } else {
