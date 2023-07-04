@@ -720,7 +720,7 @@ namespace ActionQueueTestMode {
                 ActionQueue.queuePayment(queue, space.values[0], 0, pId)
             }
         } else {
-            // TODO: Process as if bus rolled on speed die.
+            processSpeedDieBus(queue)
         }
     }
 
@@ -779,7 +779,7 @@ namespace ActionQueueTestMode {
                 owed *= p.Roll
             } else {
                 let item: ActionQueue.Item = queue[0]
-                if (item.action == PlayerAction.MoveForCard) {
+                if (item.action == PlayerAction.MoveForCard && item.values.length == 2) {
                     queue.insertAt(0, {
                         action: PlayerAction.Rolling,
                         values: [],
@@ -793,7 +793,7 @@ namespace ActionQueueTestMode {
         }
         if (space.values[0] == Properties.GROUP_RR && queue.length > 0) {
             let item: ActionQueue.Item = queue[0]
-            if (item.action == PlayerAction.MoveForCard) {
+            if (item.action == PlayerAction.MoveForCard && item.values.length == 2) {
                 owed *= item.values[1]
             }
         }

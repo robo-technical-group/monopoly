@@ -33,7 +33,7 @@
  *       - [ ] Single controller.
  * - [ ] Buy/sell houses + mortgage property.
  * - [ ] Trade mechanism.
- * - [ ] BUG: Verify payments on railroads.
+ * - [X] BUG: Verify payments on railroads.
  *       - Saw an NaN payment after moving for a card.
  *       - Card may be missing a value or the payment calculation may be looking
  *         at wrong location in the values array.
@@ -43,7 +43,7 @@
  *         number of times you have passed it. Moving backward over Go would
  *         deduct from counter.
  * - [ ] BUG: After jail roll, current space for next player is processed.
- * - [ ] BUG: PrintBank() is not erasing correct area.
+ * - [X] BUG: PrintBank() is not erasing correct area.
  * - [ ] Switch automatic processing for triples to pick a random location on the board.
  * - [X] Incorporate auction space after all properties are sold into automatic processing.
  * - [ ] Move avatar into jail space if player is in jail.

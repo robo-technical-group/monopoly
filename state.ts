@@ -234,11 +234,12 @@ class GameState {
         let groupState: Properties.GroupState = this.properties.state[groupIndex]
         let propInfo: Properties.Info = groupInfo.properties[propIndex]
         let propState: Properties.State = groupState.properties[propIndex]
-        let toReturn: Properties.FullInfo
-        toReturn.groupInfo = groupInfo
-        toReturn.groupState = groupState
-        toReturn.propInfo = propInfo
-        toReturn.propState = propState
+        let toReturn: Properties.FullInfo = {
+            groupInfo: groupInfo,
+            groupState: groupState,
+            propInfo: propInfo,
+            propState: propState,
+        }
         return toReturn
     }
 
@@ -457,7 +458,7 @@ class GameState {
         let x: number = 0
         let y: number = 0
         this.players.forEach((value: Player, index: number) => {
-            value.initStats()
+            value.initStats(index + 1 == this.currPlayer)
             value.showStats(x, y)
             x += 40
         })
