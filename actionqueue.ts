@@ -732,6 +732,7 @@ namespace ActionQueueTestMode {
         if (d.AreDoubles) {
             game.splash(Strings.ACTION_IN_JAIL_DOUBLES)
             p.InJail = false
+            g_state.Board.redraw()
             queue.push({
                 action: PlayerAction.MoveForRoll,
                 values: [d.Roll,],
@@ -741,6 +742,7 @@ namespace ActionQueueTestMode {
             if (p.JailTurns == 3) {
                 ActionQueue.queuePayment(queue, jailSpace.values[0], pId, 0)
                 p.InJail = false
+                g_state.Board.redraw()
                 queue.push({
                     action: PlayerAction.MoveForRoll,
                     values: [d.Roll,],
@@ -853,6 +855,7 @@ namespace ActionQueueTestMode {
                 jailCards[0].owner = 0
                 p.InJail = false
                 g_state.updatePlayerSprites()
+                g_state.Board.redraw()
                 // Automatically roll in test mode.
                 queue.push({
                     action: PlayerAction.Rolling,

@@ -188,15 +188,6 @@ class GameState {
         GameState.addSystemMenuItem(GameState.SAVE_TEXT, assets.image`saveIcon`, handler)
     }
 
-    public static delete(filename: string): void {
-        if (filename.indexOf(GameState.KEY_PREFIX) != 0) {
-            filename = GameState.KEY_PREFIX + filename
-        }
-        if (settings.exists(filename)) {
-            settings.remove(filename)
-        }
-    }
-
     public static exists(filename: string): boolean {
         if (filename.indexOf(GameState.KEY_PREFIX) != 0) {
             filename = GameState.KEY_PREFIX + filename
@@ -380,6 +371,15 @@ class GameState {
     public release(): void {
         this.players.forEach((value: Player, index: number) =>
             value.release())
+    }
+
+    public static remove(filename: string): void {
+        if (filename.indexOf(GameState.KEY_PREFIX) != 0) {
+            filename = GameState.KEY_PREFIX + filename
+        }
+        if (settings.exists(filename)) {
+            settings.remove(filename)
+        }
     }
 
     public static rename(oldname: string, newname: string): boolean {
@@ -673,7 +673,7 @@ namespace GameStateUI {
         switch (action) {
             case ManageActions.Delete:
                 if (game.ask(DELETE_CONFIRM, selection)) {
-                    GameState.delete(selection)
+                    GameState.remove(selection)
                     manageMenu.items[selectedIndex].text = DELETED_FILE
                 }
                 break

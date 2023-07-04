@@ -575,6 +575,10 @@ class Board {
             s.x = x
             s.bottom = Board.PLAYER_BOTTOM
             s.z = Player.Z_CURRENT
+            if (p.InJail) {
+                s.x += 4
+                s.bottom += 22
+            }
             p.showSprite()
         }
 
@@ -705,6 +709,10 @@ class Board {
         this.updateLocation()
     }
 
+    public redraw(): void {
+        this.draw(this.currSpace)
+    }
+
     /**
      * Protected methods
      */
@@ -786,6 +794,10 @@ class Board {
                 s.x = x
                 s.bottom = Board.PLAYER_BOTTOM
                 s.z = Player.Z
+                if (p.InJail) {
+                    s.x += 4
+                    s.bottom += 22
+                }
                 p.showSprite()
             }
         })

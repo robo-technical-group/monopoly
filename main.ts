@@ -46,7 +46,7 @@
  * - [X] BUG: PrintBank() is not erasing correct area.
  * - [ ] Switch automatic processing for triples to pick a random location on the board.
  * - [X] Incorporate auction space after all properties are sold into automatic processing.
- * - [ ] Move avatar into jail space if player is in jail.
+ * - [X] Move avatar into jail space if player is in jail.
  */
 
 /**
