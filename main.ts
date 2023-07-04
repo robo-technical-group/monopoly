@@ -49,6 +49,7 @@
  * - [X] Move avatar into jail space if player is in jail.
  * - [X] BUG: Triples gets stuck in a loop.
  * - [X] BUG: Card type GoToGroup no longer working.
+ * - [ ] Move double speed when not moving for roll.
  */
 
 /**
