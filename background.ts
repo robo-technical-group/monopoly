@@ -49,21 +49,23 @@ namespace Background {
     }
 
     function moveBackward(speed: number): void {
-        pixelsMoved =+ speed
+        pixelsMoved += speed
         sprites.allOfKind(SpriteKind.Background).forEach((s: Sprite, index: number) => {
             if (pixelsMoved >= <number>(s.data['lastMoved']) + <number>(s.data['frameDelay'])) {
-                s.x -= speed
+                s.left -= speed
                 s.data['lastMoved'] = pixelsMoved
-                if (s.right < 0) {
-                    // Find right-most sprite in same layer.
-                    let right: number = 0
-                    sprites.allOfKind(SpriteKind.Background).forEach((value: Sprite, index: number) => {
-                        if (value.right > right && s.data['frameDelay'] == value.data['frameDelay']) {
-                            right = value.right
-                        }
-                    })
-                    s.left = right - 1
-                }
+            }
+        })
+        sprites.allOfKind(SpriteKind.Background).forEach((s: Sprite, index: number) => {
+            if (s.right < 0) {
+                // Find right-most sprite in same layer.
+                let right: number = 0
+                sprites.allOfKind(SpriteKind.Background).forEach((value: Sprite, index: number) => {
+                    if (value.right > right && s.data['frameDelay'] == value.data['frameDelay']) {
+                        right = value.right
+                    }
+                })
+                s.left = right
             }
         })
     }
@@ -72,18 +74,20 @@ namespace Background {
         pixelsMoved += speed
         sprites.allOfKind(SpriteKind.Background).forEach((s: Sprite, index: number) => {
             if (pixelsMoved >= <number>(s.data['lastMoved']) + <number>(s.data['frameDelay'])) {
-                s.x += speed
+                s.left += speed
                 s.data['lastMoved'] = pixelsMoved
-                if (s.left >= 160) {
-                    // Find left-most sprite in same layer.
-                    let left: number = 160
-                    sprites.allOfKind(SpriteKind.Background).forEach((value: Sprite, index: number) => {
-                        if (value.left < left && s.data['frameDelay'] == value.data['frameDelay']) {
-                            left = value.left
-                        }
-                    })
-                    s.right = left + 1
-                }
+            }
+        })
+        sprites.allOfKind(SpriteKind.Background).forEach((s: Sprite, index: number) => {
+            if (s.left >= 160) {
+                // Find left-most sprite in same layer.
+                let left: number = 160
+                sprites.allOfKind(SpriteKind.Background).forEach((value: Sprite, index: number) => {
+                    if (value.left < left && s.data['frameDelay'] == value.data['frameDelay']) {
+                        left = value.left
+                    }
+                })
+                s.right = left
             }
         })
     }
@@ -99,6 +103,38 @@ namespace Background {
                 }
             )
             pixelsMoved = 0
+        }
+    }
+}
+
+namespace BackgroundTests {
+    export let currSpace: TextSprite = null
+    let running: boolean = false
+
+    export function setup(): void {
+        g_state.Mode = GameMode.NotReady
+        let bg: Image = image.create(160, 120)
+        bg.drawLine(80, 0, 80, 120, Color.Yellow)
+        scene.setBackgroundImage(bg)
+        Background.show()
+        g_state.Board.draw(0)
+        currSpace = textsprite.create('0')
+        currSpace.left = 0
+        currSpace.top = 0
+        g_state.Mode = GameMode.BackgroundTest
+        running = true
+    }
+
+    export function toggleRunning(): void {
+        running = !running
+    }
+
+    export function update(): void {
+        if (running) {
+            Background.move(g_state.Board.Speed)
+            g_state.Board.move()
+            currSpace.text = g_state.Board.CurrSpace.toString()
+            currSpace.update()
         }
     }
 }

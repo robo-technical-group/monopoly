@@ -51,6 +51,7 @@ enum GameMode {
     DiceTest,
     SpeedDieTest,
     BoardTest,
+    BackgroundTest,
 }   // GameMode
 
 enum PlayerAction {

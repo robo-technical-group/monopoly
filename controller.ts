@@ -57,8 +57,10 @@ function pressA(player: number): void {
         case GameMode.DiceTest:
         case GameMode.SpeedDieTest:
             DiceTests.diceTest.startRoll()
+            break
 
         case GameMode.BoardTest:
+        case GameMode.BackgroundTest:
             g_state.Board.Direction = (g_state.Board.Direction == 1 ? -1 : 1)
             info.setScore(g_state.Board.Direction)
             break
@@ -94,6 +96,14 @@ function pressB(player: number): void {
                 DiceTests.diceTest.Skin++
             }
             break
+
+        case GameMode.BoardTest:
+            BoardTests.toggleRunning()
+            break
+
+        case GameMode.BackgroundTest:
+            BackgroundTests.toggleRunning()
+            break
     }   // switch (g_state.Mode)
 }
 
@@ -128,6 +138,10 @@ function pressDown(player: number): void {
             DiceTests.diceTest.setStopLocation(5, 114)
             DiceTests.diceTest.setLocationChange(0, 5)
             DiceTests.diceTest.show()
+            break
+
+        case GameMode.BackgroundTest:
+            g_state.Board.DoubleSpeed = false
             break
     }   // switch (g_state.Mode)
 }
@@ -255,6 +269,10 @@ function pressUp(player: number) {
             DiceTests.diceTest.setStopLocation(5, 6)
             DiceTests.diceTest.setLocationChange(0, -5)
             DiceTests.diceTest.show()
+            break
+
+        case GameMode.BackgroundTest:
+            g_state.Board.DoubleSpeed = true
             break
     }   // switch (g_state.Mode)
 }

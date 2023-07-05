@@ -749,6 +749,8 @@ class Board {
     protected moveBackward(): void {
         for (let boardSprite of sprites.allOfKind(SpriteKind.BoardSpace)) {
             boardSprite.x -= this.doubleSpeed ? Board.SPEED * 2 : Board.SPEED
+        }
+        for (let boardSprite of sprites.allOfKind(SpriteKind.BoardSpace)) {
             if (boardSprite.right < 0) {
                 // Find sprite furthest to the right.
                 let rightX: number = 0
@@ -776,6 +778,8 @@ class Board {
     protected moveForward(): void {
         for (let boardSprite of sprites.allOfKind(SpriteKind.BoardSpace)) {
             boardSprite.x += this.doubleSpeed ? Board.SPEED * 2 : Board.SPEED
+        }
+        for (let boardSprite of sprites.allOfKind(SpriteKind.BoardSpace)) {
             if (boardSprite.left > 160) {
                 // Find sprite furthest to the left.
                 let leftX: number = 160
@@ -851,6 +855,8 @@ class Board {
 
 namespace BoardTests {
     export let currSpace: TextSprite = null
+    let running: boolean = false
+
     export function setup(): void {
         g_state.Mode = GameMode.NotReady
         let bg: Image = image.create(160, 120)
@@ -861,12 +867,18 @@ namespace BoardTests {
         currSpace.left = 0
         currSpace.top = 0
         g_state.Mode = GameMode.BoardTest
+        running = true
+    }
+
+    export function toggleRunning(): void {
+        running = !running
     }
 
     export function update(): void {
-        Background.move(g_state.Board.Speed)
-        g_state.Board.move()
-        currSpace.text = g_state.Board.CurrSpace.toString()
-        currSpace.update()
+        if (running) {
+            g_state.Board.move()
+            currSpace.text = g_state.Board.CurrSpace.toString()
+            currSpace.update()
+        }
     }
 }

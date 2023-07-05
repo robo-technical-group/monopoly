@@ -29,36 +29,40 @@ namespace Tests {
 
             case 3:
                 splash('Animated board and background tests.')
-                Background.show()
-                BoardTests.setup()
+                BackgroundTests.setup()
                 break
 
             case 4:
+                splash('Animated board tests (no background).')
+                BoardTests.setup()
+                break
+
+            case 5:
                 splash('Game state tests')
                 GameStateTests.start()
                 break
 
-            case 5:
+            case 6:
                 splash('First roll test with four players.')
                 FirstRollTests.start(4)
                 break
 
-            case 6:
+            case 7:
                 splash('First roll test with three players.')
                 FirstRollTests.start(3)
                 break
 
-            case 7:
+            case 8:
                 splash('First roll test with two players.')
                 FirstRollTests.start(2)
                 break
 
-            case 8:
+            case 9:
                 splash('Dice tests: D-pad=change direction, A=roll')
                 DiceTests.start()
                 break
 
-            case 9:
+            case 10:
                 splash('Speed die tests: D-pad=change direction, A=roll')
                 DiceTests.start(3)
                 break

@@ -50,6 +50,7 @@
  * - [X] BUG: Triples gets stuck in a loop.
  * - [X] BUG: Card type GoToGroup no longer working.
  * - [X] Move double speed when not moving for roll.
+ * - [ ] BUG: Multiple players in jail gets automated game stuck in loop.
  */
 
 /**
@@ -97,6 +98,10 @@ game.onUpdate(function () {
         case GameMode.BoardTest:
             BoardTests.update()
             break
+
+        case GameMode.BackgroundTest:
+            BackgroundTests.update()
+            break
     }   // switch (g_state.Mode)
 })  // game.onUpdate()
 
@@ -138,4 +143,5 @@ if (settings.exists(Tests.TESTING_KEY)) {
 }
 Tests.testJailMenu()
 BoardTests.setup()
+BackgroundTests.setup()
 */
