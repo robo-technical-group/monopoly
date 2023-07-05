@@ -5,7 +5,7 @@
  * Interface that can be translated to/from JSON.
  */
 interface IGameState {
-    actionQueue: ActionQueue.Item[]
+    actionQueue: ActionItem[]
     auctionQueue: number[]
     board: number
     bus: boolean
@@ -25,7 +25,7 @@ class GameState {
 
     public testMode: boolean
 
-    protected actionQueue: ActionQueue.Item[]
+    protected actionQueue: ActionQueue
     protected actionMenu: ActionMenu
     protected auctionQueue: number[]
     protected board: Board
@@ -40,7 +40,7 @@ class GameState {
     protected speedDie: boolean
 
     constructor(numPlayers: number = 0, board: number = 0) {
-        this.actionQueue = []
+        this.actionQueue = new ActionQueue()
         this.actionMenu = null
         this.auctionQueue = []
         this.board = new Board(board)
@@ -159,7 +159,7 @@ class GameState {
         this.players.forEach((value: Player, index: number) =>
             playerStates.push(value.State))
         return {
-            actionQueue: this.actionQueue,
+            actionQueue: this.actionQueue.State,
             auctionQueue: this.auctionQueue,
             board: this.boardIndex,
             bus: this.bus,
@@ -347,7 +347,7 @@ class GameState {
         }
 
         if (Array.isArray(state.actionQueue)) {
-            this.actionQueue = ActionQueue.buildFromState(state.actionQueue)
+            this.actionQueue.buildFromState(state.actionQueue)
         }
 
         return true
@@ -360,8 +360,8 @@ class GameState {
         }
         // If, for some reason, actions still exist in the queue,
         // + then empty it.
-        if (this.actionQueue.length > 0) {
-            this.actionQueue = []
+        if (!this.actionQueue.IsEmpty) {
+            this.actionQueue.purge()
         }
     }
 
@@ -409,13 +409,13 @@ class GameState {
     }
 
     public start(): void {
-        if (this.actionQueue.length == 0) {
-            ActionQueue.startTurn(this.actionQueue)
+        if (this.actionQueue.IsEmpty) {
+            this.actionQueue.startTurn()
         }
     }
 
     public update(): void {
-        ActionQueue.processQueue(this.actionQueue)
+        this.actionQueue.processNext()
     }
 
     public updatePlayerSprites(): void {
