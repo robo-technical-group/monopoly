@@ -53,6 +53,7 @@
  * - [X] BUG: Multiple players in jail gets automated game stuck in loop.
  *       + Wasn't getting stuck in a loop. Was skipping a player.
  * - [X] Refactor action queue. Use methods rather than manually manipulating queue.
+ * - [ ] BUG: Roll after card moving to utility is not paying owner.
  */
 
 /**
