@@ -103,7 +103,7 @@ namespace Tests {
 
     export function startJailTest(): void {
         startAutomatedGame(1)
-        for (let i of [1, 3]) {
+        for (let i of [1, 2]) {
             let p: Player = g_state.getPlayer(i)
             p.Location = g_state.Board.Jail
             p.InJail = true

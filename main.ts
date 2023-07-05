@@ -50,8 +50,9 @@
  * - [X] BUG: Triples gets stuck in a loop.
  * - [X] BUG: Card type GoToGroup no longer working.
  * - [X] Move double speed when not moving for roll.
- * - [ ] BUG: Multiple players in jail gets automated game stuck in loop.
- * - [ ] Refactor action queue. Use methods rather than manually manipulating queue.
+ * - [X] BUG: Multiple players in jail gets automated game stuck in loop.
+ *       + Wasn't getting stuck in a loop. Was skipping a player.
+ * - [X] Refactor action queue. Use methods rather than manually manipulating queue.
  */
 
 /**

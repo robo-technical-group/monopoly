@@ -189,27 +189,6 @@ class ActionQueue {
         }
     }
 
-    public queueJailRoll(): void {
-        let p: Player = g_state.getCurrPlayer()
-        this.enqueue({
-            action: PlayerAction.Rolling,
-            values: [],
-        })
-        this.enqueue({
-            action: PlayerAction.ProcessRollInJail,
-            values: [],
-        })
-        p.startRoll(2)
-    }
-
-    public queuePayment(amount: number, payer: number,
-            recipient: number): void {
-        this.push({
-            action: PlayerAction.PayMoney,
-            values: [amount, payer, recipient]
-        })
-    }
-
     public startTurn(): void {
         this.enqueue({
             action: PlayerAction.StartTurn,
@@ -656,6 +635,27 @@ class ActionQueue {
         }
     }
 
+    protected queueJailRoll(): void {
+        let p: Player = g_state.getCurrPlayer()
+        this.enqueue({
+            action: PlayerAction.Rolling,
+            values: [],
+        })
+        this.enqueue({
+            action: PlayerAction.ProcessRollInJail,
+            values: [],
+        })
+        p.startRoll(2)
+    }
+
+    protected queuePayment(amount: number, payer: number,
+        recipient: number): void {
+        this.push({
+            action: PlayerAction.PayMoney,
+            values: [amount, payer, recipient]
+        })
+    }
+
     protected startCurrentPlayer(): void {
         let p: Player = g_state.getCurrPlayer()
         let playerStarted: boolean = p.startTurn()
@@ -818,7 +818,11 @@ class ActionQueue {
                 })
                 g_state.Board.DoubleSpeed = false
             } else {
-                g_state.nextPlayer()
+                // Move on to the next player.
+                if (this.data.length > 0) {
+                    // This really should not happen, but just in case?
+                    this.data = []
+                }
             }
         }
     }
