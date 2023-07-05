@@ -51,6 +51,7 @@
  * - [X] BUG: Card type GoToGroup no longer working.
  * - [X] Move double speed when not moving for roll.
  * - [ ] BUG: Multiple players in jail gets automated game stuck in loop.
+ * - [ ] Refactor action queue. Use methods rather than manually manipulating queue.
  */
 
 /**
@@ -134,7 +135,8 @@ function update(): void {
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
-Tests.startAutomatedGame(1)
+// Tests.startAutomatedGame(1)
+Tests.startJailTest()
 /*
 if (settings.exists(Tests.TESTING_KEY)) {
     Tests.run()

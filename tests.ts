@@ -100,6 +100,16 @@ namespace Tests {
         startGame()
     }
 
+
+    export function startJailTest(): void {
+        startAutomatedGame(1)
+        for (let i of [1, 3]) {
+            let p: Player = g_state.getPlayer(i)
+            p.Location = g_state.Board.Jail
+            p.InJail = true
+        }
+    }
+
     export function startTestMenu(): void {
         scene.setBackgroundImage(assets.image`bg`)
         GameStateTests.loadTestState()
