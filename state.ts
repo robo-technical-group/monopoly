@@ -422,7 +422,7 @@ class GameState {
         for (let i: number = 1; i <= this.NumPlayers; i++) {
             let p: Player = this.getPlayer(i)
             let s: Sprite = p.Sprite
-            let space: Space = g_state.Board.BoardSpaces[this.board.CurrSpace]
+            let space: Space = this.board.BoardSpaces[this.board.CurrSpace]
             if (i == this.currPlayer) {
                 if (this.board.SpacesMoved > 0 &&
                         this.board.CurrSpace == this.board.Go && !p.OnGo) {
@@ -439,12 +439,12 @@ class GameState {
                 s.say(spaces == 0 ? '' : spaces)
             } else {
                 if (this.board.Direction >= 0) {
-                    s.x++
+                    s.x += this.board.Speed
                     if (s.left > 160) {
                         p.hideSprite()
                     }
                 } else {
-                    s.x--
+                    s.x -= this.board.Speed
                     if (s.right < 0) {
                         p.hideSprite()
                     }

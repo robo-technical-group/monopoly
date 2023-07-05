@@ -478,6 +478,7 @@ class Board {
     protected board: Space[]
     protected currSpace: number
     protected direction: number
+    protected doubleSpeed: boolean
     protected go: number
     protected index: number
     protected jail: number
@@ -492,6 +493,7 @@ class Board {
         this.currSpace = -1
         this.direction = 1
         this.spacesMoved = 0
+        this.doubleSpeed = false
     }
 
     /**
@@ -511,6 +513,14 @@ class Board {
 
     public set Direction(value: number) {
         this.direction = value
+    }
+
+    public get DoubleSpeed(): boolean {
+        return this.doubleSpeed
+    }
+
+    public set DoubleSpeed(value: boolean) {
+        this.doubleSpeed = value
     }
 
     public get Go(): number {
@@ -543,6 +553,10 @@ class Board {
 
     public get SpacesMoved(): number {
         return this.spacesMoved
+    }
+
+    public get Speed(): number {
+        return this.doubleSpeed ? Board.SPEED * 2 : Board.SPEED
     }
 
     /**
@@ -734,7 +748,7 @@ class Board {
 
     protected moveBackward(): void {
         for (let boardSprite of sprites.allOfKind(SpriteKind.BoardSpace)) {
-            boardSprite.x -= Board.SPEED
+            boardSprite.x -= this.doubleSpeed ? Board.SPEED * 2 : Board.SPEED
             if (boardSprite.right < 0) {
                 // Find sprite furthest to the right.
                 let rightX: number = 0
@@ -761,7 +775,7 @@ class Board {
 
     protected moveForward(): void {
         for (let boardSprite of sprites.allOfKind(SpriteKind.BoardSpace)) {
-            boardSprite.x += Board.SPEED
+            boardSprite.x += this.doubleSpeed ? Board.SPEED * 2 : Board.SPEED
             if (boardSprite.left > 160) {
                 // Find sprite furthest to the left.
                 let leftX: number = 160
@@ -850,7 +864,7 @@ namespace BoardTests {
     }
 
     export function update(): void {
-        Background.move()
+        Background.move(g_state.Board.Speed)
         g_state.Board.move()
         currSpace.text = g_state.Board.CurrSpace.toString()
         currSpace.update()

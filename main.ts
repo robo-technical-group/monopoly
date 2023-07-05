@@ -37,7 +37,7 @@
  *       - Saw an NaN payment after moving for a card.
  *       - Card may be missing a value or the payment calculation may be looking
  *         at wrong location in the values array.
- * - [ ] Review logic for paying on Go.
+ * - [X] Review logic for paying on Go.
  *       - Landing on Go and then moving for speed die results in double payment.
  *       - Perhaps refactor to count the number of times Go has paid and the
  *         number of times you have passed it. Moving backward over Go would
@@ -49,7 +49,7 @@
  * - [X] Move avatar into jail space if player is in jail.
  * - [X] BUG: Triples gets stuck in a loop.
  * - [X] BUG: Card type GoToGroup no longer working.
- * - [ ] Move double speed when not moving for roll.
+ * - [X] Move double speed when not moving for roll.
  */
 
 /**

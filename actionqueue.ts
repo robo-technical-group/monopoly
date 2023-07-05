@@ -58,7 +58,7 @@ namespace ActionQueue {
                 (g_state.Board.Direction >= 0 && g_state.Board.getXCoordinate(p.Location) < p.Sprite.x) ||
                 (g_state.Board.Direction < 0 && g_state.Board.getXCoordinate(p.Location) > p.Sprite.x)) {
             g_state.Board.move()
-            Background.move()
+            Background.move(g_state.Board.Speed)
             g_state.updatePlayerSprites()
         } else {
             p.stopAnimation()
@@ -151,6 +151,7 @@ namespace ActionQueue {
                     action: PlayerAction.MoveToLocation,
                     values: [newLocation,],
                 })
+                g_state.Board.DoubleSpeed = true
                 break
 
             case Cards.Action.GoToSpace:
@@ -168,6 +169,7 @@ namespace ActionQueue {
                         action: PlayerAction.MoveToLocation,
                         values: [g_state.Board.getCardLocation(card.values[0]),],
                     })
+                    g_state.Board.DoubleSpeed = true
                 }
                 break
 
@@ -188,6 +190,7 @@ namespace ActionQueue {
                     action: PlayerAction.MoveForRoll,
                     values: [0 - card.values[0],],
                 })
+                g_state.Board.DoubleSpeed = true
                 break
 
             case Cards.Action.PayBank:
@@ -344,6 +347,7 @@ namespace ActionQueue {
             case PlayerAction.StartTurn:
                 _ = queue.shift()
                 startCurrentPlayer(queue)
+                g_state.Board.DoubleSpeed = false
                 break
 
             case PlayerAction.DrawCard:
@@ -379,6 +383,7 @@ namespace ActionQueue {
 
             case PlayerAction.MoveToLocation:
                 startPlayerMoveToLocation(queue)
+                g_state.Board.DoubleSpeed = true
                 break
 
             case PlayerAction.Moving:
@@ -487,6 +492,7 @@ namespace ActionQueue {
                     values: [d.SpeedDie,],
                 })
             }
+            g_state.Board.DoubleSpeed = false
         }
     }
 
@@ -539,6 +545,7 @@ namespace ActionQueue {
                 action: PlayerAction.MoveToLocation,
                 values: [newLocation,],
             })
+            g_state.Board.DoubleSpeed = true
             return
         }
         // Move to next property that is owned and not mortgaged.
@@ -565,6 +572,7 @@ namespace ActionQueue {
                 action: PlayerAction.MoveToLocation,
                 values: [newLocation,],
             })
+            g_state.Board.DoubleSpeed = true
         } else {
             game.splashForPlayer(pId, Strings.ACTION_SPEED_DIE,
                 Strings.ACTION_SPEED_DIE_MONOPOLY_NO_SPACE)
@@ -600,6 +608,7 @@ namespace ActionQueue {
             Background.show()
             g_state.Board.draw(p.Location)
             g_state.Board.Direction = 1
+            g_state.Board.DoubleSpeed = false
             g_state.updatePlayerStatus()
             if (g_state.testMode) {
                 ActionQueueTestMode.startCurrentPlayer(queue)
@@ -711,6 +720,7 @@ namespace ActionQueueTestMode {
                 action: PlayerAction.MoveToLocation,
                 values: [newLocation,],
             })
+            g_state.Board.DoubleSpeed = true
         }
     }
 
@@ -745,6 +755,7 @@ namespace ActionQueueTestMode {
                 action: PlayerAction.MoveForRoll,
                 values: [d.Roll,],
             })
+            g_state.Board.DoubleSpeed = false
         } else {
             p.JailTurns++
             if (p.JailTurns == 3) {
@@ -755,6 +766,7 @@ namespace ActionQueueTestMode {
                     action: PlayerAction.MoveForRoll,
                     values: [d.Roll,],
                 })
+                g_state.Board.DoubleSpeed = false
             } else {
                 g_state.nextPlayer()
             }
@@ -838,6 +850,7 @@ namespace ActionQueueTestMode {
                 action: PlayerAction.MoveToLocation,
                 values: [newLocation,],
             })
+            g_state.Board.DoubleSpeed = true
         } else {
             // This really should not happen.
             throw 'ActionQueueTestMode.processSpeedDieBus: No space found.'
@@ -853,6 +866,7 @@ namespace ActionQueueTestMode {
             action: PlayerAction.MoveToLocation,
             values: [randint(0, g_state.Board.BoardSpaces.length - 1),],
         })
+        g_state.Board.DoubleSpeed = false
     }
 
     export function startCurrentPlayer(queue: ActionQueue.Item[]): void {

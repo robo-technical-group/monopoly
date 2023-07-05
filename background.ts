@@ -33,25 +33,27 @@ namespace Background {
                 s.left = left
                 s.top = TOP_VALUES[index]
                 s.data['frameDelay'] = FRAME_DELAYS[index]
+                s.data['lastMoved'] = 0
                 s.z = index
                 left += s.width
             }
         })
     }
 
-    export function move(): void {
+    export function move(speed: number): void {
         if (g_state.Board.Direction >= 0) {
-            moveForward()
+            moveForward(speed)
         } else {
-            moveBackward()
+            moveBackward(speed)
         }
     }
 
-    function moveBackward(): void {
-        pixelsMoved++
+    function moveBackward(speed: number): void {
+        pixelsMoved =+ speed
         sprites.allOfKind(SpriteKind.Background).forEach((s: Sprite, index: number) => {
-            if (pixelsMoved % <number>(s.data['frameDelay']) == 0) {
-                s.x--
+            if (pixelsMoved >= <number>(s.data['lastMoved']) + <number>(s.data['frameDelay'])) {
+                s.x -= speed
+                s.data['lastMoved'] = pixelsMoved
                 if (s.right < 0) {
                     // Find right-most sprite in same layer.
                     let right: number = 0
@@ -66,11 +68,12 @@ namespace Background {
         })
     }
 
-    function moveForward(): void {
-        pixelsMoved++
+    function moveForward(speed: number): void {
+        pixelsMoved += speed
         sprites.allOfKind(SpriteKind.Background).forEach((s: Sprite, index: number) => {
-            if (pixelsMoved % <number>(s.data['frameDelay']) == 0) {
-                s.x++
+            if (pixelsMoved >= <number>(s.data['lastMoved']) + <number>(s.data['frameDelay'])) {
+                s.x += speed
+                s.data['lastMoved'] = pixelsMoved
                 if (s.left >= 160) {
                     // Find left-most sprite in same layer.
                     let left: number = 160
@@ -90,8 +93,10 @@ namespace Background {
             init()
         } else {
             sprites.allOfKind(SpriteKind.Background).forEach(
-                (value: Sprite, index: number) =>
+                (value: Sprite, index: number) => {
                     value.setFlag(SpriteFlag.Invisible, false)
+                    value.data['lastMoved'] = 0
+                }
             )
             pixelsMoved = 0
         }
