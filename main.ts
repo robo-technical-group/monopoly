@@ -20,8 +20,8 @@
  *       - Add key binding sprites dynamically.
  *       - Move button actions below d-pad (maybe?)
  * - [ ] Player actions menu (while in jail).
- * - [ ] Player actions menu (turn).
- *       - [ ] Roll.
+ * - [/] Player actions menu (turn).
+ *       - [X] Roll.
  *       - [ ] Bankrupt.
  *       - [ ] Build/mortgage.
  *       - [ ] Trade.

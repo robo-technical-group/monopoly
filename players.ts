@@ -176,6 +176,10 @@ class Player {
     }
 
     public get Sprite(): Sprite {
+        // If sprite has not yet been initialized, then try to create it.
+        if (this.sprite == null && this.avatar > -1) {
+            this.Avatar = this.avatar
+        }
         return this.sprite
     }
 
@@ -466,12 +470,15 @@ class Player {
     }
 
     public showSprite(x: number = 999, y: number = 999): void {
-        this.sprite.setFlag(SpriteFlag.Invisible, false)
-        if (x < 999) {
-            this.sprite.x = x
-        }
-        if (y < 999) {
-            this.sprite.y = y
+        let s: Sprite = this.Sprite
+        if (s != null) {
+            s.setFlag(SpriteFlag.Invisible, false)
+            if (x < 999) {
+                s.x = x
+            }
+            if (y < 999) {
+                s.y = y
+            }
         }
     }
 

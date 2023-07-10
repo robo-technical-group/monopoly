@@ -54,6 +54,15 @@ class ActionQueue {
     /**
      * Other public functions.
      */
+    public actionStartRoll(): void {
+        let p: Player = g_state.getCurrPlayer()
+        this.enqueue({
+            action: PlayerAction.Rolling,
+            values: [],
+        })
+        p.startRoll(g_state.SpeedDie ? 3 : 2)
+    }
+
     public buildFromState(state: any): void {
         this.data = []
         if (!Array.isArray(state)) {
@@ -960,21 +969,13 @@ class ActionQueue {
                 g_state.updatePlayerSprites()
                 g_state.Board.redraw()
                 // Automatically roll in test mode.
-                this.enqueue({
-                    action: PlayerAction.Rolling,
-                    values: [],
-                })
-                p.startRoll(g_state.SpeedDie ? 3 : 2)
+                this.actionStartRoll()
             } else {
                 this.queueJailRoll()
             }
         } else {
             // Automatically roll in test mode.
-            this.enqueue({
-                action: PlayerAction.Rolling,
-                values: [],
-            })
-            p.startRoll(g_state.SpeedDie ? 3 : 2)
+            this.actionStartRoll()
         }
     }
 }

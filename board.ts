@@ -571,13 +571,13 @@ class Board {
             location += this.board.length
         }
 
-        this.currSpace = location
         // Remove all existing board sprites.
         for (let s of sprites.allOfKind(SpriteKind.BoardSpace)) {
             s.destroy()
         }
 
         // Place current location in center of moving board.
+        this.currSpace = location
         let x: number = 80
         let currSprite: Sprite = this.drawSprite(location, x)
         let s: Sprite = null

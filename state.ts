@@ -179,6 +179,11 @@ class GameState {
     /**
      * Public methods
      */
+    public actionStartRoll(): void {
+        this.hideMenu()
+        this.actionQueue.actionStartRoll()
+    }
+
     public static addSystemMenuItem(text: string, icon: Image, handler: () => void): void {
         if (infoScreens.addMenuOption != undefined) {
             game.splash('Info Screens plugin is missing.')
@@ -426,10 +431,7 @@ class GameState {
     public showMenu(menu: ActionMenuType): void {
         let priorMode: GameMode = this.gameMode
         this.gameMode = GameMode.NotReady
-        this.hidePlayers()
         Background.hide()
-        let p: Player = this.getCurrPlayer()
-        p.showSprite(ActionMenu.PLAYER_SPRITE_X, ActionMenu.PLAYER_SPRITE_Y)
 
         switch (menu) {
             case ActionMenuType.InJail:
@@ -559,6 +561,16 @@ class GameState {
     /**
      * Protected methods
      */
+    protected hideMenu(): void {
+        Background.show()
+        let _: ActionItem = this.actionQueue.peek()
+        if (_.action == PlayerAction.WaitingForAction) {
+            _ = this.actionQueue.pop()
+            this.actionMenu.hide()
+            this.actionMenu = null
+        }
+    }
+
     protected initMovementSprite(): void {
         let i: Image = image.create(160, 7)
         this.movementSprite = sprites.create(i, SpriteKind.PlayerMessage)
@@ -599,7 +611,7 @@ class GameState {
         let msg: string = Strings.MENU_START_TURN_TITLE
             .replace('%NAME%', p.Name)
             .replace('%TURN%', (p.TurnCount + 1).toString())
-        this.actionMenu = new TestActionMenu(msg)
+        this.actionMenu = new StartTurnActionMenu(msg)
         this.actionMenu.show()
     }
 }

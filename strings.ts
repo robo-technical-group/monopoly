@@ -15,7 +15,6 @@ namespace Strings {
     export const ACTION_IN_JAIL_MUST_PAY: string = 'Time to leave jail!'
     export const ACTION_IN_JAIL_DOUBLES: string = 'Doubles! Get out of jail free!'
     export const ACTION_PAY: string = 'Pay'
-    export const ACTION_ROLL: string = 'Roll'
     export const ACTION_ROLLED: string = 'You rolled a %ROLL%!'
     export const ACTION_SPEED_DIE: string = 'Speed die'
     export const ACTION_SPEED_DIE_BUS: string = 'Speed die: Bus'
@@ -34,7 +33,13 @@ namespace Strings {
     export const FIRSTROLL_START: string = "%PLAYERNAME%: You're first!"
 
     // Strings used in actionmenus.ts and in state.ts when displaying menus.
+    export const MENU_BANKRUPT: string = 'Bankrupt (Quit)'
+    export const MENU_BUILD: string = 'Build/Mortgage'
+    export const MENU_PROPERTY_AUCTION: string = 'Start auction'
+    export const MENU_PROPERTY_BUY: string = 'Buy for M%COST%'
     export const MENU_START_TURN_TITLE: string = "%NAME%: Roll %TURN%"
+    export const MENU_ROLL: string = 'Roll'
+    export const MENU_TRADE: string = 'Trade'
 
     // Strings used in player.ts
     export const PLAYER_BUY_PROPERTY: string = '%PLAYERNAME% is buying %PROPERTY% for M%VALUE%.'

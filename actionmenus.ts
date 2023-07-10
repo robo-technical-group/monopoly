@@ -8,9 +8,13 @@ abstract class ActionMenu {
     
     protected done: boolean
     protected message: string
+    protected pId: number
+    protected player: Player
 
     constructor(msg: string) {
         this.message = msg
+        this.pId = g_state.CurrPlayer
+        this.player = g_state.getCurrPlayer()
     }
 
     /**
@@ -58,11 +62,9 @@ abstract class ActionMenu {
     }
 
     public show(): void {
-        let p: Player = g_state.getCurrPlayer()
-        p.showSprite(10, 40)
         let msgSprite: TextSprite = textsprite.create(this.message, Color.Transparent, Color.White)
         msgSprite.setMaxFontHeight(8)
-        msgSprite.left = 30
+        msgSprite.left = 0
         msgSprite.top = 32
         msgSprite.setKind(SpriteKind.ActionMenu)
     }
@@ -181,7 +183,7 @@ class InJailActionMenu extends ActionMenu {
         super.show()
         let p: Player = g_state.getCurrPlayer()
         let pId: number = g_state.CurrPlayer
-        this.showAction(ControllerButton.A, Strings.ACTION_ROLL)
+        this.showAction(ControllerButton.A, Strings.MENU_ROLL)
         if (p.Bank >= 50 /*GameSettings.JAIL_FEE*/) {
             let msg: string = Strings.ACTION_PAY + ' '
             if (GameSettings.CURRENCY_IS_PREFIX) {
@@ -236,6 +238,59 @@ class InJailActionMenu extends ActionMenu {
             cards[0].owner = 0
             this.done = true
         }
+    }
+}
+
+class StartTurnActionMenu extends ActionMenu {
+    protected hasProperties: boolean
+
+    public show(): void {
+        super.show()
+        this.showAction(ControllerButton.A, Strings.MENU_ROLL)
+        this.showAction(ControllerButton.Down, Strings.MENU_BANKRUPT)
+        this.hasProperties = false
+        for (let gs of g_state.Properties.state) {
+            for (let s of gs.properties) {
+                if (s.owner == this.pId) {
+                    this.hasProperties = true
+                    break
+                }
+            }
+        }
+        if (this.hasProperties) {
+            this.showAction(ControllerButton.B, Strings.MENU_BUILD)
+        }
+        if (this.hasProperties || this.player.Bank > 0) {
+            this.showAction(ControllerButton.Up, Strings.MENU_TRADE)
+        }
+    }
+
+    public actionA(): void {
+        g_state.actionStartRoll()
+    }
+
+    public actionB(): void {
+        if (this.hasProperties) {
+            game.splashForPlayer(this.pId, 'Build/Mortgage not yet implemented.')
+        }
+    }
+
+    public actionDown(): void {
+        game.splashForPlayer(this.pId, 'Bankrupt not yet implemented.')
+    }
+
+    public actionUp(): void {
+        if (this.hasProperties || this.player.Bank > 0) {
+            game.splashForPlayer(this.pId, 'Trading has not yet been implemented.')
+        }
+    }
+}
+
+class UnownedPropertyActionMenu extends ActionMenu {
+    public show(): void {
+        super.show()
+        this.showAction(ControllerButton.A, Strings.MENU_PROPERTY_BUY)
+        this.showAction(ControllerButton.B, Strings.MENU_PROPERTY_AUCTION)
     }
 }
 
