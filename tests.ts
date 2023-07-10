@@ -116,7 +116,7 @@ namespace Tests {
         g_state.CurrPlayer = randint(1, g_state.NumPlayers)
         g_state.testMode = true
         g_state.Board.draw(0)
-        let menu: ActionMenu = new TestActionMenu('Test action menu!')
+        let menu: ActionMenu = new TestActionMenu()
         menu.show()
     }
 

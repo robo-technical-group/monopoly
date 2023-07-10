@@ -435,12 +435,16 @@ class GameState {
 
         switch (menu) {
             case ActionMenuType.InJail:
-                this.showMenuInJail()
+                this.actionMenu = new InJailActionMenu()
                 break
 
             case ActionMenuType.StartTurn:
-                this.showMenuStartTurn()
+                this.actionMenu = new StartTurnActionMenu()
                 break
+        }
+
+        if (this.actionMenu != null) {
+            this.actionMenu.show()
         }
 
         this.gameMode = priorMode
@@ -600,19 +604,6 @@ class GameState {
         this.monopolyStatus.z = Player.Z
         let i: Image = this.monopolyStatus.image
         i.fill(Color.Black)
-    }
-
-    protected showMenuInJail(): void {
-        game.splash('In Jail Action Menu!')
-    }
-
-    protected showMenuStartTurn(): void {
-        let p: Player = this.getCurrPlayer()
-        let msg: string = Strings.MENU_START_TURN_TITLE
-            .replace('%NAME%', p.Name)
-            .replace('%TURN%', (p.TurnCount + 1).toString())
-        this.actionMenu = new StartTurnActionMenu(msg)
-        this.actionMenu.show()
     }
 }
 

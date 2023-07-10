@@ -6,13 +6,13 @@ abstract class ActionMenu {
     public static readonly PLAYER_SPRITE_X: number = 10
     public static readonly PLAYER_SPRITE_Y: number = 40
     
-    protected done: boolean
+    // protected done: boolean
     protected message: string
     protected pId: number
     protected player: Player
 
-    constructor(msg: string) {
-        this.message = msg
+    constructor() {
+        this.message = ''
         this.pId = g_state.CurrPlayer
         this.player = g_state.getCurrPlayer()
     }
@@ -20,9 +20,11 @@ abstract class ActionMenu {
     /**
      * Public properties
      */
+    /*
     public get Done(): boolean {
         return this.done
     }
+    */
 
     /**
      * Public methods
@@ -62,11 +64,14 @@ abstract class ActionMenu {
     }
 
     public show(): void {
-        let msgSprite: TextSprite = textsprite.create(this.message, Color.Transparent, Color.White)
-        msgSprite.setMaxFontHeight(8)
-        msgSprite.left = 0
-        msgSprite.top = 32
-        msgSprite.setKind(SpriteKind.ActionMenu)
+        if (this.message.length > 0) {
+            let i: Image = image.create(160, 8)
+            i.fill(this.player.Color)
+            i.print(this.message, 1, 0, Color.Black, image.font8)
+            let msgSprite: Sprite = sprites.create(i, SpriteKind.ActionMenu)
+            msgSprite.left = 0
+            msgSprite.top = 32
+        }
     }
 
     public actionA(): void { }
@@ -82,6 +87,7 @@ abstract class ActionMenu {
     protected showAction(button: ControllerButton, msg: string) {
         let msgSprite: TextSprite = textsprite.create(msg, Color.Transparent, Color.Yellow)
         msgSprite.setMaxFontHeight(5)
+        msgSprite.setKind(SpriteKind.ActionMenu)
         let buttonSprite: Sprite = sprites.create(img`.`, SpriteKind.ActionMenu)
         buttonSprite.setFlag(SpriteFlag.Ghost, true)
         switch (button) {
@@ -138,6 +144,7 @@ abstract class ActionMenu {
 
 class TestActionMenu extends ActionMenu {
     public show(): void {
+        this.message = 'Test action menu!'
         super.show()
         this.showAction(ControllerButton.A, 'Button A')
         this.showAction(ControllerButton.B, 'Button B')
@@ -148,65 +155,66 @@ class TestActionMenu extends ActionMenu {
     }
 
     public actionA(): void {
-        let pId: number = g_state.CurrPlayer
-        game.splashForPlayer(pId, 'You pressed A!')
+        game.splashForPlayer(this.pId, 'You pressed A!')
     }
 
     public actionB(): void {
-        let pId: number = g_state.CurrPlayer
-        game.splashForPlayer(pId, 'You pressed B!')
+        game.splashForPlayer(this.pId, 'You pressed B!')
     }
 
     public actionDown(): void {
-        let pId: number = g_state.CurrPlayer
-        game.splashForPlayer(pId, 'You pressed Down!')
+        game.splashForPlayer(this.pId, 'You pressed Down!')
     }
 
     public actionLeft(): void {
-        let pId: number = g_state.CurrPlayer
-        game.splashForPlayer(pId, 'You pressed Left!')
+        game.splashForPlayer(this.pId, 'You pressed Left!')
     }
 
     public actionRight(): void {
-        let pId: number = g_state.CurrPlayer
-        game.splashForPlayer(pId, 'You pressed Right!')
+        game.splashForPlayer(this.pId, 'You pressed Right!')
     }
 
     public actionUp(): void {
-        let pId: number = g_state.CurrPlayer
-        game.splashForPlayer(pId, 'You pressed Up!')
+        game.splashForPlayer(this.pId, 'You pressed Up!')
     }
 }
 
 class InJailActionMenu extends ActionMenu {
+    protected canPay: boolean
+    protected hasJailCard: boolean
+
     public show(): void {
+        this.message = Strings.MENU_IN_JAIL_TITLE
+            .replace('%NAME%', this.player.Name)
+            .replace('%TURN%', (this.player.TurnCount + 1).toString())
         super.show()
-        let p: Player = g_state.getCurrPlayer()
-        let pId: number = g_state.CurrPlayer
         this.showAction(ControllerButton.A, Strings.MENU_ROLL)
-        if (p.Bank >= 50 /*GameSettings.JAIL_FEE*/) {
+        if (this.player.Bank >= GameSettings.JAIL_FEE) {
+            this.canPay = true
             let msg: string = Strings.ACTION_PAY + ' '
             if (GameSettings.CURRENCY_IS_PREFIX) {
-                msg += GameSettings.CURRENCY_SYMBOL + 50 /*GameSettings.JAIL_FEE*/
+                msg += GameSettings.CURRENCY_SYMBOL + GameSettings.JAIL_FEE
             } else {
-                msg += 50 /*GameSettings.JAIL_FEE*/ + GameSettings.CURRENCY_SYMBOL
+                msg += GameSettings.JAIL_FEE + GameSettings.CURRENCY_SYMBOL
             }
             this.showAction(ControllerButton.B, msg)
         }
-        let hasJailCard: boolean = false
+        this.hasJailCard = false
         g_state.Properties.state[Properties.GROUP_JAIL].properties.forEach(
             (value: Properties.State, index: number) => {
-                if (value.owner == pId) {
-                    hasJailCard = true
+                if (value.owner == this.pId) {
+                    this.hasJailCard = true
                 }
             }
         )
-        if (hasJailCard) {
+        if (this.hasJailCard) {
             this.showAction(ControllerButton.Down, Strings.ACTION_USE_JAIL_CARD)
         }
     }
 
     public actionA(): void {
+        game.splashForPlayer(this.pId, 'You chose to roll!')
+        /*
         let p: Player = g_state.getCurrPlayer()
         if (p.JailTurns < 4) {
             g_state.Board.draw(p.Location)
@@ -215,18 +223,24 @@ class InJailActionMenu extends ActionMenu {
             // p.Status = PlayerStatus.RollingInJail
         }
         this.done = true
+        */
     }
 
     public actionB(): void {
+        game.splashForPlayer(this.pId, 'You chose to pay!')
+        /*
         let p: Player = g_state.getCurrPlayer()
-        if (p.Bank >= 50 /*GameSettings.JAIL_FEE*/) {
-            p.changeBank(0 - 50 /*GameSettings.JAIL_FEE*/)
+        if (p.Bank >= GameSettings.JAIL_FEE) {
+            p.changeBank(0 - GameSettings.JAIL_FEE)
             p.InJail = false
             this.done = true
         }
+        */
     }
 
     public actionDown(): void {
+        game.splashForPlayer(this.pId, 'You chose to use a card!')
+        /*
         let p: Player = g_state.getCurrPlayer()
         let pId: number = g_state.CurrPlayer
         let cards: Properties.State[] =
@@ -238,6 +252,7 @@ class InJailActionMenu extends ActionMenu {
             cards[0].owner = 0
             this.done = true
         }
+        */
     }
 }
 
@@ -245,6 +260,14 @@ class StartTurnActionMenu extends ActionMenu {
     protected hasProperties: boolean
 
     public show(): void {
+        if (this.player.TurnCount == 0) {
+            this.message = Strings.MENU_START_TURN_TITLE
+                .replace('%NAME%', this.player.Name)
+        } else {
+            this.message = Strings.MENU_START_TURN_TITLE_MULTI_ROLL
+                .replace('%NAME%', this.player.Name)
+                .replace('%TURN%', (this.player.TurnCount + 1).toString())
+        }
         super.show()
         this.showAction(ControllerButton.A, Strings.MENU_ROLL)
         this.showAction(ControllerButton.Down, Strings.MENU_BANKRUPT)

@@ -137,6 +137,7 @@ class ActionQueue {
                     this.tmProcessTriples()
                 } else {
                     // TODO: Implement.
+                    game.splash('Triples! Need to implement.')
                 }
                 break
 
@@ -151,6 +152,7 @@ class ActionQueue {
 
             case PlayerAction.NeedMoney:
                 // TODO: Implement
+                game.splash('Does this need to be implemented?')
                 break
 
             case PlayerAction.PayMoney:
@@ -163,6 +165,7 @@ class ActionQueue {
 
             case PlayerAction.ProcessCard:
                 // TODO: Implement
+                game.splash('Does this need to be implemented?')
                 break
 
             case PlayerAction.ProcessMove:
@@ -181,6 +184,7 @@ class ActionQueue {
                     this.tmProcessJailRoll()
                 } else {
                     // TODO: Process jail roll.
+                    game.splash('Jail roll! Need to implement.')
                 }
                 break
 
@@ -190,6 +194,7 @@ class ActionQueue {
 
             case PlayerAction.ReceiveMoney:
                 // TODO: Implement
+                game.splash('Does this need to be implemented?')
                 break
 
             case PlayerAction.Rolling:
@@ -228,7 +233,13 @@ class ActionQueue {
         let amount: number = item.values[0]
         let payerId: number = item.values[1]
         let recipientId: number = item.values[2]
-        // TODO: Implement.
+        let payer: Player = g_state.getPlayer(payerId)
+        if (payer.Bank >= amount) {
+            this.queuePayment(amount, payerId, recipientId)
+        } else {
+            // TODO: Implement.
+            game.splash('moveMoney: Not enough cash! Need to implement.')
+        }
     }
 
     protected movePlayer(): void {
@@ -355,10 +366,12 @@ class ActionQueue {
 
             case Cards.Action.GoToSpaceAllPay:
                 // TODO: Implement.
+                game.splash('Cards.Action.GoToSpaceAllPay: Need to implement.')
                 break
 
             case Cards.Action.Lottery:
                 // TODO: Implement.
+                game.splash('Cards.Action.Lottery: Need to implement.')
                 break
 
             case Cards.Action.MoveBackward:
@@ -390,6 +403,7 @@ class ActionQueue {
 
             case Cards.Action.PayTax:
                 // TODO: Implement.
+                game.splash('Cards.Action.PayTax: Need to implement.')
                 break
 
             case Cards.Action.Repairs:
@@ -416,12 +430,14 @@ class ActionQueue {
 
             case Cards.Action.SkipNextTurn:
                 // TODO: Implement.
+                game.splash('Cards.Action.SkipNextTurn: Need to implement.')
                 break
         }
     }
 
     protected processGift(): void {
         // TODO: Implement.
+        game.splash('processGift: Need to implement.')
     }
 
     protected processMove(): void {
@@ -433,6 +449,7 @@ class ActionQueue {
                     this.tmProcessAuctionSpace()
                 } else {
                     // TODO: Implement
+                    game.splash('Auction space: Need to implement.')
                 }
                 break
 
@@ -449,6 +466,7 @@ class ActionQueue {
                     }
                 } else {
                     // TODO: Process as if bus rolled on speed die.
+                    game.splash('SpaceType.BusTicket: Need to implement if not using bus tickets.')
                 }
                 break
 
@@ -527,6 +545,8 @@ class ActionQueue {
                         let owed: number = p.Roll * (g_state.BoardIndex == 0 ?
                             item.values[1] : item.values[2])
                         this.queuePayment(owed, pId, propertyState.owner)
+                    } else {
+                        game.splash('processRoll: Need to implement for other card types.')
                     }
                     // TODO: Process roll for other cards.
                     break
@@ -583,6 +603,7 @@ class ActionQueue {
 
     protected processSpeedDieBus(): void {
         // TODO: Implement.
+        game.splash('processSpeedDieBus: Need to implement.')
     }
 
     protected processSpeedDieMonopoly(): void {
@@ -690,7 +711,11 @@ class ActionQueue {
             if (g_state.testMode) {
                 this.tmStartCurrentPlayer()
             } else {
-                this.showActionMenu(ActionMenuType.StartTurn)
+                if (p.InJail) {
+                    this.showActionMenu(ActionMenuType.InJail)
+                } else {
+                    this.showActionMenu(ActionMenuType.StartTurn)
+                }
             }
         }
     }
