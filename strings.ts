@@ -10,7 +10,7 @@
  * - taxes.ts
  */
 namespace Strings {
-    // Strings used in actions.ts
+    // Strings used in actionqueue.ts
     export const ACTION_IN_JAIL: string = 'In jail (Turn %TURN%)'
     export const ACTION_IN_JAIL_MUST_PAY: string = 'Time to leave jail!'
     export const ACTION_IN_JAIL_DOUBLES: string = 'Doubles! Get out of jail free!'
@@ -32,6 +32,9 @@ namespace Strings {
     export const FIRSTROLL_HEADING_TEXT: string = 'Highest roll goes first'
     export const FIRSTROLL_FOOTER_TEXT: string = 'Players: Press A to roll!'
     export const FIRSTROLL_START: string = "%PLAYERNAME%: You're first!"
+
+    // Strings used in actionmenus.ts and in state.ts when displaying menus.
+    export const MENU_START_TURN_TITLE: string = "%NAME%: Roll %TURN%"
 
     // Strings used in player.ts
     export const PLAYER_BUY_PROPERTY: string = '%PLAYERNAME% is buying %PROPERTY% for M%VALUE%.'

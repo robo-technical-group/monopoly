@@ -1,17 +1,17 @@
 /**
  * Controller event handlers
  */
+/*
 function mainButtonHandler(button: ControllerButton) {
     let p: Player = g_state.getCurrPlayer()
-    /*
     if (p.Status == PlayerStatus.ActionMenu && g_state.ActionMenu != null) {
         g_state.ActionMenu.handleButton(button)
         if (g_state.ActionMenu.Done) {
             g_state.ActionMenu.hide()
         }
     } 
-    */
 }
+*/
 
 function pressA(player: number): void {
     switch (g_state.Mode) {
@@ -46,7 +46,7 @@ function pressA(player: number): void {
 
         case GameMode.Main:
             if (g_state.CurrPlayer == player || GameSettings.controllers == ControllerSetting.Single) {
-                mainButtonHandler(ControllerButton.A)
+                g_state.handleButton(ControllerButton.A)
             }
             break
 
@@ -80,7 +80,7 @@ function pressB(player: number): void {
 
         case GameMode.Main:
             if (g_state.CurrPlayer == player || GameSettings.controllers == ControllerSetting.Single) {
-                mainButtonHandler(ControllerButton.B)
+                g_state.handleButton(ControllerButton.B)
             }
             break
 
@@ -123,7 +123,7 @@ function pressDown(player: number): void {
 
         case GameMode.Main:
             if (g_state.CurrPlayer == player || GameSettings.controllers == ControllerSetting.Single) {
-                mainButtonHandler(ControllerButton.Down)
+                g_state.handleButton(ControllerButton.Down)
             }
             break
 
@@ -169,7 +169,7 @@ function pressLeft(player: number): void {
 
         case GameMode.Main:
             if (g_state.CurrPlayer == player || GameSettings.controllers == ControllerSetting.Single) {
-                mainButtonHandler(ControllerButton.Left)
+                g_state.handleButton(ControllerButton.Left)
             }
             break
 
@@ -219,7 +219,7 @@ function pressRight(player: number): void {
 
         case GameMode.Main:
             if (g_state.CurrPlayer == player || GameSettings.controllers == ControllerSetting.Single) {
-                mainButtonHandler(ControllerButton.Right)
+                g_state.handleButton(ControllerButton.Right)
             }
             break
 
@@ -254,7 +254,7 @@ function pressUp(player: number) {
 
         case GameMode.Main:
             if (g_state.CurrPlayer == player || GameSettings.controllers == ControllerSetting.Single) {
-                mainButtonHandler(ControllerButton.Up)
+                g_state.handleButton(ControllerButton.Up)
             }
             break
 

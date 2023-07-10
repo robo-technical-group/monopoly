@@ -237,6 +237,12 @@ class GameState {
         return toReturn
     }
 
+    public handleButton(button: ControllerButton): void {
+        if (this.actionQueue.peek().action == PlayerAction.WaitingForAction) {
+            this.actionMenu.handleButton(button)
+        }
+    }
+
     public hideMovementMessage(): void {
         if (this.movementSprite != null) {
             this.movementSprite.setFlag(SpriteFlag.Invisible, true)
@@ -417,6 +423,27 @@ class GameState {
         return settings.list(GameState.KEY_PREFIX).length > 0
     }
 
+    public showMenu(menu: ActionMenuType): void {
+        let priorMode: GameMode = this.gameMode
+        this.gameMode = GameMode.NotReady
+        this.hidePlayers()
+        Background.hide()
+        let p: Player = this.getCurrPlayer()
+        p.showSprite(ActionMenu.PLAYER_SPRITE_X, ActionMenu.PLAYER_SPRITE_Y)
+
+        switch (menu) {
+            case ActionMenuType.InJail:
+                this.showMenuInJail()
+                break
+
+            case ActionMenuType.StartTurn:
+                this.showMenuStartTurn()
+                break
+        }
+
+        this.gameMode = priorMode
+    }
+
     public showMovementMessage(message: string): void {
         if (this.movementSprite == null) {
             this.initMovementSprite()
@@ -561,6 +588,19 @@ class GameState {
         this.monopolyStatus.z = Player.Z
         let i: Image = this.monopolyStatus.image
         i.fill(Color.Black)
+    }
+
+    protected showMenuInJail(): void {
+        game.splash('In Jail Action Menu!')
+    }
+
+    protected showMenuStartTurn(): void {
+        let p: Player = this.getCurrPlayer()
+        let msg: string = Strings.MENU_START_TURN_TITLE
+            .replace('%NAME%', p.Name)
+            .replace('%TURN%', (p.TurnCount + 1).toString())
+        this.actionMenu = new TestActionMenu(msg)
+        this.actionMenu.show()
     }
 }
 

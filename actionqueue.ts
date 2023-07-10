@@ -82,7 +82,7 @@ class ActionQueue {
                 if (g_state.testMode) {
                     this.tmStartCurrentPlayer()
                 } else {
-                    // Show player action menu.
+                    this.showActionMenu(ActionMenuType.StartTurn)
                 }
             } else {
                 g_state.nextPlayer()
@@ -660,6 +660,14 @@ class ActionQueue {
         })
     }
 
+    protected showActionMenu(menu: ActionMenuType): void {
+        g_state.showMenu(menu)
+        this.push({
+            action: PlayerAction.WaitingForAction,
+            values: []
+        })
+    }
+
     protected startCurrentPlayer(): void {
         let p: Player = g_state.getCurrPlayer()
         let playerStarted: boolean = p.startTurn()
@@ -673,7 +681,7 @@ class ActionQueue {
             if (g_state.testMode) {
                 this.tmStartCurrentPlayer()
             } else {
-                // Show player action menu.
+                this.showActionMenu(ActionMenuType.StartTurn)
             }
         }
     }

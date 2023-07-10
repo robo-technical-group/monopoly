@@ -1,6 +1,11 @@
 /**
  * Enumerations
  */
+enum ActionMenuType {
+    InJail,
+    StartTurn,
+}
+
 // Standard palette
 enum Color {
     Transparent, // 0

@@ -119,7 +119,7 @@ function update(): void {
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
-Tests.startJailTest()
+ActionMenuTests.setup()
 /*
 if (settings.exists(Tests.TESTING_KEY)) {
     Tests.run()
@@ -130,4 +130,5 @@ Tests.testJailMenu()
 BoardTests.setup()
 BackgroundTests.setup()
 Tests.startAutomatedGame(1)
+Tests.startJailTest()
 */

@@ -3,6 +3,9 @@ namespace SpriteKind {
 }
 
 abstract class ActionMenu {
+    public static readonly PLAYER_SPRITE_X: number = 10
+    public static readonly PLAYER_SPRITE_Y: number = 40
+    
     protected done: boolean
     protected message: string
 
@@ -55,10 +58,6 @@ abstract class ActionMenu {
     }
 
     public show(): void {
-        let priorMode: GameMode = g_state.Mode
-        g_state.Mode = GameMode.NotReady
-        g_state.hidePlayers()
-        Background.hide()
         let p: Player = g_state.getCurrPlayer()
         p.showSprite(10, 40)
         let msgSprite: TextSprite = textsprite.create(this.message, Color.Transparent, Color.White)
@@ -66,8 +65,6 @@ abstract class ActionMenu {
         msgSprite.left = 30
         msgSprite.top = 32
         msgSprite.setKind(SpriteKind.ActionMenu)
-        // p.Status = PlayerStatus.ActionMenu
-        g_state.Mode = priorMode
     }
 
     public actionA(): void { }
@@ -147,6 +144,36 @@ class TestActionMenu extends ActionMenu {
         this.showAction(ControllerButton.Right, 'Right Button')
         this.showAction(ControllerButton.Up, 'Up Button')
     }
+
+    public actionA(): void {
+        let pId: number = g_state.CurrPlayer
+        game.splashForPlayer(pId, 'You pressed A!')
+    }
+
+    public actionB(): void {
+        let pId: number = g_state.CurrPlayer
+        game.splashForPlayer(pId, 'You pressed B!')
+    }
+
+    public actionDown(): void {
+        let pId: number = g_state.CurrPlayer
+        game.splashForPlayer(pId, 'You pressed Down!')
+    }
+
+    public actionLeft(): void {
+        let pId: number = g_state.CurrPlayer
+        game.splashForPlayer(pId, 'You pressed Left!')
+    }
+
+    public actionRight(): void {
+        let pId: number = g_state.CurrPlayer
+        game.splashForPlayer(pId, 'You pressed Right!')
+    }
+
+    public actionUp(): void {
+        let pId: number = g_state.CurrPlayer
+        game.splashForPlayer(pId, 'You pressed Up!')
+    }
 }
 
 class InJailActionMenu extends ActionMenu {
@@ -209,5 +236,12 @@ class InJailActionMenu extends ActionMenu {
             cards[0].owner = 0
             this.done = true
         }
+    }
+}
+
+namespace ActionMenuTests {
+    export function setup() {
+        Tests.startJailTest()
+        g_state.testMode = false
     }
 }
