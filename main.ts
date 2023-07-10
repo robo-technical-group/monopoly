@@ -19,7 +19,7 @@
  * - [ ] Player actions menu (generic, *e.g.*, while in jail, buy or auction property).
  *       - Add key binding sprites dynamically.
  *       - Move button actions below d-pad (maybe?)
- * - [ ] Player actions menu (while in jail).
+ * - [/] Player actions menu (while in jail).
  * - [/] Player actions menu (turn).
  *       - [X] Roll.
  *       - [ ] Bankrupt.
