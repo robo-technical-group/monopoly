@@ -232,6 +232,7 @@ class ActionQueue {
             g_state.updatePlayerSprites()
         } else {
             p.stopAnimation()
+            g_state.hideMovementMessage()
             this.data[0] = {
                 action: PlayerAction.ProcessMove,
                 values: [],
@@ -597,6 +598,7 @@ class ActionQueue {
             }
         }
         if (newLocation != p.Location) {
+            g_state.showMovementMessage(Strings.ACTION_SPEED_DIE_MONOPOLY)
             this.push({
                 action: PlayerAction.MoveToLocation,
                 values: [newLocation,],
@@ -624,6 +626,7 @@ class ActionQueue {
             }
         }
         if (newLocation != p.Location) {
+            g_state.showMovementMessage(Strings.ACTION_SPEED_DIE_MONOPOLY)
             this.push({
                 action: PlayerAction.MoveToLocation,
                 values: [newLocation,],
@@ -677,6 +680,12 @@ class ActionQueue {
     protected startPlayerMove(): void {
         let p: Player = g_state.getCurrPlayer()
         let spaces: number = this.peek().values[0]
+        let msg: string = Strings.ACTION_ROLLED
+            .replace('%ROLL%', spaces.toString())
+        if (spaces == 8 || spaces == 11) {
+            msg = msg.replace(' a ', ' an ')
+        }
+        g_state.showMovementMessage(msg)
         p.OnGo = (p.Location == g_state.Board.Go)
         p.changeLocation(spaces)
         g_state.Board.Direction = spaces
@@ -696,6 +705,7 @@ class ActionQueue {
         } else {
             // Already at requested location.
             let _: ActionItem = this.pop()
+            g_state.hideMovementMessage()
         }
     }
 
@@ -900,6 +910,7 @@ class ActionQueue {
             }
         }
         if (newLocation != p.Location) {
+            g_state.showMovementMessage(Strings.ACTION_SPEED_DIE_BUS)
             this.push({
                 action: PlayerAction.MoveToLocation,
                 values: [newLocation,],

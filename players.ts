@@ -3,6 +3,7 @@
  */
 namespace SpriteKind {
     export const BankBump = SpriteKind.create()
+    export const PlayerMessage = SpriteKind.create()
 }
 
 /**

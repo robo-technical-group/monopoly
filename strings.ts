@@ -16,7 +16,10 @@ namespace Strings {
     export const ACTION_IN_JAIL_DOUBLES: string = 'Doubles! Get out of jail free!'
     export const ACTION_PAY: string = 'Pay'
     export const ACTION_ROLL: string = 'Roll'
+    export const ACTION_ROLLED: string = 'You rolled a %ROLL%!'
     export const ACTION_SPEED_DIE: string = 'Speed die'
+    export const ACTION_SPEED_DIE_BUS: string = 'Speed die: Bus'
+    export const ACTION_SPEED_DIE_MONOPOLY: string = 'Speed die: Monopoly'
     export const ACTION_SPEED_DIE_MONOPOLY_NO_SPACE: string =
         "No unowned properties and no unmortgaged properties. You're safe!"
     export const ACTION_USE_JAIL_CARD: string = 'Get out free'

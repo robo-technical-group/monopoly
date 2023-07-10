@@ -20,6 +20,7 @@ interface IGameState {
 
 class GameState {
     protected static readonly KEY_PREFIX: string = 'mpy_'
+    protected static readonly MESSAGE_TOP: number = 32
     protected static readonly SAVE_TEXT: string = 'SAVE GAME'
     protected static readonly STARTING_BALANCES: number[] = [1500, 2500,]
 
@@ -35,6 +36,7 @@ class GameState {
     protected depots: boolean
     protected gameMode: GameMode
     protected monopolyStatus: Sprite
+    protected movementSprite: Sprite
     protected players: Player[]
     protected properties: Properties.Properties
     protected speedDie: boolean
@@ -51,6 +53,7 @@ class GameState {
         this.gameMode = GameMode.NotReady
         this.initPlayers(numPlayers)
         this.monopolyStatus = null
+        this.movementSprite = null
         this.players = []
         this.properties = {
             info: Properties.PROPERTIES[this.boardIndex],
@@ -234,6 +237,12 @@ class GameState {
         return toReturn
     }
 
+    public hideMovementMessage(): void {
+        if (this.movementSprite != null) {
+            this.movementSprite.setFlag(SpriteFlag.Invisible, true)
+        }
+    }
+
     public hidePlayers(): void {
         this.players.forEach((p: Player, index: number) => {
             p.hideSprite()
@@ -408,6 +417,16 @@ class GameState {
         return settings.list(GameState.KEY_PREFIX).length > 0
     }
 
+    public showMovementMessage(message: string): void {
+        if (this.movementSprite == null) {
+            this.initMovementSprite()
+        }
+        let i: Image = this.movementSprite.image
+        i.fill(this.getCurrPlayer().Color)
+        i.printCenter(message, 1, 15, image.font5)
+        this.movementSprite.setFlag(SpriteFlag.Invisible, false)
+    }
+
     public start(): void {
         if (this.actionQueue.IsEmpty) {
             this.actionQueue.startTurn()
@@ -511,8 +530,15 @@ class GameState {
     }
 
     /**
-     * protected methods
+     * Protected methods
      */
+    protected initMovementSprite(): void {
+        let i: Image = image.create(160, 7)
+        this.movementSprite = sprites.create(i, SpriteKind.PlayerMessage)
+        this.movementSprite.top = GameState.MESSAGE_TOP
+        this.movementSprite.z = Player.Z - 1
+    }
+
     protected initPlayers(numPlayers: number): void {
         this.players = []
         for (let i: number = 0; i < numPlayers; i++) {
