@@ -54,6 +54,7 @@
  *       + Wasn't getting stuck in a loop. Was skipping a player.
  * - [X] Refactor action queue. Use methods rather than manually manipulating queue.
  * - [ ] BUG: Roll after card moving to utility is not paying owner.
+ * - [ ] BUG: Need to clear doubles flag after rolling triples.
  */
 
 /**
