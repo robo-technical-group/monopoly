@@ -525,6 +525,7 @@ class ActionQueue {
         } else {
             // Process roll as player's move.
             if (g_state.SpeedDie && d.AreTriples) {
+                p.DoublesRolled = false
                 this.enqueue({
                     action: PlayerAction.MoveForTriples,
                     values: [d.Roll,],

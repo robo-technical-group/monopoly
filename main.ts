@@ -33,28 +33,8 @@
  *       - [ ] Single controller.
  * - [ ] Buy/sell houses + mortgage property.
  * - [ ] Trade mechanism.
- * - [X] BUG: Verify payments on railroads.
- *       - Saw an NaN payment after moving for a card.
- *       - Card may be missing a value or the payment calculation may be looking
- *         at wrong location in the values array.
- * - [X] Review logic for paying on Go.
- *       - Landing on Go and then moving for speed die results in double payment.
- *       - Perhaps refactor to count the number of times Go has paid and the
- *         number of times you have passed it. Moving backward over Go would
- *         deduct from counter.
- * - [X] BUG: After jail roll, current space for next player is processed.
- * - [X] BUG: PrintBank() is not erasing correct area.
- * - [X] Switch automatic processing for triples to pick a random location on the board.
- * - [X] Incorporate auction space after all properties are sold into automatic processing.
- * - [X] Move avatar into jail space if player is in jail.
- * - [X] BUG: Triples gets stuck in a loop.
- * - [X] BUG: Card type GoToGroup no longer working.
- * - [X] Move double speed when not moving for roll.
- * - [X] BUG: Multiple players in jail gets automated game stuck in loop.
- *       + Wasn't getting stuck in a loop. Was skipping a player.
- * - [X] Refactor action queue. Use methods rather than manually manipulating queue.
  * - [ ] BUG: Roll after card moving to utility is not paying owner.
- * - [ ] BUG: Need to clear doubles flag after rolling triples.
+ * - [X] BUG: Need to clear doubles flag after rolling triples.
  * - [X] Add sprite for player movement messaging.
  */
 
@@ -139,7 +119,6 @@ function update(): void {
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
-// Tests.startAutomatedGame(1)
 Tests.startJailTest()
 /*
 if (settings.exists(Tests.TESTING_KEY)) {
@@ -150,4 +129,5 @@ if (settings.exists(Tests.TESTING_KEY)) {
 Tests.testJailMenu()
 BoardTests.setup()
 BackgroundTests.setup()
+Tests.startAutomatedGame(1)
 */
