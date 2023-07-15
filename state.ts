@@ -491,6 +491,10 @@ class GameState {
             case ActionMenuType.StartTurn:
                 this.actionMenu = new StartTurnActionMenu()
                 break
+
+            case ActionMenuType.Test:
+                this.actionMenu = new TestActionMenu()
+                break
         }
 
         if (this.actionMenu != null) {

@@ -5,6 +5,7 @@ enum ActionMenuType {
     InJail,
     PurchaseProperty,
     StartTurn,
+    Test,
 }
 
 // Standard palette

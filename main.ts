@@ -115,15 +115,15 @@ function update(): void {
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
-Tests.startAutomatedGame(0)
-g_state.testMode = false
+Tests.startTestMenu()
 /*
 if (settings.exists(Tests.TESTING_KEY)) {
     Tests.run()
 } else {
     Attract.start()
 }
-ActionMenuTests.setup()
+Tests.startAutomatedGame(0)
+g_state.testMode = false
 Tests.startJailTest()
 BackgroundTests.setup()
 BoardTests.setup()

@@ -90,55 +90,45 @@ abstract class ActionMenu {
         msgSprite.setKind(SpriteKind.ActionMenu)
         let buttonSprite: Sprite = sprites.create(img`.`, SpriteKind.ActionMenu)
         buttonSprite.setFlag(SpriteFlag.Ghost, true)
+        let left: number = 0
+        let y: number = 0
         switch (button) {
             case ControllerButton.A:
                 buttonSprite.setImage(assets.animation`actionmenubuttons`[0])
-                buttonSprite.right = 158
-                buttonSprite.y = 48
-                msgSprite.y = 48
-                msgSprite.right = 148
+                y = 45
                 break
 
             case ControllerButton.B:
                 buttonSprite.setImage(assets.animation`actionmenubuttons`[1])
-                buttonSprite.left = 98
-                buttonSprite.y = 70
-                msgSprite.y = 70
-                msgSprite.left = 108
+                y = 53
                 break
 
             case ControllerButton.Down:
                 buttonSprite.setImage(assets.animation`actionmenubuttons`[2])
-                buttonSprite.x = 55
-                buttonSprite.top = 60
-                msgSprite.x = 55
-                msgSprite.bottom = 75
+                y = 69
                 break
 
             case ControllerButton.Left:
                 buttonSprite.setImage(assets.animation`actionmenubuttons`[3])
-                buttonSprite.right = 55
-                buttonSprite.y = 60
-                msgSprite.y = 60
-                msgSprite.right = 45
+                left = 80
+                y = 45
                 break
 
             case ControllerButton.Right:
                 buttonSprite.setImage(assets.animation`actionmenubuttons`[4])
-                buttonSprite.left = 55
-                buttonSprite.y = 60
-                msgSprite.y = 60
-                msgSprite.left = 68
+                left = 80
+                y = 53
                 break
 
             case ControllerButton.Up:
                 buttonSprite.setImage(assets.animation`actionmenubuttons`[5])
-                buttonSprite.x = 55
-                buttonSprite.bottom = 60
-                msgSprite.x = 55
-                msgSprite.bottom = 50
+                y = 61
                 break
         }
+        buttonSprite.left = left
+        buttonSprite.y = y
+        msgSprite.left = left + 8
+        msgSprite.y = y
     }
 }
 
@@ -318,12 +308,5 @@ class UnownedPropertyActionMenu extends ActionMenu {
         super.show()
         this.showAction(ControllerButton.A, Strings.MENU_PROPERTY_BUY)
         this.showAction(ControllerButton.B, Strings.MENU_PROPERTY_AUCTION)
-    }
-}
-
-namespace ActionMenuTests {
-    export function setup() {
-        Tests.startJailTest()
-        g_state.testMode = false
     }
 }
