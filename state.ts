@@ -531,6 +531,12 @@ class GameState {
         if (this.actionQueue.IsEmpty) {
             this.actionQueue.startTurn()
         }
+        if (this.actionQueue.peek().action == PlayerAction.WaitingForAction) {
+            // Assume that we're waiting for a player to start their turn.
+            // TODO: Enhance appropriately.
+            this.actionQueue.purge()
+            this.actionQueue.startTurn()
+        }
     }
 
     public update(): void {
@@ -730,7 +736,6 @@ namespace GameStateUI {
 
                 case GameMode.Main:
                 default:
-                    // For now, just start a new game.
                     startGame()
                     break
             }
