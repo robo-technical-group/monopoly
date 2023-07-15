@@ -74,6 +74,10 @@ class GameState {
         this.actionMenu = value
     }
 
+    public get ActionQueueString(): string {
+        return this.actionQueue.toString()
+    }
+
     public get Board(): Board {
         return this.board
     }

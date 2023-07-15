@@ -230,6 +230,102 @@ class ActionQueue {
         })
     }
 
+    public toString(): string {
+        if (this.data.length = 0) {
+            return 'Action queue is empty.'
+        }
+        let toReturn: string = ''
+        this.data.forEach((value: ActionItem, index: number) => {
+            toReturn += (toReturn.length == 0 ? '#' : '\n#') + index + ' '
+            switch (value.action) {
+                case PlayerAction.StartTurn:
+                    toReturn += 'StartTurn'
+                    break
+
+                case PlayerAction.DrawCard:
+                    toReturn += 'DrawCard'
+                    break
+
+                case PlayerAction.GoToJail:
+                    toReturn += 'GoToJail'
+                    break
+
+                case PlayerAction.MoveForCard:
+                    toReturn += 'MoveForCard'
+                    break
+
+                case PlayerAction.MoveForRoll:
+                    toReturn += 'MoveForRoll'
+                    break
+                
+                case PlayerAction.MoveForTriples:
+                    toReturn += 'MoveForTriples'
+                    break
+
+                case PlayerAction.MoveToLocation:
+                    toReturn += 'MoveToLocation'
+                    break
+
+                case PlayerAction.Moving:
+                    toReturn += 'Moving'
+                    break
+
+                case PlayerAction.NeedMoney:
+                    toReturn += 'NeedMoney'
+                    break
+
+                case PlayerAction.PayMoney:
+                    toReturn += 'PayMoney'
+                    break
+
+                case PlayerAction.ProcessCard:
+                    toReturn += 'ProcessCard'
+                    break
+
+                case PlayerAction.ProcessMove:
+                    toReturn += 'ProcessMove'
+                    break
+
+                case PlayerAction.ProcessRoll:
+                    toReturn += 'ProcessRoll'
+                    break
+
+                case PlayerAction.ProcessRollInJail:
+                    toReturn += 'ProcessRollInJail'
+                    break
+
+                case PlayerAction.ProcessSpeedDie:
+                    toReturn += 'ProcessSpeedDie'
+                    break
+
+                case PlayerAction.ReceiveMoney:
+                    toReturn += 'ReceiveMoney'
+                    break
+
+                case PlayerAction.Rolling:
+                    toReturn += 'Rolling'
+                    break
+
+                case PlayerAction.WaitingForAction:
+                    toReturn += 'WaitingForAction'
+                    break
+
+                default:
+                    toReturn += value.action
+                    break
+            }
+
+            if (value.values.length > 0) {
+                toReturn += ' ['
+                value.values.forEach((value: number, index: number) => {
+                    toReturn += (index > 0 ? ',' : '') + value
+                })
+                toReturn += ']'
+            }
+        })
+        return toReturn
+    }
+
     /**
      * Protected methods
      */

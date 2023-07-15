@@ -2,6 +2,7 @@
 namespace PauseMenu {
     enum Items {
         SaveGame = 0,
+        ShowActionQueue,
         ManageGames,
         VolumeDown,
         VolumeUp,
@@ -16,6 +17,7 @@ namespace PauseMenu {
 
     const MENU_TEXT: string[] = [
         'Save game',
+        'Show action queue',
         'Manage game saves',
         'Volume down',
         'Volume up',
@@ -29,6 +31,7 @@ namespace PauseMenu {
     ]
 
     const MENU_TEXT_ALTERNATE: string[] = [
+        '',
         '',
         '',
         '',
@@ -111,6 +114,10 @@ namespace PauseMenu {
 
     function processSelection(selection: string, selectedIndex: number): void {
         switch (selectedIndex) {
+            case Items.ShowActionQueue:
+                showActionQueue()
+                break
+
             case Items.VolumeDown:
                 changeVolume(-1)
                 break
@@ -196,6 +203,16 @@ namespace PauseMenu {
         menu.onButtonPressed(controller.A, processSelection)
         menu.onButtonPressed(controller.B, processSelection)
         isMenuRunning = true
+    }
+
+    function showActionQueue(): void {
+        let message: string = ''
+        if (g_state == null) {
+            message = 'Game state has not yet been initialized.'
+        } else {
+            message = g_state.ActionQueueString
+        }
+        game.showLongText(message, DialogLayout.Full)
     }
 
     function sleep(): void {
