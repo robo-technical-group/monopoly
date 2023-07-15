@@ -33,6 +33,9 @@
  * - [ ] BUG: Roll after card moving to utility is not paying owner.
  * - [ ] Show property information as a sprite when purchasing, auctioning, or mortgaging.
  * - [ ] Remove viewing of action queue from production version.
+ * - [ ] Add subclass of action menu for starting a turn with appropriate default actions.
+ *       - Trade
+ *       - Build/Mortgage
  */
 
 /**
