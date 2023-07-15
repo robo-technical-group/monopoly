@@ -35,19 +35,22 @@ namespace Strings {
     export const MENU_BANKRUPT: string = 'Bankrupt (Quit)'
     export const MENU_BUILD: string = 'Build/Mortgage'
     export const MENU_IN_JAIL_TITLE: string = '%NAME%: In jail (Turn %TURN%)'
-    export const MENU_PROPERTY_AUCTION: string = 'Start auction'
+    // export const MENU_PROPERTY_AUCTION: string = 'Start auction'
+    export const MENU_PROPERTY_AUCTION: string = 'Auction!'
     export const MENU_PROPERTY_BUY: string = 'Buy for M%COST%'
+    export const MENU_PROPERTY_NO_MONEY: string = "You do not have enough money to purchase %PROPERTY%. We're going to auction!"
     export const MENU_START_TURN_TITLE: string = '%NAME%: Your turn!'
     export const MENU_START_TURN_TITLE_MULTI_ROLL: string = "%NAME%: Roll again! (#%TURN%)"
     export const MENU_ROLL: string = 'Roll'
     export const MENU_TRADE: string = 'Trade'
 
     // Strings used in player.ts
+    // Test mode automatic purchase message.
     export const PLAYER_BUY_PROPERTY: string = '%PLAYERNAME% is buying %PROPERTY% for M%VALUE%.'
     export const PLAYER_TO_JAIL: string = 'Off to jail for you!'
     export const PLAYER_SKIPPED: string = "%PLAYERNAME%: You're skipping this turn. Take a break!"
-    export const PLAYER_OWES_PLAYER: string = "%PLAYERNAME% owes M%AMOUNT% to %OTHERPLAYER%."
-    export const PLAYER_PAY_TAX: string = '%PLAYERNAME% owes %TAXNAME% of M%TAXAMOUNT%.'
+    export const PLAYER_OWES_PLAYER: string = "You owe M%AMOUNT% to %OTHERPLAYER%."
+    export const PLAYER_PAY_TAX: string = 'You owe %TAXNAME% of M%TAXAMOUNT%.'
     export const PLAYER_PROPERTY_OWNED: string = "You're home!"
 
     // Board spaces

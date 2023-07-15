@@ -3,6 +3,7 @@
  */
 enum ActionMenuType {
     InJail,
+    PurchaseProperty,
     StartTurn,
 }
 

@@ -538,6 +538,8 @@ class ActionQueue {
             case SpaceType.Property:
                 if (g_state.testMode) {
                     this.tmProcessProperty()
+                } else {
+                    this.processProperty()
                 }
                 break
 
@@ -549,6 +551,60 @@ class ActionQueue {
                     '%TAXNAME%', tax.name).replace('%TAXAMOUNT%', tax.value.toString()))
                 break
         }
+    }
+
+    protected processProperty(): void {
+        let pId: number = g_state.CurrPlayer
+        let p: Player = g_state.getCurrPlayer()
+        let space: Space = g_state.Board.BoardSpaces[p.Location]
+        let property: Properties.FullInfo = g_state.getPropertyInfo(p.Location)
+        if (property.state.owner <= 0) {
+            // Property is vacant.
+            if (p.Bank >= property.info.cost) {
+                this.showActionMenu(ActionMenuType.PurchaseProperty)
+            } else {
+                game.splashForPlayer(pId, Strings.MENU_PROPERTY_NO_MONEY
+                    .replace('%PROPERTY%', property.info.name))
+                g_state.actionPropertyAuction()
+            }
+            return
+        }
+        if (property.state.owner == pId) {
+            // Property is owned by current player.
+            game.splashForPlayer(pId, Strings.PLAYER_PROPERTY_OWNED)
+            return
+        }
+        // Property is owned by another player.
+        let owed: number = Properties.calculateRent(property, g_state.BoardIndex)
+        if (space.values[0] == Properties.GROUP_UTIL) {
+            if (this.data.length == 0) {
+                owed *= p.Roll
+            } else {
+                let item: ActionItem = this.peek()
+                if (item.action == PlayerAction.MoveForCard && item.values.length == 2) {
+                    this.push({
+                        action: PlayerAction.Rolling,
+                        values: [],
+                    })
+                    p.startRoll(2)
+                    return
+                } else {
+                    owed *= p.Roll
+                }
+            }
+        }
+        if (space.values[0] == Properties.GROUP_RR && this.data.length > 0) {
+            let item: ActionItem = this.peek()
+            if (item.action == PlayerAction.MoveForCard && item.values.length == 2) {
+                owed *= item.values[1]
+            }
+        }
+        let owner: Player = g_state.getPlayer(property.state.owner)
+        this.queuePayment(owed, pId, property.state.owner)
+        game.splashForPlayer(pId,
+            Strings.PLAYER_OWES_PLAYER.replace('%PLAYERNAME%', p.Name)
+                .replace('%OTHERPLAYER%', owner.Name)
+                .replace('%AMOUNT%', owed.toString()))
     }
 
     /**
@@ -810,8 +866,8 @@ class ActionQueue {
             spaceReviewed = g_state.getBoardSpace(reviewing)
             if (spaceReviewed.spaceType == SpaceType.Property) {
                 propFullInfo = g_state.getPropertyInfo(reviewing)
-                if (propFullInfo.propState.owner > 0 &&
-                    propFullInfo.propState.owner != pId) {
+                if (propFullInfo.state.owner > 0 &&
+                    propFullInfo.state.owner != pId) {
                     let rent: number =
                         Properties.calculateRent(propFullInfo, g_state.BoardIndex)
                     if (rent > rentOwed) {
@@ -891,25 +947,17 @@ class ActionQueue {
         let pId: number = g_state.CurrPlayer
         let p: Player = g_state.getCurrPlayer()
         let space: Space = g_state.Board.BoardSpaces[p.Location]
-        let groupInfo: Properties.GroupInfo = g_state.Properties.info[space.values[0]]
-        let groupState: Properties.GroupState = g_state.Properties.state[space.values[0]]
-        let propertyInfo: Properties.Info = groupInfo.properties[space.values[1]]
-        let propertyState: Properties.State = groupState.properties[space.values[1]]
-        if (propertyState.owner <= 0) {
+        let property: Properties.FullInfo = g_state.getPropertyInfo(p.Location)
+        if (property.state.owner <= 0) {
             this.tmBuyProperty()
             return
         }
-        if (propertyState.owner == pId) {
+        if (property.state.owner == pId) {
             game.splashForPlayer(pId, Strings.PLAYER_PROPERTY_OWNED)
             return
         }
         // Property is owned by another player.
-        let owed: number = Properties.calculateRent({
-            groupInfo: groupInfo,
-            groupState: groupState,
-            propInfo: propertyInfo,
-            propState: propertyState,
-        }, g_state.BoardIndex)
+        let owed: number = Properties.calculateRent(property, g_state.BoardIndex)
         if (space.values[0] == Properties.GROUP_UTIL) {
             if (this.data.length == 0) {
                 owed *= p.Roll
@@ -933,8 +981,8 @@ class ActionQueue {
                 owed *= item.values[1]
             }
         }
-        let owner: Player = g_state.getPlayer(propertyState.owner)
-        this.queuePayment(owed, pId, propertyState.owner)
+        let owner: Player = g_state.getPlayer(property.state.owner)
+        this.queuePayment(owed, pId, property.state.owner)
         game.splashForPlayer(pId,
             Strings.PLAYER_OWES_PLAYER.replace('%PLAYERNAME%', p.Name)
                 .replace('%OTHERPLAYER%', owner.Name)

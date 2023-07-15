@@ -12,8 +12,8 @@ namespace Properties {
     export interface FullInfo {
         groupInfo: GroupInfo
         groupState: GroupState
-        propInfo: Info
-        propState: State
+        info: Info
+        state: State
     }
 
     export interface Info {
@@ -548,8 +548,8 @@ namespace Properties {
     export function calculateRent(propFullInfo: FullInfo, board: number): number {
         let groupInfo: GroupInfo = propFullInfo.groupInfo
         let groupState: GroupState = propFullInfo.groupState
-        let propInfo: Info = propFullInfo.propInfo
-        let propState: State = propFullInfo.propState
+        let propInfo: Info = propFullInfo.info
+        let propState: State = propFullInfo.state
         let owed: number = 0
         let count: number = groupState.properties.filter((value: Properties.State, index: number) =>
             value.owner == propState.owner).length

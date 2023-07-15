@@ -187,6 +187,21 @@ class GameState {
         p.InJail = false
         this.board.draw(p.Location)
     }
+
+    public actionPropertyAuction(): void {
+        game.splashForPlayer(this.currPlayer, 'Auctions have not yet been implemented.')
+    }
+
+    public actionPropertyPurchase(): void {
+        let pId: number = this.currPlayer
+        let p: Player = this.getCurrPlayer()
+        let property: Properties.FullInfo = this.getPropertyInfo(p.Location)
+        if (p.Bank >= property.info.cost) {
+            this.hideMenu()
+            this.actionQueue.queuePayment(property.info.cost, pId, 0)
+            property.state.owner = pId
+        }
+    }
     
     public actionStartRoll(): void {
         this.hideMenu()
@@ -266,8 +281,8 @@ class GameState {
         let toReturn: Properties.FullInfo = {
             groupInfo: groupInfo,
             groupState: groupState,
-            propInfo: propInfo,
-            propState: propState,
+            info: propInfo,
+            state: propState,
         }
         return toReturn
     }
@@ -462,10 +477,15 @@ class GameState {
         let priorMode: GameMode = this.gameMode
         this.gameMode = GameMode.NotReady
         Background.hide()
+        let p: Player = this.getCurrPlayer()
 
         switch (menu) {
             case ActionMenuType.InJail:
                 this.actionMenu = new InJailActionMenu()
+                break
+
+            case ActionMenuType.PurchaseProperty:
+                this.actionMenu = new PurchaseActionMenu()
                 break
 
             case ActionMenuType.StartTurn:
@@ -474,6 +494,7 @@ class GameState {
         }
 
         if (this.actionMenu != null) {
+            p.Dice.hide()
             this.actionMenu.show()
         }
 

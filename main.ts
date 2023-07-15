@@ -17,20 +17,21 @@
  *       - [ ] Handle gift options.
  *       - [ ] Handle bankrupt player.
  * - [X] Player actions menu (while in jail).
- * - [/] Player actions menu (turn).
+ * - [X] Player actions menu (turn).
  *       - [X] Roll.
- *       - [ ] Bankrupt.
- *       - [ ] Build/mortgage.
- *       - [ ] Trade.
- * - [ ] Player actions menu (unowned property).
- *       - [ ] Buy.
- *       - [ ] Auction.
+ *       - [X] Bankrupt.
+ *       - [X] Build/mortgage.
+ *       - [X] Trade.
+ * - [X] Player actions menu (unowned property).
+ *       - [X] Buy.
+ *       - [X] Auction.
  * - [ ] Auction property.
  *       - [ ] Multiplayer.
  *       - [ ] Single controller.
  * - [ ] Buy/sell houses + mortgage property.
  * - [ ] Trade mechanism.
  * - [ ] BUG: Roll after card moving to utility is not paying owner.
+ * - [ ] Show property information as a sprite when purchasing, auctioning, or mortgaging.
  */
 
 /**
