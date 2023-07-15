@@ -6,7 +6,6 @@ abstract class ActionMenu {
     public static readonly PLAYER_SPRITE_X: number = 10
     public static readonly PLAYER_SPRITE_Y: number = 40
     
-    // protected done: boolean
     protected message: string
     protected pId: number
     protected player: Player
@@ -16,15 +15,6 @@ abstract class ActionMenu {
         this.pId = g_state.CurrPlayer
         this.player = g_state.getCurrPlayer()
     }
-
-    /**
-     * Public properties
-     */
-    /*
-    public get Done(): boolean {
-        return this.done
-    }
-    */
 
     /**
      * Public methods
@@ -132,53 +122,22 @@ abstract class ActionMenu {
     }
 }
 
-class TestActionMenu extends ActionMenu {
-    public show(): void {
-        this.message = 'Test action menu!'
-        super.show()
-        this.showAction(ControllerButton.A, 'Button A')
-        this.showAction(ControllerButton.B, 'Button B')
-        this.showAction(ControllerButton.Down, 'Down Button')
-        this.showAction(ControllerButton.Left, 'Left Button')
-        this.showAction(ControllerButton.Right, 'Right Button')
-        this.showAction(ControllerButton.Up, 'Up Button')
-    }
-
-    public actionA(): void {
-        game.splashForPlayer(this.pId, 'You pressed A!')
-    }
-
-    public actionB(): void {
-        game.splashForPlayer(this.pId, 'You pressed B!')
-    }
-
-    public actionDown(): void {
-        game.splashForPlayer(this.pId, 'You pressed Down!')
-    }
-
-    public actionLeft(): void {
-        game.splashForPlayer(this.pId, 'You pressed Left!')
-    }
-
-    public actionRight(): void {
-        game.splashForPlayer(this.pId, 'You pressed Right!')
-    }
-
-    public actionUp(): void {
-        game.splashForPlayer(this.pId, 'You pressed Up!')
-    }
-}
-
 class InJailActionMenu extends ActionMenu {
     protected canPay: boolean
     protected hasJailCard: boolean
 
     public show(): void {
-        this.message = Strings.MENU_IN_JAIL_TITLE
-            .replace('%NAME%', this.player.Name)
-            .replace('%TURN%', (this.player.TurnCount + 1).toString())
+        if (this.player.JailTurns < 3) {
+            this.message = Strings.MENU_IN_JAIL_TITLE
+                .replace('%NAME%', this.player.Name)
+                .replace('%TURN%', (this.player.JailTurns + 1).toString())
+        } else {
+            this.message = Strings.ACTION_IN_JAIL_MUST_PAY
+        }
         super.show()
-        this.showAction(ControllerButton.A, Strings.MENU_ROLL)
+        if (this.player.JailTurns < 3) {
+            this.showAction(ControllerButton.A, Strings.MENU_ROLL)
+        }
         if (this.player.Bank >= GameSettings.JAIL_FEE) {
             this.canPay = true
             let msg: string = Strings.ACTION_PAY + ' '
@@ -203,7 +162,7 @@ class InJailActionMenu extends ActionMenu {
     }
 
     public actionA(): void {
-        if (this.player.JailTurns < 4) {
+        if (this.player.JailTurns < 3) {
             g_state.actionStartRollInJail()
         }
     }
@@ -308,5 +267,42 @@ class UnownedPropertyActionMenu extends ActionMenu {
         super.show()
         this.showAction(ControllerButton.A, Strings.MENU_PROPERTY_BUY)
         this.showAction(ControllerButton.B, Strings.MENU_PROPERTY_AUCTION)
+    }
+}
+
+class TestActionMenu extends ActionMenu {
+    public show(): void {
+        this.message = 'Test action menu!'
+        super.show()
+        this.showAction(ControllerButton.A, 'Button A')
+        this.showAction(ControllerButton.B, 'Button B')
+        this.showAction(ControllerButton.Down, 'Down Button')
+        this.showAction(ControllerButton.Left, 'Left Button')
+        this.showAction(ControllerButton.Right, 'Right Button')
+        this.showAction(ControllerButton.Up, 'Up Button')
+    }
+
+    public actionA(): void {
+        game.splashForPlayer(this.pId, 'You pressed A!')
+    }
+
+    public actionB(): void {
+        game.splashForPlayer(this.pId, 'You pressed B!')
+    }
+
+    public actionDown(): void {
+        game.splashForPlayer(this.pId, 'You pressed Down!')
+    }
+
+    public actionLeft(): void {
+        game.splashForPlayer(this.pId, 'You pressed Left!')
+    }
+
+    public actionRight(): void {
+        game.splashForPlayer(this.pId, 'You pressed Right!')
+    }
+
+    public actionUp(): void {
+        game.splashForPlayer(this.pId, 'You pressed Up!')
     }
 }

@@ -182,10 +182,14 @@ class GameState {
     public actionPayJailFee(): void {
         this.hideMenu()
         this.actionQueue.queuePayment(GameSettings.JAIL_FEE, this.currPlayer, 0)
-        this.actionQueue.actionStartRoll()
         let p: Player = this.getCurrPlayer()
         p.InJail = false
         this.board.draw(p.Location)
+        if (p.JailTurns < 3) {
+            this.actionQueue.actionStartRoll()
+        } else {
+            p.Dice.show()
+        }
     }
 
     public actionPropertyAuction(): void {
@@ -223,9 +227,13 @@ class GameState {
         if (cards.length > 0) {
             this.hideMenu()
             cards[0].owner = 0
-            this.actionQueue.actionStartRoll()
             p.InJail = false
             this.board.draw(p.Location)
+            if (p.JailTurns < 3) {
+                this.actionQueue.actionStartRoll()
+            } else {
+                p.Dice.show()
+            }
         }
     }
 
@@ -624,7 +632,12 @@ class GameState {
         Background.show()
         let _: ActionItem = this.actionQueue.peek()
         if (_.action == PlayerAction.WaitingForAction) {
-            _ = this.actionQueue.pop()
+            while (this.actionQueue.Length > 0 && _.action == PlayerAction.WaitingForAction) {
+                _ = this.actionQueue.pop()
+                if (this.actionQueue.Length > 0) {
+                    _ = this.actionQueue.peek()
+                }
+            }
             this.actionMenu.hide()
             this.actionMenu = null
         }

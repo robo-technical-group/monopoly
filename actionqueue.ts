@@ -183,8 +183,7 @@ class ActionQueue {
                 if (g_state.testMode) {
                     this.tmProcessJailRoll()
                 } else {
-                    // TODO: Process jail roll.
-                    game.splash('Jail roll! Need to implement.')
+                    this.processJailRoll()
                 }
                 break
 
@@ -266,6 +265,12 @@ class ActionQueue {
             } else {
                 // TODO: Implement.
                 game.splash('moveMoney: Not enough cash! Need to implement.')
+            }
+        } else {
+            item = this.pop()
+            if (item.values.length > 2 && item.values[2] > 0) {
+                let recipient: Player = g_state.getPlayer(item.values[2])
+                recipient.changeBank(amount)
             }
         }
     }
@@ -466,6 +471,44 @@ class ActionQueue {
     protected processGift(): void {
         // TODO: Implement.
         game.splash('processGift: Need to implement.')
+    }
+
+    protected processJailRoll(): void {
+        let p: Player = g_state.getCurrPlayer()
+        let pId: number = g_state.CurrPlayer
+        let d: Dice = p.Dice
+        let jailSpace: Space = g_state.getBoardSpace(g_state.Board.Jail)
+        if (d.AreDoubles) {
+            game.splashForPlayer(pId, Strings.ACTION_IN_JAIL_DOUBLES)
+            p.InJail = false
+            g_state.Board.redraw()
+            this.enqueue({
+                action: PlayerAction.MoveForRoll,
+                values: [d.Roll,],
+            })
+            g_state.Board.DoubleSpeed = false
+        } else {
+            p.JailTurns++
+            if (p.JailTurns == 3) {
+                game.splashForPlayer(pId, Strings.ACTION_IN_JAIL_MUST_PAY)
+                this.showActionMenu(ActionMenuType.InJail)
+                this.enqueue({
+                    action: PlayerAction.WaitingForAction,
+                    values: [],
+                })
+                this.enqueue({
+                    action: PlayerAction.MoveForRoll,
+                    values: [d.Roll,],
+                })
+                g_state.Board.DoubleSpeed = false
+            } else {
+                // Move on to the next player.
+                if (this.data.length > 0) {
+                    // This really should not happen, but just in case?
+                    this.data = []
+                }
+            }
+        }
     }
 
     protected processMove(): void {

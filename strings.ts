@@ -11,7 +11,7 @@
  */
 namespace Strings {
     // Strings used in actionqueue.ts
-    export const ACTION_IN_JAIL_MUST_PAY: string = 'Time to leave jail!'
+    export const ACTION_IN_JAIL_MUST_PAY: string = 'No rolls remaining. Time to leave jail!'
     export const ACTION_IN_JAIL_DOUBLES: string = 'Doubles! Get out of jail free!'
     export const ACTION_PAY: string = 'Pay'
     export const ACTION_ROLLED: string = 'You rolled a %ROLL%!'
