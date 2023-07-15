@@ -213,46 +213,21 @@ class InJailActionMenu extends ActionMenu {
     }
 
     public actionA(): void {
-        game.splashForPlayer(this.pId, 'You chose to roll!')
-        /*
-        let p: Player = g_state.getCurrPlayer()
-        if (p.JailTurns < 4) {
-            g_state.Board.draw(p.Location)
-            g_state.Board.Direction = 1
-            p.startRoll(g_state.SpeedDie ? 3 : 2)
-            // p.Status = PlayerStatus.RollingInJail
+        if (this.player.JailTurns < 4) {
+            g_state.actionStartRollInJail()
         }
-        this.done = true
-        */
     }
 
     public actionB(): void {
-        game.splashForPlayer(this.pId, 'You chose to pay!')
-        /*
-        let p: Player = g_state.getCurrPlayer()
-        if (p.Bank >= GameSettings.JAIL_FEE) {
-            p.changeBank(0 - GameSettings.JAIL_FEE)
-            p.InJail = false
-            this.done = true
+        if (this.player.Bank >= GameSettings.JAIL_FEE) {
+            g_state.actionPayJailFee()
         }
-        */
     }
 
     public actionDown(): void {
-        game.splashForPlayer(this.pId, 'You chose to use a card!')
-        /*
-        let p: Player = g_state.getCurrPlayer()
-        let pId: number = g_state.CurrPlayer
-        let cards: Properties.State[] =
-            g_state.Properties.state[Properties.GROUP_JAIL].properties.filter(
-                (value: Properties.State, index: number) =>
-                    value.owner == pId
-            )
-        if (cards.length > 0) {
-            cards[0].owner = 0
-            this.done = true
+        if (this.hasJailCard) {
+            g_state.actionUseJailCard()
         }
-        */
     }
 }
 

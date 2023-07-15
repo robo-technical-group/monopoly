@@ -16,10 +16,7 @@
  *       - [ ] Handle bus options.
  *       - [ ] Handle gift options.
  *       - [ ] Handle bankrupt player.
- * - [X] Player actions menu (generic, *e.g.*, while in jail, buy or auction property).
- *       - Add key binding sprites dynamically.
- *       - Move button actions below d-pad (maybe?)
- * - [/] Player actions menu (while in jail).
+ * - [X] Player actions menu (while in jail).
  * - [/] Player actions menu (turn).
  *       - [X] Roll.
  *       - [ ] Bankrupt.
@@ -34,8 +31,6 @@
  * - [ ] Buy/sell houses + mortgage property.
  * - [ ] Trade mechanism.
  * - [ ] BUG: Roll after card moving to utility is not paying owner.
- * - [X] BUG: Need to clear doubles flag after rolling triples.
- * - [X] Add sprite for player movement messaging.
  */
 
 /**

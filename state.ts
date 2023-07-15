@@ -179,9 +179,39 @@ class GameState {
     /**
      * Public methods
      */
+    public actionPayJailFee(): void {
+        this.hideMenu()
+        this.actionQueue.queuePayment(GameSettings.JAIL_FEE, this.currPlayer, 0)
+        this.actionQueue.actionStartRoll()
+        let p: Player = this.getCurrPlayer()
+        p.InJail = false
+        this.board.draw(p.Location)
+    }
+    
     public actionStartRoll(): void {
         this.hideMenu()
         this.actionQueue.actionStartRoll()
+    }
+
+    public actionStartRollInJail(): void {
+        this.hideMenu()
+        this.actionQueue.queueJailRoll()
+    }
+
+    public actionUseJailCard(): void {
+        let p: Player = this.getCurrPlayer()
+        let cards: Properties.State[] =
+            this.Properties.state[Properties.GROUP_JAIL].properties.filter(
+                (value: Properties.State, index: number) =>
+                    value.owner == this.currPlayer
+            )
+        if (cards.length > 0) {
+            this.hideMenu()
+            cards[0].owner = 0
+            this.actionQueue.actionStartRoll()
+            p.InJail = false
+            this.board.draw(p.Location)
+        }
     }
 
     public static addSystemMenuItem(text: string, icon: Image, handler: () => void): void {

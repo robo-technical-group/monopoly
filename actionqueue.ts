@@ -203,6 +203,27 @@ class ActionQueue {
         }
     }
 
+    public queueJailRoll(): void {
+        let p: Player = g_state.getCurrPlayer()
+        this.enqueue({
+            action: PlayerAction.Rolling,
+            values: [],
+        })
+        this.enqueue({
+            action: PlayerAction.ProcessRollInJail,
+            values: [],
+        })
+        p.startRoll(2)
+    }
+
+    public queuePayment(amount: number, payer: number,
+        recipient: number): void {
+        this.push({
+            action: PlayerAction.PayMoney,
+            values: [amount, payer, recipient]
+        })
+    }
+
     public startTurn(): void {
         this.enqueue({
             action: PlayerAction.StartTurn,
@@ -233,12 +254,19 @@ class ActionQueue {
         let amount: number = item.values[0]
         let payerId: number = item.values[1]
         let recipientId: number = item.values[2]
-        let payer: Player = g_state.getPlayer(payerId)
-        if (payer.Bank >= amount) {
-            this.queuePayment(amount, payerId, recipientId)
-        } else {
-            // TODO: Implement.
-            game.splash('moveMoney: Not enough cash! Need to implement.')
+        if (payerId > 0) {
+            let payer: Player = g_state.getPlayer(payerId)
+            if (payer.Bank >= amount) {
+                item = this.pop()
+                payer.changeBank(0 - amount)
+                if (item.values.length > 2 && item.values[2] > 0) {
+                    let recipient: Player = g_state.getPlayer(item.values[2])
+                    recipient.changeBank(amount)
+                }
+            } else {
+                // TODO: Implement.
+                game.splash('moveMoney: Not enough cash! Need to implement.')
+            }
         }
     }
 
@@ -667,27 +695,6 @@ class ActionQueue {
             game.splashForPlayer(pId, Strings.ACTION_SPEED_DIE,
                 Strings.ACTION_SPEED_DIE_MONOPOLY_NO_SPACE)
         }
-    }
-
-    protected queueJailRoll(): void {
-        let p: Player = g_state.getCurrPlayer()
-        this.enqueue({
-            action: PlayerAction.Rolling,
-            values: [],
-        })
-        this.enqueue({
-            action: PlayerAction.ProcessRollInJail,
-            values: [],
-        })
-        p.startRoll(2)
-    }
-
-    protected queuePayment(amount: number, payer: number,
-        recipient: number): void {
-        this.push({
-            action: PlayerAction.PayMoney,
-            values: [amount, payer, recipient]
-        })
     }
 
     protected showActionMenu(menu: ActionMenuType): void {
