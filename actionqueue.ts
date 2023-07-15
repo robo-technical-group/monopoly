@@ -70,13 +70,14 @@ class ActionQueue {
         }
         for (let i of <any[]>state) {
             if (typeof i.action == 'number' &&
-                Array.isArray(i.values)) {
+                    Array.isArray(i.values)) {
+                let values: number[] = <number[]>(i.values)
                 let newItem: ActionItem = {
                     action: i.action,
                     values: []
                 }
-                if (i.values.length > 0 && typeof i.values[0] == 'number') {
-                    for (let v of <number[]>i.values) {
+                if (values.length > 0 && typeof values[0] == 'number') {
+                    for (let v of values) {
                         newItem.values.push(v)
                     }
                 }

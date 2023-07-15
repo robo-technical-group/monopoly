@@ -32,6 +32,7 @@
  * - [ ] Trade mechanism.
  * - [ ] BUG: Roll after card moving to utility is not paying owner.
  * - [ ] Show property information as a sprite when purchasing, auctioning, or mortgaging.
+ * - [ ] Remove viewing of action queue from production version.
  */
 
 /**
@@ -93,6 +94,10 @@ function startGame(): void {
     g_state.Mode = GameMode.NotReady
     sprites.allOfKind(SpriteKind.Text).forEach((v: Sprite, index: number) => v.destroy())
     g_state.Players.forEach((p: Player, index: number) => {
+        p.Dice.Orientation = DiceOrientation.Vertical
+        p.Dice.setStartLocation(Board.DICE_BEGIN_X, Board.DICE_BEGIN_Y)
+        p.Dice.setStopLocation(Board.DICE_END_X, Board.DICE_END_Y)
+        p.Dice.setLocationChange(5, 0)
         p.DoublesRolled = false
         p.TurnCount = 0
     })
