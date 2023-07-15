@@ -32,11 +32,10 @@ namespace Strings {
     export const FIRSTROLL_START: string = "%PLAYERNAME%: You're first!"
 
     // Strings used in actionmenus.ts and in state.ts when displaying menus.
-    export const MENU_BANKRUPT: string = 'Bankrupt (Quit)'
+    export const MENU_BANKRUPT: string = 'Go bankrupt'
     export const MENU_BUILD: string = 'Build/Mortgage'
     export const MENU_IN_JAIL_TITLE: string = '%NAME%: In jail (Turn %TURN%)'
-    // export const MENU_PROPERTY_AUCTION: string = 'Start auction'
-    export const MENU_PROPERTY_AUCTION: string = 'Auction!'
+    export const MENU_PROPERTY_AUCTION: string = 'Start auction'
     export const MENU_PROPERTY_BUY: string = 'Buy for M%COST%'
     export const MENU_PROPERTY_NO_MONEY: string = "You do not have enough money to purchase %PROPERTY%. We're going to auction!"
     export const MENU_START_TURN_TITLE: string = '%NAME%: Your turn!'

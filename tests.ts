@@ -101,8 +101,8 @@ namespace Tests {
     }
 
 
-    export function startJailTest(): void {
-        startAutomatedGame(1)
+    export function startJailTest(board: number): void {
+        startAutomatedGame(board)
         for (let i of [1, 2]) {
             let p: Player = g_state.getPlayer(i)
             p.Location = g_state.Board.Jail
