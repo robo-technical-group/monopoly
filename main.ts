@@ -32,7 +32,6 @@
  * - [ ] Trade mechanism.
  * - [ ] BUG: Roll after card moving to utility is not paying owner.
  * - [ ] Show property information as a sprite when purchasing, auctioning, or mortgaging.
- * - [ ] Remove viewing of action queue from production version.
  * - [ ] Add subclass of action menu for starting a turn with appropriate default actions.
  *       - Trade
  *       - Build/Mortgage
@@ -42,7 +41,10 @@
  *       - [ ] Allow for restraints (*e.g.*, select only a property, select from one side of the board).
  * - [ ] Game select a random space mechanism.
  *       - [ ] Add *Press Your Luck* sound effect. :-)
- *       - [ ] Perhas add both "spin" and "bounce" selection mechanisms.
+ *       - [ ] Perhaps add both "spin" and "bounce" selection mechanisms.
+ * - [ ] Production version cleanup.
+ *       - [ ] Remove viewing of action queue.
+ *       - [ ] Remove template board images from assets.
  */
 
 /**
