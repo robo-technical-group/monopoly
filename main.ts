@@ -36,6 +36,13 @@
  * - [ ] Add subclass of action menu for starting a turn with appropriate default actions.
  *       - Trade
  *       - Build/Mortgage
+ * - [ ] Show ownership of a property with an overlay.
+ *       - Bottom of tile, player name and color.
+ * - [ ] Player select a space mechanism.
+ *       - [ ] Allow for restraints (*e.g.*, select only a property, select from one side of the board).
+ * - [ ] Game select a random space mechanism.
+ *       - [ ] Add *Press Your Luck* sound effect. :-)
+ *       - [ ] Perhas add both "spin" and "bounce" selection mechanisms.
  */
 
 /**
