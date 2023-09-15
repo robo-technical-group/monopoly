@@ -134,7 +134,7 @@ class GameState {
     }
     
     public get NumPlayers(): number {
-        return this.players.length
+        return this.players.length - 1
     }
 
     public set NumPlayers(value: number) {
@@ -273,7 +273,7 @@ class GameState {
      */
     public getPlayer(player: number): Player {
         if (player > 0 && player <= this.players.length) {
-            return this.players[player - 1]
+            return this.players[player]
         } else {
             return null
         }
@@ -581,16 +581,17 @@ class GameState {
     public updatePlayerStatus(): void {
         let x: number = 0
         let y: number = 0
-        this.players.forEach((value: Player, index: number) => {
-            value.initStats(index + 1 == this.currPlayer)
-            value.showStats(x, y)
-            x += 40
+        this.players.filter((value: Player, index: number) => index > 0)
+            .forEach((value: Player, index: number) => {
+                value.initStats(index == this.currPlayer)
+                value.showStats(x, y)
+                x += 40
         })
         this.properties.info.forEach((pgi: Properties.GroupInfo, pgIndex: number) => {
             pgi.properties.forEach((prop: Properties.Info, propIndex: number) => {
                 this.players.forEach((p: Player, playerIndex: number) => {
                     let ps: Properties.State = this.properties.state[pgIndex].properties[propIndex]
-                    if (ps.owner == playerIndex + 1) {
+                    if (ps.owner == playerIndex) {
                         p.drawStatus(pgIndex, propIndex, pgi.color, ps.isMortgaged)
                     } else {
                         p.drawStatus(pgIndex, propIndex, Properties.COLOR_UNOWNED, false)
@@ -662,9 +663,9 @@ class GameState {
 
     protected initPlayers(numPlayers: number): void {
         this.players = []
-        for (let i: number = 0; i < numPlayers; i++) {
-            let p: Player = new Player(i + 1)
-            if (this.speedDie || this.boardIndex > 0) {
+        for (let i: number = 0; i <= numPlayers; i++) {
+            let p: Player = new Player(i)
+            if (i > 0 && (this.speedDie || this.boardIndex > 0)) {
                 p.Bank = GameState.STARTING_BALANCES[1]
             } else {
                 p.Bank = GameState.STARTING_BALANCES[0]
@@ -880,19 +881,19 @@ namespace GameStateTests {
                 {
                     name: 'Robo',
                     controllerId: 1,
-                    avatar: 9,
+                    avatar: 10,
                 }, {
                     name: 'Xander',
                     controllerId: 2,
-                    avatar: 6,
+                    avatar: 7,
                 }, {
                     name: 'Lex',
                     controllerId: 3,
-                    avatar: 2,
+                    avatar: 3,
                 }, {
                     name: 'Solar',
                     controllerId: 4,
-                    avatar: 1,
+                    avatar: 2,
                 },
             ],
         }

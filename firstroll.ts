@@ -37,8 +37,8 @@ namespace FirstRoll {
         }
         let highRoll: number = 0
         let winPlayer: number[] = []
-        for (let i: number = 0; i < g_state.NumPlayers; i++) {
-            let p: Player = g_state.Players[i]
+        for (let i: number = 1; i <= g_state.NumPlayers; i++) {
+            let p: Player = g_state.getPlayer(i)
             if (p.Dice.Visible && p.Dice.Roll == highRoll) {
                 winPlayer.push(i)
             }
@@ -49,15 +49,15 @@ namespace FirstRoll {
             }
         }
         if (winPlayer.length > 1) {
-            for (let i: number = 0; i < g_state.NumPlayers; i++) {
+            for (let i: number = 1; i <= g_state.NumPlayers; i++) {
                 if (winPlayer.indexOf(i) > -1) {
-                    g_state.Players[i].Dice.startRoll()
+                    g_state.getPlayer(i).Dice.startRoll()
                 } else {
-                    g_state.Players[i].Dice.hide()
+                    g_state.getPlayer(i).Dice.hide()
                 }
             }
         } else {
-            firstPlayer = winPlayer[0] + 1
+            firstPlayer = winPlayer[0]
             toReturn = true
         }
         return toReturn
@@ -83,17 +83,18 @@ namespace FirstRoll {
         let deltaX: number = Math.floor(160 / g_state.NumPlayers)
         let x: number = Math.floor(deltaX / 2)
         let y: number = 100
-        g_state.Players.forEach((p: Player, index: number) => {
-            p.moveSprite(x, y)
-            p.showSprite()
-            p.Dice.Count = 2
-            p.Dice.Orientation = DiceOrientation.Horizontal
-            p.Dice.setStartLocation(x - 7, y - 20)
-            p.Dice.setStopLocation(x - 7, 16)
-            p.Dice.setLocationChange(0, -5)
-            p.Dice.show()
-            x += deltaX
-            firstRollStarted.push(false)
+        g_state.Players.filter((p: Player, index: number) => index > 0)
+            .forEach((p: Player, index: number) => {
+                p.moveSprite(x, y)
+                p.showSprite()
+                p.Dice.Count = 2
+                p.Dice.Orientation = DiceOrientation.Horizontal
+                p.Dice.setStartLocation(x - 7, y - 20)
+                p.Dice.setStopLocation(x - 7, 16)
+                p.Dice.setLocationChange(0, -5)
+                p.Dice.show()
+                x += deltaX
+                firstRollStarted.push(false)
         })
         if (GameSettings.controllers == ControllerSetting.Single) {
             cursor = sprites.create(assets.image`playerCursor`, SpriteKind.FirstRoll)
@@ -115,7 +116,7 @@ namespace FirstRoll {
                 if (!firstRollStarted[i]) {
                     player = i + 1
                     if (player < g_state.NumPlayers) {
-                        let p: Player = g_state.Players[player]
+                        let p: Player = g_state.getPlayer(player)
                         cursor.setPosition(p.Sprite.x, p.Sprite.y)
                     } else {
                         cursor.setPosition(-20, -20)
@@ -148,13 +149,14 @@ namespace FirstRoll {
 }
 
 namespace FirstRollTests {
-    const PLAYER_NAMES: string[] = ['Robo', 'Xander', 'Lex', 'Solar',]
-    const PLAYER_AVATARS: number[] = [0, 1, 2, 3]
+    const PLAYER_NAMES: string[] = ['', 'Robo', 'Xander', 'Lex', 'Solar',]
+    const PLAYER_AVATARS: number[] = [0, 1, 2, 3, 4]
     export function start(numPlayers: number): void {
         g_state.NumPlayers = numPlayers
-        g_state.Players.forEach((value: Player, index: number) => {
-            value.Name = PLAYER_NAMES[index]
-            value.Avatar = PLAYER_AVATARS[index]
+        g_state.Players.filter((p: Player, index: number) => index > 0)
+            .forEach((value: Player, index: number) => {
+                value.Name = PLAYER_NAMES[value.ControllerId]
+                value.Avatar = PLAYER_AVATARS[value.ControllerId]
         })
         FirstRoll.setup()
     }

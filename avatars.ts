@@ -29,6 +29,15 @@ namespace Avatar {
 
     export const AVATARS: Avatar[] = [
         {
+            name: 'Placeholder',
+            frontImage: null,
+            backImage: null,
+            leftImage: null,
+            rightImage: null,
+            leftAnim: [],
+            rightAnim: [],
+        },
+        {
             name: 'Castle warrior',
             frontImage: sprites.castle.heroWalkFront1,
             backImage: sprites.castle.heroWalkBack1,
@@ -163,7 +172,7 @@ namespace Avatar {
 
     function fixAvatars(): void {
         for (let a of AVATARS) {
-            if (a.rightImage == null) {
+            if (a.rightImage == null && a.leftImage != null) {
                 a.rightImage = a.leftImage.clone()
                 a.rightImage.flipX()
             }
@@ -180,7 +189,7 @@ namespace Avatar {
 
     function initSelection(): void {
         selection.currPlayer = 1
-        selection.selectedAvatar = 0
+        selection.selectedAvatar = 1 // Avatar zero is reserved.
         selection.header = textsprite.create(' ', 0, Color.Yellow)
         selection.header.setPosition(80, 4)
         selection.footer1 = textsprite.create(Strings.AVATAR_CHANGE_IMAGE_TEXT, 0, Color.White)
@@ -200,10 +209,10 @@ namespace Avatar {
     }
 
     export function select(): void {
-        g_state.Players[selection.currPlayer - 1].Avatar = selection.selectedAvatar
+        g_state.Players[selection.currPlayer].Avatar = selection.selectedAvatar
         if (selection.currPlayer < g_state.NumPlayers) {
             selection.currPlayer++
-            g_state.Players[selection.currPlayer - 1].promptForName()
+            g_state.Players[selection.currPlayer].promptForName()
             updateSelection()
         } else {
             selection.header.destroy()
@@ -227,11 +236,12 @@ namespace Avatar {
             } else {
                 selection.selectedAvatar--
             }
-            if (selection.selectedAvatar < 0) {
+            // Avatar zero is reserved and cannot be selected.
+            if (selection.selectedAvatar < 1) {
                 selection.selectedAvatar = AVATARS.length - 1
             }
             if (selection.selectedAvatar >= AVATARS.length) {
-                selection.selectedAvatar = 0
+                selection.selectedAvatar = 1
             }
             taken = false
             for (let p of g_state.Players) {
@@ -250,12 +260,12 @@ namespace Avatar {
         fixAvatars()
         initSelection()
         g_state.Mode = GameMode.AvatarSelect
-        g_state.Players[selection.currPlayer - 1].promptForName()
+        g_state.Players[selection.currPlayer].promptForName()
         updateSelection()
     }
 
     function updateSelection(): void {
-        selection.header.setText(g_state.Players[selection.currPlayer - 1].Name
+        selection.header.setText(g_state.Players[selection.currPlayer].Name
             + ' select avatar.')
         selection.header.setPosition(80, 4)
         selection.selectedAvatar = -1

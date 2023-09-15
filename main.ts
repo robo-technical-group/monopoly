@@ -134,7 +134,7 @@ function update(): void {
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
-Tests.startAutomatedGame(0)
+FirstRollTests.start(4)
 
 /*
 if (settings.exists(Tests.TESTING_KEY)) {
@@ -142,8 +142,10 @@ if (settings.exists(Tests.TESTING_KEY)) {
 } else {
     Attract.start()
 }
+
 Tests.startBoardSpaceMenu(0)
 Tests.startJailTest(0)
+Tests.startAutomatedGame(0)
 g_state.testMode = false
 Tests.startTestMenu()
 BackgroundTests.setup()

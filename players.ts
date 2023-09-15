@@ -117,6 +117,10 @@ class Player {
         }
     }
 
+    public get ControllerId(): number {
+        return this.controllerId
+    }
+
     public get Dice(): Dice {
         return this.dice
     }
@@ -421,7 +425,9 @@ class Player {
     }
 
     public moveSprite(x: number, y: number): void {
-        this.sprite.setPosition(x, y)
+        if (this.sprite != null) {
+            this.sprite.setPosition(x, y)
+        }
     }
 
     public processGo(direction: number, payAmount: number): void {
