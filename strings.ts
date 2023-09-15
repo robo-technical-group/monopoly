@@ -33,6 +33,8 @@ namespace Strings {
 
     // Strings used in actionmenus.ts and in state.ts when displaying menus.
     export const MENU_BANKRUPT: string = 'Go bankrupt'
+    export const MENU_BOARD_MOVE: string = 'Move cursor'
+    export const MENU_BOARD_SELECT: string = 'Select location'
     export const MENU_BUILD: string = 'Build/Mortgage'
     export const MENU_IN_JAIL_TITLE: string = '%NAME%: In jail (Turn %TURN%)'
     export const MENU_PROPERTY_AUCTION: string = 'Start auction'

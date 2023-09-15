@@ -79,6 +79,14 @@ namespace Tests {
         settings.writeNumber(TESTING_KEY, currTest)
     }
 
+    function setupMenuTest(board: number): void {
+        scene.setBackgroundImage(assets.image`bg`)
+        GameStateTests.loadTestState()
+        g_state.CurrPlayer = randint(1, g_state.NumPlayers)
+        g_state.testMode = true
+        g_state.Board.draw(board)
+    }
+
     function splash(message: string): void {
         game.showLongText(TITLE + '\n' + message + '\n' + INSTRUCTIONS,
             DialogLayout.Full)
@@ -100,6 +108,11 @@ namespace Tests {
         startGame()
     }
 
+    export function startBoardSpaceMenu(board: number): void {
+        setupMenuTest(board)
+        let menu: ActionMenu = new SelectSpaceActionMenu()
+        menu.show()
+    }
 
     export function startJailTest(board: number): void {
         startAutomatedGame(board)
@@ -111,24 +124,17 @@ namespace Tests {
     }
 
     export function startTestMenu(): void {
-        scene.setBackgroundImage(assets.image`bg`)
-        GameStateTests.loadTestState()
-        g_state.CurrPlayer = randint(1, g_state.NumPlayers)
-        g_state.testMode = true
-        g_state.Board.draw(0)
+        setupMenuTest(0)
         let menu: ActionMenu = new TestActionMenu()
         menu.show()
     }
 
     export function testJailMenu(): void {
-        scene.setBackgroundImage(assets.image`bg`)
-        GameStateTests.loadTestState()
-        g_state.CurrPlayer = randint(1, g_state.NumPlayers)
+        setupMenuTest(0)
         let p: Player = g_state.getCurrPlayer()
         g_state.Properties.state[Properties.GROUP_JAIL].properties[0].owner = g_state.CurrPlayer
         g_state.Properties.state[Properties.GROUP_JAIL].properties[1].owner = g_state.CurrPlayer
         p.goToJail()
-        g_state.testMode = true
         startGame()
     }
 }

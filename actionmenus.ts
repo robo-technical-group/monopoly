@@ -262,6 +262,15 @@ class StartTurnActionMenu extends ActionMenu {
     }
 }
 
+class SelectSpaceActionMenu extends ActionMenu {
+    public show(): void {
+        super.show()
+        this.showAction(ControllerButton.A, Strings.MENU_BOARD_SELECT)
+        this.showAction(ControllerButton.Left, Strings.MENU_BOARD_MOVE)
+        this.showAction(ControllerButton.Right, Strings.MENU_BOARD_MOVE)
+    }
+}
+
 class UnownedPropertyActionMenu extends ActionMenu {
     public show(): void {
         super.show()
