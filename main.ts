@@ -45,6 +45,8 @@
  * - [ ] Production version cleanup.
  *       - [ ] Remove viewing of action queue.
  *       - [ ] Remove template board images from assets.
+ * - [ ] Refactor player array in game state.
+ *       - Player zero will be used when selecting a location on the board.
  */
 
 /**
@@ -132,6 +134,7 @@ function update(): void {
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
+Tests.startAutomatedGame(0)
 
 /*
 if (settings.exists(Tests.TESTING_KEY)) {
@@ -139,9 +142,9 @@ if (settings.exists(Tests.TESTING_KEY)) {
 } else {
     Attract.start()
 }
+Tests.startBoardSpaceMenu(0)
 Tests.startJailTest(0)
 g_state.testMode = false
-Tests.startAutomatedGame(0)
 Tests.startTestMenu()
 BackgroundTests.setup()
 BoardTests.setup()

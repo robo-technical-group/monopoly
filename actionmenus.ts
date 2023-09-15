@@ -209,6 +209,28 @@ class PurchaseActionMenu extends ActionMenu {
     }
 }
 
+class SelectSpaceActionMenu extends ActionMenu {
+    public show(): void {
+        super.show()
+        this.showAction(ControllerButton.A, Strings.MENU_BOARD_SELECT)
+        this.showAction(ControllerButton.Left, Strings.MENU_BOARD_MOVE_FORWARD)
+        this.showAction(ControllerButton.Right, Strings.MENU_BOARD_MOVE_BACKWARD)
+        g_state.Board.DoubleSpeed = true
+    }
+
+    public actionA(): void {
+
+    }
+
+    public actionLeft(): void {
+        g_state.Board.Direction = 1
+    }
+
+    public actionRight(): void {
+
+    }
+}
+
 class StartTurnActionMenu extends ActionMenu {
     protected hasProperties: boolean
 
@@ -259,15 +281,6 @@ class StartTurnActionMenu extends ActionMenu {
         if (this.hasProperties || this.player.Bank > 0) {
             game.splashForPlayer(this.pId, 'Trading has not yet been implemented.')
         }
-    }
-}
-
-class SelectSpaceActionMenu extends ActionMenu {
-    public show(): void {
-        super.show()
-        this.showAction(ControllerButton.A, Strings.MENU_BOARD_SELECT)
-        this.showAction(ControllerButton.Left, Strings.MENU_BOARD_MOVE)
-        this.showAction(ControllerButton.Right, Strings.MENU_BOARD_MOVE)
     }
 }
 
