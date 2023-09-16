@@ -163,8 +163,8 @@ class GameState {
 
     public get State(): IGameState {
         let playerStates: IPlayer[] = []
-        this.players.forEach((value: Player, index: number) =>
-            playerStates.push(value.State))
+        this.players.filter((p: Player) => p.ControllerId > 0)
+            .forEach((value: Player) => playerStates.push(value.State))
         return {
             actionQueue: this.actionQueue.State,
             auctionQueue: this.auctionQueue,
@@ -360,7 +360,7 @@ class GameState {
         }
 
         if (Array.isArray(state.players)) {
-            this.players = []
+            this.initPlayerArray()
             let playerList = <object[]>state.players
             for (let playerState of playerList) {
                 let p: Player = new Player()
@@ -663,11 +663,18 @@ class GameState {
         this.movementSprite.z = Player.Z - 1
     }
 
-    protected initPlayers(numPlayers: number): void {
+    protected initPlayerArray(): void {
         this.players = []
-        for (let i: number = 0; i <= numPlayers; i++) {
+        let p: Player = new Player(0)
+        // Configure additional settings for hidden player.
+        this.players.push(p)
+    }
+
+    protected initPlayers(numPlayers: number): void {
+        this.initPlayerArray()
+        for (let i: number = 0; i < numPlayers; i++) {
             let p: Player = new Player(i)
-            if (i > 0 && (this.speedDie || this.boardIndex > 0)) {
+            if (this.speedDie || this.boardIndex > 0) {
                 p.Bank = GameState.STARTING_BALANCES[1]
             } else {
                 p.Bank = GameState.STARTING_BALANCES[0]

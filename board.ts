@@ -584,7 +584,7 @@ class Board {
 
         // Draw current player.
         let p: Player = g_state.getCurrPlayer()
-        if (p != null) {
+        if (p != null && p.Sprite != null) {
             s = p.Sprite
             s.x = x
             s.bottom = Board.PLAYER_BOTTOM
@@ -698,9 +698,8 @@ class Board {
     }
 
     public getXCoordinate(location: number): number {
-        let s: Sprite[] = sprites.allOfKind(SpriteKind.BoardSpace).filter(
-            (value: Sprite, index: number) => value.data['boardIndex'] == location
-        )
+        let s: Sprite[] = sprites.allOfKind(SpriteKind.BoardSpace)
+            .filter((value: Sprite) => value.data['boardIndex'] == location)
         if (s.length > 0) {
             return s[0].x
         } else {
@@ -709,9 +708,9 @@ class Board {
     }
 
     public locationVisible(location: number): boolean {
-        return sprites.allOfKind(SpriteKind.BoardSpace).filter(
-            (value: Sprite, index: number) => value.data['boardIndex'] == location
-        ).length > 0
+        return sprites.allOfKind(SpriteKind.BoardSpace)
+            .filter((value: Sprite) => value.data['boardIndex'] == location)
+            .length > 0
     }
 
     public move(): void {
@@ -806,8 +805,8 @@ class Board {
 
     protected showPlayer(location: number, x: number): void {
         // Draw player if at this location.
-        g_state.Players.filter((p: Player, index: number) => index > 0)
-            .forEach((p: Player, index: number) => {
+        g_state.Players.filter((p: Player) => p.ControllerId > 0)
+            .forEach((p: Player) => {
                 if (p.ControllerId != g_state.CurrPlayer && p.Location == location) {
                     let s: Sprite = p.Sprite
                     s.x = x
