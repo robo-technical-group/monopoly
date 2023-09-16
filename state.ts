@@ -666,7 +666,7 @@ class GameState {
     protected initPlayerArray(): void {
         this.players = []
         let p: Player = new Player(0)
-        // Configure additional settings for hidden player.
+        p.Avatar = 0
         this.players.push(p)
     }
 

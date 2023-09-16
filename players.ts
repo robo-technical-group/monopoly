@@ -356,9 +356,14 @@ class Player {
         }
 
         if (typeof state.avatar == 'number' &&
-                state.avatar > 0 &&
+                state.avatar > -1 &&
                 state.avatar < Avatar.AVATARS.length) {
-            this.Avatar = state.avatar
+            // In original game save files, state.avatar could be zero.
+            if (state.avatar > 0) {
+                this.Avatar = state.avatar
+            } else {
+                this.Avatar = randint(1, Avatar.AVATARS.length - 1)
+            }
         } else {
             return false
         }

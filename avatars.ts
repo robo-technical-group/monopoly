@@ -29,13 +29,13 @@ namespace Avatar {
 
     export const AVATARS: Avatar[] = [
         {
-            name: 'Placeholder',
-            frontImage: null,
-            backImage: null,
-            leftImage: null,
-            rightImage: null,
-            leftAnim: [],
-            rightAnim: [],
+            name: 'Board Indicator',
+            frontImage: assets.animation`boardSelector`[0],
+            backImage: assets.animation`boardSelector`[0],
+            leftImage: assets.animation`boardSelector`[0],
+            rightImage: assets.animation`boardSelector`[0],
+            leftAnim: assets.animation`boardSelector`,
+            rightAnim: assets.animation`boardSelector`,
         },
         {
             name: 'Castle warrior',

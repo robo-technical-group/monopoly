@@ -40,13 +40,14 @@
  * - [ ] Player select a space mechanism.
  *       - [ ] Allow for restraints (*e.g.*, select only a property, select from one side of the board).
  * - [ ] Game select a random space mechanism.
- *       - [ ] Add *Press Your Luck* sound effect. :-)
+ *       - [X] Add *Press Your Luck* sound effect. :-)
  *       - [ ] Perhaps add both "spin" and "bounce" selection mechanisms.
  * - [ ] Production version cleanup.
  *       - [ ] Remove viewing of action queue.
  *       - [ ] Remove template board images from assets.
  * - [X] Refactor player array in game state.
  *       - Player zero will be used when selecting a location on the board.
+ * - [ ] When redeeming "Get out of jail free" card, place it at the bottom of the deck.
  */
 
 /**
@@ -135,14 +136,13 @@ function update(): void {
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
-Tests.startAutomatedGame(0)
-
-/*
 if (settings.exists(Tests.TESTING_KEY)) {
     Tests.run()
 } else {
     Attract.start()
 }
+
+/*
 
 Tests.startBoardSpaceMenu(0)
 Tests.startJailTest(0)
