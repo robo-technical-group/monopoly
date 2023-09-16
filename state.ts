@@ -314,7 +314,9 @@ class GameState {
     public hidePlayers(): void {
         this.players.forEach((p: Player, index: number) => {
             p.hideSprite()
-            p.Dice.hide()
+            if (p.Dice != null) {
+                p.Dice.hide()
+            }
         })
     }
 
@@ -583,32 +585,34 @@ class GameState {
         let y: number = 0
         this.players.filter((value: Player, index: number) => index > 0)
             .forEach((value: Player, index: number) => {
-                value.initStats(index == this.currPlayer)
+                value.initStats(value.ControllerId == this.currPlayer)
                 value.showStats(x, y)
                 x += 40
         })
         this.properties.info.forEach((pgi: Properties.GroupInfo, pgIndex: number) => {
             pgi.properties.forEach((prop: Properties.Info, propIndex: number) => {
-                this.players.forEach((p: Player, playerIndex: number) => {
-                    let ps: Properties.State = this.properties.state[pgIndex].properties[propIndex]
-                    if (ps.owner == playerIndex) {
-                        p.drawStatus(pgIndex, propIndex, pgi.color, ps.isMortgaged)
-                    } else {
-                        p.drawStatus(pgIndex, propIndex, Properties.COLOR_UNOWNED, false)
-                    }
+                this.players.filter((p: Player, index: number) => index > 0)
+                    .forEach((p: Player, index: number) => {
+                        let ps: Properties.State = this.properties.state[pgIndex].properties[propIndex]
+                        if (ps.owner == p.ControllerId) {
+                            p.drawStatus(pgIndex, propIndex, pgi.color, ps.isMortgaged)
+                        } else {
+                            p.drawStatus(pgIndex, propIndex, Properties.COLOR_UNOWNED, false)
+                        }
                 })
             })
         })
         if (g_state.Bus) {
-            this.players.forEach((p: Player, playerIndex: number) => {
-                let pgIndex: number = this.properties.info.length - 1
-                let pgi: Properties.GroupInfo = this.properties.info[pgIndex]
-                let propIndex: number = this.properties.info[pgIndex].properties.length
-                if (p.BusTickets > 0) {
-                    p.drawStatus(pgIndex, propIndex, pgi.color, false)
-                } else {
-                    p.drawStatus(pgIndex, propIndex, Properties.COLOR_UNOWNED, false)
-                }
+            this.players.filter((p: Player, index: number) => index > 0)
+                .forEach((p: Player, index: number) => {
+                    let pgIndex: number = this.properties.info.length - 1
+                    let pgi: Properties.GroupInfo = this.properties.info[pgIndex]
+                    let propIndex: number = this.properties.info[pgIndex].properties.length
+                    if (p.BusTickets > 0) {
+                        p.drawStatus(pgIndex, propIndex, pgi.color, false)
+                    } else {
+                        p.drawStatus(pgIndex, propIndex, Properties.COLOR_UNOWNED, false)
+                    }
             })
         }
         if (this.testMode) {

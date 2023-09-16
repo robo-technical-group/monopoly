@@ -107,13 +107,14 @@ game.onUpdate(function () {
 function startGame(): void {
     g_state.Mode = GameMode.NotReady
     sprites.allOfKind(SpriteKind.Text).forEach((v: Sprite, index: number) => v.destroy())
-    g_state.Players.forEach((p: Player, index: number) => {
-        p.Dice.Orientation = DiceOrientation.Vertical
-        p.Dice.setStartLocation(Board.DICE_BEGIN_X, Board.DICE_BEGIN_Y)
-        p.Dice.setStopLocation(Board.DICE_END_X, Board.DICE_END_Y)
-        p.Dice.setLocationChange(5, 0)
-        p.DoublesRolled = false
-        p.TurnCount = 0
+    g_state.Players.filter((p: Player, index: number) => index > 0)
+        .forEach((p: Player, index: number) => {
+            p.Dice.Orientation = DiceOrientation.Vertical
+            p.Dice.setStartLocation(Board.DICE_BEGIN_X, Board.DICE_BEGIN_Y)
+            p.Dice.setStopLocation(Board.DICE_END_X, Board.DICE_END_Y)
+            p.Dice.setLocationChange(5, 0)
+            p.DoublesRolled = false
+            p.TurnCount = 0
     })
     scene.setBackgroundColor(Color.Black)
     scene.setBackgroundImage(assets.image`bg`)
@@ -134,7 +135,7 @@ function update(): void {
  * Main() a.k.a. game.onStart()
  */
 game.stats = true
-FirstRollTests.start(4)
+FirstRollTests.start(2)
 
 /*
 if (settings.exists(Tests.TESTING_KEY)) {

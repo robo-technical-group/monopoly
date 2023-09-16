@@ -806,18 +806,19 @@ class Board {
 
     protected showPlayer(location: number, x: number): void {
         // Draw player if at this location.
-        g_state.Players.forEach((p: Player, index: number) => {
-            if (index + 1 != g_state.CurrPlayer && p.Location == location) {
-                let s: Sprite = p.Sprite
-                s.x = x
-                s.bottom = Board.PLAYER_BOTTOM
-                s.z = Player.Z
-                if (p.InJail) {
-                    s.x += Board.JAIL_DELTA_X
-                    s.bottom += Board.JAIL_DELTA_Y
+        g_state.Players.filter((p: Player, index: number) => index > 0)
+            .forEach((p: Player, index: number) => {
+                if (p.ControllerId != g_state.CurrPlayer && p.Location == location) {
+                    let s: Sprite = p.Sprite
+                    s.x = x
+                    s.bottom = Board.PLAYER_BOTTOM
+                    s.z = Player.Z
+                    if (p.InJail) {
+                        s.x += Board.JAIL_DELTA_X
+                        s.bottom += Board.JAIL_DELTA_Y
+                    }
+                    p.showSprite()
                 }
-                p.showSprite()
-            }
         })
     }
 
