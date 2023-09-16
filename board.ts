@@ -55,6 +55,7 @@
 
 namespace SpriteKind {
     export const BoardSpace = SpriteKind.create()
+    export const BoardSpaceOnwer = SpriteKind.create()
 }
 
 enum SpaceType {
@@ -572,9 +573,10 @@ class Board {
         }
 
         // Remove all existing board sprites.
-        for (let s of sprites.allOfKind(SpriteKind.BoardSpace)) {
-            s.destroy()
-        }
+        sprites.allOfKind(SpriteKind.BoardSpace)
+            .forEach((s: Sprite) => s.destroy())
+        sprites.allOfKind(SpriteKind.BoardSpaceOnwer)
+            .forEach((s: Sprite) => s.destroy())
 
         // Place current location in center of moving board.
         this.currSpace = location
@@ -729,6 +731,25 @@ class Board {
     /**
      * Protected methods
      */
+    protected drawOwnerSprite(boardSprite: Sprite): void {
+        let location: number = boardSprite.data['boardIndex']
+        if (this.board[location].spaceType == SpaceType.Property) {
+            let fi: Properties.FullInfo = g_state.getPropertyInfo(location)
+            if (fi.state.owner > 0) {
+                let owner: Player = g_state.getPlayer(fi.state.owner)
+                let i: Image = image.create(boardSprite.width, 9)
+                i.fill(owner.Color)
+                i.print(owner.Name, 2, 2, Color.Black, image.font5)
+                i.drawRect(0, 0, i.width, i.height, Color.Black)
+                let ownerSprite: Sprite = sprites.create(i, SpriteKind.BoardSpaceOnwer)
+                ownerSprite.x = boardSprite.x
+                ownerSprite.bottom = boardSprite.bottom
+                ownerSprite.setFlag(SpriteFlag.Ghost, true)
+                ownerSprite.z = Board.Z
+            }
+        }
+    }
+
     protected drawSprite(location: number, x: number): Sprite {
         let s: Sprite = sprites.create(this.board[location].image,
             SpriteKind.BoardSpace
@@ -741,14 +762,20 @@ class Board {
         if (g_state.CurrPlayer > 0) {
             this.showPlayer(location, x)
         }
+        this.drawOwnerSprite(s)
 
         return s
     }
 
     protected moveBackward(): void {
-        for (let boardSprite of sprites.allOfKind(SpriteKind.BoardSpace)) {
-            boardSprite.x -= this.doubleSpeed ? Board.SPEED * 2 : Board.SPEED
-        }
+        sprites.allOfKind(SpriteKind.BoardSpace).forEach((s: Sprite) =>
+            s.x -= this.doubleSpeed ? Board.SPEED * 2 : Board.SPEED)
+        sprites.allOfKind(SpriteKind.BoardSpaceOnwer).forEach((s: Sprite) => {
+            s.x -= this.doubleSpeed ? Board.SPEED * 2 : Board.SPEED
+            if (s.right < 0) {
+                s.destroy()
+            }
+        })
         for (let boardSprite of sprites.allOfKind(SpriteKind.BoardSpace)) {
             if (boardSprite.right < 0) {
                 // Find sprite furthest to the right.
@@ -770,14 +797,20 @@ class Board {
                 if (g_state.CurrPlayer > 0) {
                     this.showPlayer(boardIndex, boardSprite.x)
                 }
+                this.drawOwnerSprite(boardSprite)
             }
         }
     }
 
     protected moveForward(): void {
-        for (let boardSprite of sprites.allOfKind(SpriteKind.BoardSpace)) {
-            boardSprite.x += this.doubleSpeed ? Board.SPEED * 2 : Board.SPEED
-        }
+        sprites.allOfKind(SpriteKind.BoardSpace).forEach((s: Sprite) =>
+            s.x += this.doubleSpeed ? Board.SPEED * 2 : Board.SPEED)
+        sprites.allOfKind(SpriteKind.BoardSpaceOnwer).forEach((s: Sprite) => {
+            s.x += this.doubleSpeed ? Board.SPEED * 2 : Board.SPEED
+            if (s.left > 160) {
+                s.destroy()
+            }
+        })
         for (let boardSprite of sprites.allOfKind(SpriteKind.BoardSpace)) {
             if (boardSprite.left > 160) {
                 // Find sprite furthest to the left.
@@ -799,6 +832,7 @@ class Board {
                 if (g_state.CurrPlayer > 0) {
                     this.showPlayer(boardIndex, boardSprite.x)
                 }
+                this.drawOwnerSprite(boardSprite)
             }
         }
     }
