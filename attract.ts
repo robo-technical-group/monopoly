@@ -49,7 +49,7 @@ namespace Attract {
         }
         for (let i: number = 0; i < 4; i++) {
             splashScreen.addMovingSprite(
-                Avatar.AVATARS[randint(0, Avatar.AVATARS.length - 1)].frontImage)
+                Avatar.AVATARS[randint(1, Avatar.AVATARS.length - 1)].frontImage)
         }
         splashScreen.movingSpriteOptions.mode = SpriteMode.BlankSpace
         splashScreen.movingSpriteOptions.dir = SpriteDirection.Both
