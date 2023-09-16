@@ -45,7 +45,7 @@
  * - [ ] Production version cleanup.
  *       - [ ] Remove viewing of action queue.
  *       - [ ] Remove template board images from assets.
- * - [ ] Refactor player array in game state.
+ * - [X] Refactor player array in game state.
  *       - Player zero will be used when selecting a location on the board.
  */
 

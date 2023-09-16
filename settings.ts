@@ -8,7 +8,7 @@ namespace GameSettings {
     // Milliseconds for a bank bump to be visible.
     export const BANK_BUMP_VISIBLE: number = 2000
     // export const CURRENCY_SYMBOL: string = '$'
-    export const CURRENCY_SYMBOL: string = 'B'
+    export const CURRENCY_SYMBOL: string = 'M'
     export const CURRENCY_IS_PREFIX: boolean = true
     export const JAIL_FEE: number = 50
     const TEXT_DONE = 'Start game!'
