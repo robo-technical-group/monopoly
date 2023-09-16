@@ -224,10 +224,8 @@ class GameState {
     public actionUseJailCard(): void {
         let p: Player = this.getCurrPlayer()
         let cards: Properties.State[] =
-            this.Properties.state[Properties.GROUP_JAIL].properties.filter(
-                (value: Properties.State, index: number) =>
-                    value.owner == this.currPlayer
-            )
+            this.Properties.state[Properties.GROUP_JAIL].properties
+                .filter((value: Properties.State) => value.owner == this.currPlayer)
         if (cards.length > 0) {
             this.hideMenu()
             cards[0].owner = 0
@@ -273,7 +271,7 @@ class GameState {
      */
     public getPlayer(player: number): Player {
         if (player > 0 && player <= this.players.length) {
-            return this.players[player]
+            return this.players.find((p: Player) => p.ControllerId == player)
         } else {
             return null
         }
@@ -434,7 +432,7 @@ class GameState {
 
     public nextPlayer(): void {
         this.currPlayer++
-        if (this.currPlayer > this.players.length) {
+        if (this.currPlayer > this.NumPlayers) {
             this.currPlayer = 1
         }
         // If, for some reason, actions still exist in the queue,
@@ -583,16 +581,16 @@ class GameState {
     public updatePlayerStatus(): void {
         let x: number = 0
         let y: number = 0
-        this.players.filter((value: Player, index: number) => index > 0)
-            .forEach((value: Player, index: number) => {
+        this.players.filter((value: Player) => value.ControllerId > 0)
+            .forEach((value: Player) => {
                 value.initStats(value.ControllerId == this.currPlayer)
                 value.showStats(x, y)
                 x += 40
         })
         this.properties.info.forEach((pgi: Properties.GroupInfo, pgIndex: number) => {
             pgi.properties.forEach((prop: Properties.Info, propIndex: number) => {
-                this.players.filter((p: Player, index: number) => index > 0)
-                    .forEach((p: Player, index: number) => {
+                this.players.filter((p: Player) => p.ControllerId > 0)
+                    .forEach((p: Player) => {
                         let ps: Properties.State = this.properties.state[pgIndex].properties[propIndex]
                         if (ps.owner == p.ControllerId) {
                             p.drawStatus(pgIndex, propIndex, pgi.color, ps.isMortgaged)
@@ -603,8 +601,8 @@ class GameState {
             })
         })
         if (g_state.Bus) {
-            this.players.filter((p: Player, index: number) => index > 0)
-                .forEach((p: Player, index: number) => {
+            this.players.filter((p: Player) => p.ControllerId > 0)
+                .forEach((p: Player) => {
                     let pgIndex: number = this.properties.info.length - 1
                     let pgi: Properties.GroupInfo = this.properties.info[pgIndex]
                     let propIndex: number = this.properties.info[pgIndex].properties.length

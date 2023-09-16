@@ -1177,10 +1177,9 @@ class ActionQueue {
         if (p.InJail) {
             // Any jail cards?
             let jailCards: Properties.State[] =
-                g_state.Properties.state[Properties.GROUP_JAIL].properties.filter(
-                    (value: Properties.State, index: number) =>
-                        value.owner == g_state.CurrPlayer
-                )
+                g_state.Properties.state[Properties.GROUP_JAIL].properties
+                    .filter((value: Properties.State) =>
+                        value.owner == g_state.CurrPlayer)
             if (jailCards.length > 0) {
                 // Redeem jail card.
                 game.splash('Using jail card.')
