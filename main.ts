@@ -16,15 +16,6 @@
  *       - [ ] Handle bus options.
  *       - [ ] Handle gift options.
  *       - [ ] Handle bankrupt player.
- * - [X] Player actions menu (while in jail).
- * - [X] Player actions menu (turn).
- *       - [X] Roll.
- *       - [X] Bankrupt.
- *       - [X] Build/mortgage.
- *       - [X] Trade.
- * - [X] Player actions menu (unowned property).
- *       - [X] Buy.
- *       - [X] Auction.
  * - [ ] Auction property.
  *       - [ ] Multiplayer.
  *       - [ ] Single controller.
