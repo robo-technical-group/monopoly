@@ -38,7 +38,7 @@
  *       - [ ] Remove template board images from assets.
  * - [X] Refactor player array in game state.
  *       - Player zero will be used when selecting a location on the board.
- * - [ ] When redeeming "Get out of jail free" card, place it at the bottom of the deck.
+ * - [X] When redeeming "Get out of jail free" card, place it at the bottom of the deck.
  */
 
 /**
@@ -134,7 +134,11 @@ if (settings.exists(Tests.TESTING_KEY)) {
 }
 
 /*
-
+if (settings.exists(Tests.TESTING_KEY)) {
+    Tests.run()
+} else {
+    Attract.start()
+}
 Tests.startBoardSpaceMenu(0)
 Tests.startJailTest(0)
 Tests.startAutomatedGame(0)

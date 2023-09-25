@@ -209,6 +209,9 @@ namespace Cards {
     let decks: number[][] = []
 
     function currentCard(deck: number): Card {
+        if (deck > deckIndex.length) {
+            return null
+        }
         let index: number = deckIndex[deck]
         if (index >= decks[deck].length) {
             return null
@@ -289,6 +292,34 @@ namespace Cards {
         if (deck <= BUS_DECK && deckIndex[deck] >= decks[deck].length) {
             deckIndex[deck] = 0
         }
+    }
+
+    /**
+     * Moves the jail card to the bottom of the deck.
+     */
+    function returnJailCard(deck: number): void {
+        if (deck < 0 || deck >= BUS_DECK) {
+            return
+        }
+        // Build a new deck, skipping the jail card.
+        let currDeck: number[] = decks[deck]
+        let newDeck: number[] = []
+        let currCard: number = 0
+        for (let count: number = 0; count < currDeck.length; count++) {
+            currCard = currDeck[deckIndex[deck]]
+            if (currCard == 0) {
+                continue
+            }
+            newDeck.push(currCard)
+            deckIndex[deck]++
+            if (deckIndex[deck] >= currDeck.length) {
+                deckIndex[deck] = 0
+            }
+        }
+        // Put the jail card at the bottom of the deck.
+        newDeck.push(0)
+        deckIndex[deck] = 0
+        decks[deck] = newDeck
     }
 
     export function setIndex(deck: number, index: number): void {
