@@ -112,7 +112,7 @@ class GameState {
     }
 
     public set CurrPlayer(value: number) {
-        if (value > 0 && value <= this.players.length) {
+        if (value > 0 && value < this.players.length) {
             this.currPlayer = value
         }
     }
@@ -134,6 +134,7 @@ class GameState {
     }
     
     public get NumPlayers(): number {
+        // Player zero is for selecting 
         return this.players.length - 1
     }
 
@@ -665,6 +666,7 @@ class GameState {
 
     protected initPlayerArray(): void {
         this.players = []
+        // Player zero is for selecting a location on the board.
         let p: Player = new Player(0)
         p.Avatar = 0
         this.players.push(p)
@@ -672,7 +674,7 @@ class GameState {
 
     protected initPlayers(numPlayers: number): void {
         this.initPlayerArray()
-        for (let i: number = 0; i < numPlayers; i++) {
+        for (let i: number = 1; i <= numPlayers; i++) {
             let p: Player = new Player(i)
             if (this.speedDie || this.boardIndex > 0) {
                 p.Bank = GameState.STARTING_BALANCES[1]

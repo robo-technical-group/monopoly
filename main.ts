@@ -26,8 +26,6 @@
  * - [ ] Add subclass of action menu for starting a turn with appropriate default actions.
  *       - Trade
  *       - Build/Mortgage
- * - [X] Show ownership of a property with an overlay.
- *       - Bottom of tile, player name and color.
  * - [ ] Player select a space mechanism.
  *       - [ ] Allow for restraints (*e.g.*, select only a property, select from one side of the board).
  * - [ ] Game select a random space mechanism.
@@ -36,9 +34,6 @@
  * - [ ] Production version cleanup.
  *       - [ ] Remove viewing of action queue.
  *       - [ ] Remove template board images from assets.
- * - [X] Refactor player array in game state.
- *       - Player zero will be used when selecting a location on the board.
- * - [X] When redeeming "Get out of jail free" card, place it at the bottom of the deck.
  */
 
 /**
