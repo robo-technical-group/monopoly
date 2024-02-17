@@ -35,7 +35,7 @@
     ],
     "testFiles": [],
     "targetVersions": {
-        "target": "1.12.41",
+        "target": "1.12.47",
         "targetId": "arcade"
     },
     "supportedTargets": [
