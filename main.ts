@@ -34,6 +34,11 @@
  * - [ ] Production version cleanup.
  *       - [ ] Remove viewing of action queue.
  *       - [ ] Remove template board images from assets.
+ * - [ ] Implement rules for short game.
+ * - [ ] Implement millionnaire variant?
+ * - [X] Implement tutorial system.
+ * - [/] Write tutorials.
+ * - [ ] Require owner demand for rent.
  */
 
 /**

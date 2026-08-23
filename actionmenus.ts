@@ -180,35 +180,6 @@ class InJailActionMenu extends ActionMenu {
     }
 }
 
-class PurchaseActionMenu extends ActionMenu {
-    protected property: Properties.FullInfo
-
-    constructor() {
-        super()
-        this.property = g_state.getPropertyInfo(this.player.Location)
-    }
-
-    public show(): void {
-        this.message = this.property.info.name
-        super.show()
-        if (this.player.Bank >= this.property.info.cost) {
-            this.showAction(ControllerButton.A, Strings.MENU_PROPERTY_BUY
-                .replace('%COST%', this.property.info.cost.toString()))
-        }
-        this.showAction(ControllerButton.B, Strings.MENU_PROPERTY_AUCTION)
-    }
-
-    public actionA(): void {
-        if (this.player.Bank >= this.property.info.cost) {
-            g_state.actionPropertyPurchase()
-        }
-    }
-
-    public actionB(): void {
-        g_state.actionPropertyAuction()
-    }
-}
-
 class SelectSpaceActionMenu extends ActionMenu {
     public show(): void {
         super.show()
@@ -285,10 +256,31 @@ class StartTurnActionMenu extends ActionMenu {
 }
 
 class UnownedPropertyActionMenu extends ActionMenu {
+    protected property: Properties.FullInfo
+
+    constructor() {
+        super()
+        this.property = g_state.getPropertyInfo(this.player.Location)
+    }
+
     public show(): void {
+        this.message = this.property.info.name
         super.show()
-        this.showAction(ControllerButton.A, Strings.MENU_PROPERTY_BUY)
+        if (this.player.Bank >= this.property.info.cost) {
+            this.showAction(ControllerButton.A, Strings.MENU_PROPERTY_BUY
+                .replace('%COST%', this.property.info.cost.toString()))
+        }
         this.showAction(ControllerButton.B, Strings.MENU_PROPERTY_AUCTION)
+    }
+
+    public actionA(): void {
+        if (this.player.Bank >= this.property.info.cost) {
+            g_state.actionPropertyPurchase()
+        }
+    }
+
+    public actionB(): void {
+        g_state.actionPropertyAuction()
     }
 }
 

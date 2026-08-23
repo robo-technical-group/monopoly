@@ -3,6 +3,8 @@ namespace PauseMenu {
     enum Items {
         SaveGame = 0,
         ShowActionQueue,
+        SetTutorialMode,
+        ResetTutorials,
         ManageGames,
         VolumeDown,
         VolumeUp,
@@ -18,6 +20,8 @@ namespace PauseMenu {
     const MENU_TEXT: string[] = [
         'Save game',
         'Show action queue',
+        'Enable tutorial mode',
+        'Reset tutorials',
         'Manage game saves',
         'Volume down',
         'Volume up',
@@ -33,6 +37,8 @@ namespace PauseMenu {
     const MENU_TEXT_ALTERNATE: string[] = [
         '',
         '',
+        'Disable tutorial mode',
+        '',
         '',
         '',
         '',
@@ -47,6 +53,7 @@ namespace PauseMenu {
 
     const MENU_TITLE: string = 'Pause Menu'
     const TESTS_PROMPT: string = 'Restart game to start/stop tests.'
+    const TUTORIAL_NOT_AVAILABLE: string = 'Start a game first before setting tutorial mode.'
     const VOLUMES: number[] = [0, 32, 64, 96, 128, 160, 192, 224, 255]
     const Z: number = 255
 
@@ -161,6 +168,14 @@ namespace PauseMenu {
             case Items.RunTests:
                 toggleTests()
                 break
+
+            case Items.SetTutorialMode:
+                toggleTutorialMode()
+                break
+
+            case Items.ResetTutorials:
+                resetTutorials()
+                break
         }
     }
 
@@ -168,6 +183,10 @@ namespace PauseMenu {
         menu.close()
         isMenuRunning = false
         g_state.Mode = priorMode
+    }
+
+    function resetTutorials(): void {
+        Tutorial.resetTutorials()
     }
 
     export function show(): void {
@@ -200,6 +219,7 @@ namespace PauseMenu {
         updateStats()
         updateVolume()
         updateTests()
+        updateTutorialMode()
         menu.onButtonPressed(controller.A, processSelection)
         menu.onButtonPressed(controller.B, processSelection)
         isMenuRunning = true
@@ -241,6 +261,15 @@ namespace PauseMenu {
         updateTests()
     }
 
+    function toggleTutorialMode(): void {
+        if (g_state) {
+            g_state.TutorialMode = !g_state.TutorialMode
+            updateTutorialMode()
+        } else {
+            game.splash(TUTORIAL_NOT_AVAILABLE)
+        }
+    }
+
     function updateBrightness(): void {
         menu.items[Items.BrightnessDown].text = MENU_TEXT[Items.BrightnessDown] +
             ' (' + screen.brightness() + ')'
@@ -267,6 +296,12 @@ namespace PauseMenu {
         menu.items[Items.RunTests].text = settings.exists(Tests.TESTING_KEY) ?
             MENU_TEXT_ALTERNATE[Items.RunTests] :
             MENU_TEXT[Items.RunTests]
+    }
+
+    function updateTutorialMode(): void {
+        menu.items[Items.SetTutorialMode].text = g_state.TutorialMode ?
+            MENU_TEXT_ALTERNATE[Items.SetTutorialMode] :
+            MENU_TEXT[Items.SetTutorialMode]
     }
 
     function updateVolume(): void {

@@ -701,7 +701,7 @@ class ActionQueue {
         if (property.state.owner <= 0) {
             // Property is vacant.
             if (p.Bank >= property.info.cost) {
-                this.showActionMenu(ActionMenuType.PurchaseProperty)
+                this.showActionMenu(ActionMenuType.UnownedProperty)
             } else {
                 game.splashForPlayer(pId, Strings.MENU_PROPERTY_NO_MONEY
                     .replace('%PROPERTY%', property.info.name))
@@ -920,6 +920,7 @@ class ActionQueue {
                     this.showActionMenu(ActionMenuType.StartTurn)
                 }
             }
+            Tutorial.firstTurn()
         }
     }
 

@@ -4,8 +4,8 @@
 namespace Attract {
     export const TEXT_HEADLINES: string[][] = [
         ['Monopoly is a registered', 'trademark of Hasbro'],
-        ['MakeCode Arcade Port', '(C) 2023'],
-        ['(C) 2023', 'Robo Technical Group'],
+        ['MakeCode Arcade Port', '(C) 2023-2026'],
+        ['(C) 2023-2026', 'Robo Technical Group'],
         ['Programmed in', 'MakeCode Arcade'],
         ['by', 'Alex K.'],
     ]

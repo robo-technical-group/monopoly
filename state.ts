@@ -1,7 +1,4 @@
 /**
- * Current game state
- */
-/**
  * Interface that can be translated to/from JSON.
  */
 interface IGameState {
@@ -16,8 +13,13 @@ interface IGameState {
     players: IPlayer[]
     properties: Properties.GroupState[]
     speedDie: boolean
+    tutorialMode: boolean
+    tutorialStates: boolean[]
 }
 
+/**
+ * Current game state
+ */
 class GameState {
     protected static readonly KEY_PREFIX: string = 'mpy_'
     protected static readonly MESSAGE_TOP: number = 32
@@ -40,6 +42,8 @@ class GameState {
     protected players: Player[]
     protected properties: Properties.Properties
     protected speedDie: boolean
+    protected tutorialMode: boolean
+    protected tutorialStates: boolean[]
 
     constructor(numPlayers: number = 0, board: number = 0) {
         this.actionQueue = new ActionQueue()
@@ -61,6 +65,12 @@ class GameState {
         }
         this.speedDie = false
         this.testMode = false
+        this.tutorialMode = true
+        this.tutorialStates = []
+
+        if (settings.exists("TUTORIAL_RAN") && settings.readNumber("TUTORIAL_RAN") == 1) {
+            this.tutorialMode = false
+        }
     }
 
     /**
@@ -162,6 +172,14 @@ class GameState {
         this.speedDie = value
     }
 
+    public get TutorialMode(): boolean {
+        return this.tutorialMode
+    }
+
+    public set TutorialMode(value: boolean) {
+        this.tutorialMode = value
+    }
+
     public get State(): IGameState {
         let playerStates: IPlayer[] = []
         this.players.filter((p: Player) => p.ControllerId > 0)
@@ -178,6 +196,8 @@ class GameState {
             players: playerStates,
             properties: this.properties.state,
             speedDie: this.speedDie,
+            tutorialMode: this.tutorialMode,
+            tutorialStates: this.tutorialStates,
         }
     }
 
@@ -209,6 +229,10 @@ class GameState {
             this.hideMenu()
             this.actionQueue.queuePayment(property.info.cost, pId, 0)
             property.state.owner = pId
+        }
+        Tutorial.firstSale()
+        if (property.groupState.isMonopolyOwned) {
+            Tutorial.firstMonopoly()
         }
     }
     
@@ -296,6 +320,19 @@ class GameState {
             state: propState,
         }
         return toReturn
+    }
+
+    public getTutorialState(index: number): boolean {
+        if (this.tutorialStates.length > index && index > -1) {
+            return this.tutorialStates[index]
+        }
+        if (index > -1) {
+            while (index > this.tutorialStates.length) {
+                this.tutorialStates.push(false)
+            }
+            return false
+        }
+        return false
     }
 
     public handleButton(button: ControllerButton): void {
@@ -428,6 +465,23 @@ class GameState {
             this.actionQueue.buildFromState(state.actionQueue)
         }
 
+        if (typeof state.tutorialMode == 'boolean') {
+            this.tutorialMode = state.tutorialMode
+        } else if (typeof state.tutorialMode == 'number') {
+            this.tutorialMode = (state.tutorialMode != 0) 
+        } else {
+            this.tutorialMode = false
+        }
+
+        this.tutorialStates = []
+        if (Array.isArray(state.tutorialStates) &&
+        (<boolean[]>state.tutorialStates).length > 0 &&
+        typeof state.tutorialStates[0] == 'boolean') {
+            for (let b of <boolean[]>state.tutorialStates) {
+                this.tutorialStates.push(b)
+            }
+        }
+
         return true
     }
 
@@ -486,6 +540,16 @@ class GameState {
         return settings.list(GameState.KEY_PREFIX).length > 0
     }
 
+    public setTutorialState(index: number, value: boolean = true): void {
+        if (index < 0) {
+            return
+        }
+        while (index > this.tutorialStates.length) {
+            this.tutorialStates.push(false)
+        }
+        this.tutorialStates[index] = value
+    }
+
     public showMenu(menu: ActionMenuType): void {
         let priorMode: GameMode = this.gameMode
         this.gameMode = GameMode.NotReady
@@ -497,8 +561,8 @@ class GameState {
                 this.actionMenu = new InJailActionMenu()
                 break
 
-            case ActionMenuType.PurchaseProperty:
-                this.actionMenu = new PurchaseActionMenu()
+            case ActionMenuType.UnownedProperty:
+                this.actionMenu = new UnownedPropertyActionMenu()
                 break
 
             case ActionMenuType.StartTurn:

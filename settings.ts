@@ -107,6 +107,7 @@ namespace GameSettings {
         Attract.splashScreen.release()
         build()
         settingsScreens.build()
+        Tutorial.gameSettings()
         g_state.Mode = GameMode.Settings
     }
 

@@ -17,6 +17,7 @@ function pressA(player: number): void {
     switch (g_state.Mode) {
         case GameMode.Attract:
             if (player == 1) {
+                Tutorial.firstTutorial()
                 GameSettings.start()
             }
             break
@@ -29,7 +30,7 @@ function pressA(player: number): void {
                         GameSettings.collect()
                         Avatar.startSelection()
                     }
-                }   // if (GameSettings.settingsScreens.done)
+                }
             }
             break
 
@@ -64,7 +65,7 @@ function pressA(player: number): void {
             g_state.Board.Direction = (g_state.Board.Direction == 1 ? -1 : 1)
             info.setScore(g_state.Board.Direction)
             break
-    }   // switch (g_state.Mode)
+    }
 }
 
 function pressB(player: number): void {
@@ -104,7 +105,7 @@ function pressB(player: number): void {
         case GameMode.BackgroundTest:
             BackgroundTests.toggleRunning()
             break
-    }   // switch (g_state.Mode)
+    }
 }
 
 function pressDown(player: number): void {
@@ -143,7 +144,7 @@ function pressDown(player: number): void {
         case GameMode.BackgroundTest:
             g_state.Board.DoubleSpeed = false
             break
-    }   // switch (g_state.Mode)
+    }
 }
 
 function pressLeft(player: number): void {
@@ -185,7 +186,7 @@ function pressLeft(player: number): void {
             DiceTests.diceTest.setLocationChange(-5, 0)
             DiceTests.diceTest.show()
             break
-    }   // switch (g_state.Mode)
+    }
 }
 
 function pressMenu(): void {
@@ -235,7 +236,7 @@ function pressRight(player: number): void {
             DiceTests.diceTest.setLocationChange(5, 0)
             DiceTests.diceTest.show()
             break
-    }   // switch (g_state.Mode)
+    }
 }
 
 function pressUp(player: number) {
@@ -274,7 +275,7 @@ function pressUp(player: number) {
         case GameMode.BackgroundTest:
             g_state.Board.DoubleSpeed = true
             break
-    }   // switch (g_state.Mode)
+    }
 }
 
 /**

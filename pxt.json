@@ -31,11 +31,12 @@
         "taxes.ts",
         "strings.ts",
         "actionmenus.ts",
-        "actionqueue.ts"
+        "actionqueue.ts",
+        "tutorial.ts"
     ],
     "testFiles": [],
     "targetVersions": {
-        "target": "1.12.47",
+        "target": "4.0.14",
         "targetId": "arcade"
     },
     "supportedTargets": [
